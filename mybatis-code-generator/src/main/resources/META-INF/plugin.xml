@@ -30,7 +30,9 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService"/>
+        <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService"/>
+        <applicationConfigurable dynamic="true" instance="zone.pusu.mybatisCodeGenerator.ui.SettingMain"/>
     </extensions>
     <actions>
         <action id="GenerateMybatisAction" class="zone.pusu.mybatisCodeGenerator.action.GenerateMybatisAction"

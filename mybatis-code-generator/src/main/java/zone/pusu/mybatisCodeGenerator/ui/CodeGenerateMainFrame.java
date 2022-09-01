@@ -23,7 +23,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.EventListener;
 
-public class MyMainFrame extends JFrame {
+public class CodeGenerateMainFrame extends JFrame {
     // 操作类型申请
     public static int Operate_Save = 1;
     public static int Operate_Generate = 2;
@@ -39,7 +39,7 @@ public class MyMainFrame extends JFrame {
     // 事件申请
     private ArrayList<MyMainFrameOperateEvent> eventListenerList = new ArrayList<MyMainFrameOperateEvent>();
 
-    public MyMainFrame(GenerateMybatisConfigClass generateMybatisConfigClass) {
+    public CodeGenerateMainFrame(GenerateMybatisConfigClass generateMybatisConfigClass) {
         this.generateMybatisConfigClass = generateMybatisConfigClass;
         JPanel jPanelHead = new JPanel();
         jPanelHead.setBorder(new EmptyBorder(20, 20, 0, 20));
@@ -227,15 +227,15 @@ public class MyMainFrame extends JFrame {
     }
 
     void onGenerateClick() {
-        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        ArrayList<String> arrayList = new ArrayList<String>();
         if (isGenerateDaoFile) {
-            arrayList.add(Generate_File_Type_Dao);
+            arrayList.add(String.valueOf(Generate_File_Type_Dao));
         }
         if (isGenerateMapperFile) {
-            arrayList.add(Generate_File_Type_Mapper);
+            arrayList.add(String.valueOf(Generate_File_Type_Mapper));
         }
         if (isGenerateQueryParamFile) {
-            arrayList.add(Generate_File_Type_QueryParam);
+            arrayList.add(String.valueOf(Generate_File_Type_QueryParam));
         }
         triggerOperateEvent(Operate_Generate, arrayList.toArray(String[]::new));
     }

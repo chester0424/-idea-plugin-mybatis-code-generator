@@ -23,7 +23,7 @@ import zone.pusu.mybatisCodeGenerator.tool.FileUtil;
 import zone.pusu.mybatisCodeGenerator.tool.FreeMarkerUtil;
 import zone.pusu.mybatisCodeGenerator.tool.JsonUtil;
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
-import zone.pusu.mybatisCodeGenerator.ui.MyMainFrame;
+import zone.pusu.mybatisCodeGenerator.ui.CodeGenerateMainFrame;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -41,21 +41,45 @@ public class GenerateMybatisAction extends AnAction {
 
             GenerateMybatisConfigClass configClass = getGenerateMybatisConfigClass(classInfo);
 
-            MyMainFrame myMainFrame = new MyMainFrame(configClass);
-            myMainFrame.addOperateListener((operate, params) -> {
-                if (operate == MyMainFrame.Operate_Save) {
+            CodeGenerateMainFrame codeGenerateMainFrame = new CodeGenerateMainFrame(configClass);
+            codeGenerateMainFrame.addOperateListener((operate, params) -> {
+                if (operate == CodeGenerateMainFrame.Operate_Save) {
                     saveConfigInfo(classInfo, configClass);
                     Messages.showInfoMessage("has been Saved", "Info");
-                } else if (operate == MyMainFrame.Operate_Generate) {
+                } else if (operate == CodeGenerateMainFrame.Operate_Generate) {
                     if (params != null) {
-                        // 默认路径 和文件名
-                        String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent(), "dao").toString();
-                        String fileName = "I" + classInfo.getName() + "Dao.java";
-                        TempDataContent tempDataContent = new TempDataContent(configClass, fileDir, fileName);
+                        for (String param : params) {
+                            if (param.equals(String.valueOf(CodeGenerateMainFrame.Generate_File_Type_Dao))) {
+                                // 默认路径 和文件名
+                                String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent(), "dao").toString();
+                                String fileName = "I" + classInfo.getName() + "Dao.java";
+                                TempDataContent tempDataContent = new TempDataContent(configClass, fileDir, fileName);
 
-                        String content = FreeMarkerUtil.process("dao.ftl", tempDataContent);
-                        String filePath = Paths.get(tempDataContent.getFileDir(), tempDataContent.getFileName()).toString();
-                        FileUtil.writeFile(filePath, content);
+                                String content = FreeMarkerUtil.process("dao.ftl", tempDataContent);
+                                String filePath = Paths.get(tempDataContent.getFileDir(), tempDataContent.getFileName()).toString();
+                                FileUtil.writeFile(filePath, content);
+                            } else if (param.equals(String.valueOf(CodeGenerateMainFrame.Generate_File_Type_Mapper))) {
+                                // 默认路径 和文件名
+                                String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent(), "dao").toString();
+                                String fileName = "mybatis" + classInfo.getName() + ".xml";
+                                TempDataContent tempDataContent = new TempDataContent(configClass, fileDir, fileName);
+
+                                String content = FreeMarkerUtil.process("mapper.ftl", tempDataContent);
+                                String filePath = Paths.get(tempDataContent.getFileDir(), tempDataContent.getFileName()).toString();
+                                FileUtil.writeFile(filePath, content);
+                            } else if (param.equals(String.valueOf(CodeGenerateMainFrame.Generate_File_Type_QueryParam))) {
+                                // 默认路径 和文件名
+                                String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent()).toString();
+                                String fileName = classInfo.getName() + "QueryParam.java";
+                                TempDataContent tempDataContent = new TempDataContent(configClass, fileDir, fileName);
+                                String content = FreeMarkerUtil.process("queryParam.ftl", tempDataContent);
+                                String filePath = Paths.get(tempDataContent.getFileDir(), tempDataContent.getFileName()).toString();
+                                FileUtil.writeFile(filePath, content);
+                            } else {
+                                throw new MCGException("不支持");
+                            }
+                        }
+
                     }
                 } else {
                     throw new MCGException("不支持");

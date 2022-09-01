@@ -2,6 +2,9 @@ package zone.pusu.mybatisCodeGenerator.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 /**
  * JSON操作
@@ -41,5 +44,13 @@ public class JsonUtil {
      */
     public static <T> T fromJson(String source, Class<T> clz) {
         return new Gson().fromJson(source, clz);
+    }
+
+    public static <T> T fromJson(String source, Type typeOfT) {
+        return new Gson().fromJson(source, typeOfT);
+    }
+
+    public static <T> T fromJson(String source, TypeToken typeToken) {
+        return new Gson().fromJson(source, typeToken.getType());
     }
 }
