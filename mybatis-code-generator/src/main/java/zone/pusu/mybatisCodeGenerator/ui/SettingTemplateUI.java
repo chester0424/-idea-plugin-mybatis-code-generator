@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
+import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.Nullable;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
@@ -23,10 +24,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class SettingTemplate implements Configurable {
+/**
+ * 设置-模板
+ */
+public class SettingTemplateUI implements Configurable {
     List<SettingTemplateItem> itemList = new ArrayList<>();
-    // 模板列表
-//    private DefaultListModel dlm = new DefaultListModel();
+
+    //region Configurable
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
@@ -35,21 +39,23 @@ public class SettingTemplate implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
-        return getMainUI();
+        return initUI();
     }
 
     @Override
     public boolean isModified() {
-        return !JsonUtil.toJson(itemList).equals(JsonUtil.toJson(SettingTemplateStoreService.getInstance().getState().getItemList()));
+        return !JsonUtil.toJson(itemList).equals(JsonUtil.toJson(SettingTemplateStoreService.getInstance().getState().getItems()));
     }
 
     @Override
     public void apply() throws ConfigurationException {
-        SettingTemplateStoreService.getInstance().getState().setItemList(itemList);
+        SettingTemplateStoreService.getInstance().getState().setItems(itemList);
     }
 
-    private JPanel getMainUI() {
-        itemList = ObjectUtil.clone(SettingTemplateStoreService.getInstance().getState().getItemList(), new TypeToken<List<SettingTemplateItem>>() {
+    //endregion
+
+    private JPanel initUI() {
+        itemList = ObjectUtil.clone(SettingTemplateStoreService.getInstance().getState().getItems(), new TypeToken<List<SettingTemplateItem>>() {
         });
 
         // 容器
@@ -73,6 +79,29 @@ public class SettingTemplate implements Configurable {
         // 模板列表
         JList jListTemplateName = new JList();
         jSplitPaneMain.setLeftComponent(jListTemplateName);
+        Runnable refreshTemplateModel = () -> {
+            jListTemplateName.setModel(new ListModel() {
+                @Override
+                public int getSize() {
+                    return itemList.size();
+                }
+
+                @Override
+                public Object getElementAt(int index) {
+                    return itemList.get(index).getName();
+                }
+
+                @Override
+                public void addListDataListener(ListDataListener l) {
+
+                }
+
+                @Override
+                public void removeListDataListener(ListDataListener l) {
+
+                }
+            });
+        };
         // 编辑器
         JTextArea jTextAreaEditor = new JTextArea();
         jSplitPaneMain.setRightComponent(jTextAreaEditor);
@@ -100,9 +129,8 @@ public class SettingTemplate implements Configurable {
                         SettingTemplateItem item = new SettingTemplateItem();
                         item.setName(s);
                         item.setContent("");
-
                         itemList.add(item);
-                        refreshModel(jListTemplateName);
+                        refreshTemplateModel.run();
                     }
                 });
             }
@@ -114,7 +142,7 @@ public class SettingTemplate implements Configurable {
                 String templateName = jListTemplateName.getSelectedValue().toString();
                 SettingTemplateItem settingTemplateItem = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst().get();
                 itemList.remove(settingTemplateItem);
-                refreshModel(jListTemplateName);
+                refreshTemplateModel.run();
             }
         });
 //        DefaultListModel
@@ -164,42 +192,25 @@ public class SettingTemplate implements Configurable {
             }
 
             private void onTemplateContentChanged() {
-                String templateName = jListTemplateName.getSelectedValue().toString();
-                String templateContent = jTextAreaEditor.getText();
-
-                Optional<SettingTemplateItem> optional = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst();
-                if (optional.isPresent()) {
-                    optional.get().setContent(templateContent);
+                if (jListTemplateName.getSelectedValue() != null) {
+                    String templateName = jListTemplateName.getSelectedValue().toString();
+                    String templateContent = jTextAreaEditor.getText();
+                    if (!StringUtil.isNullOrEmpty(templateName)) {
+                        Optional<SettingTemplateItem> optional = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst();
+                        if (optional.isPresent()) {
+                            optional.get().setContent(templateContent);
+                        }
+                    }
+                } else {
+                    Messages.showInfoMessage("Add a template first", "Info");
                 }
             }
         });
 
+
         return jPanelContainer;
     }
 
-    private void refreshModel(JList jListTemplateName){
-        jListTemplateName.setModel(new ListModel() {
-            @Override
-            public int getSize() {
-                return itemList.size();
-            }
-
-            @Override
-            public Object getElementAt(int index) {
-                return itemList.get(index).getName();
-            }
-
-            @Override
-            public void addListDataListener(ListDataListener l) {
-
-            }
-
-            @Override
-            public void removeListDataListener(ListDataListener l) {
-
-            }
-        });
-    }
     private void inputItemName(String message, String initValue, InputValidator validator, Consumer<String> consumer) {
         String value = Messages.showInputDialog(message, "Input " + message, Messages.getQuestionIcon(), initValue, validator);
         if (StringUtil.isNullOrEmpty(value)) {

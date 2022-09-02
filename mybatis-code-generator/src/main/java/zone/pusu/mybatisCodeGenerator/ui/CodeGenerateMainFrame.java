@@ -1,12 +1,16 @@
 package zone.pusu.mybatisCodeGenerator.ui;
 
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.Nls;
 import zone.pusu.mybatisCodeGenerator.define.GenerateMybatisConfigClass;
 import zone.pusu.mybatisCodeGenerator.define.GenerateMybatisConfigField;
+import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
+import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
+import zone.pusu.mybatisCodeGenerator.tool.JdbcTypeUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,27 +24,28 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.EventListener;
+import java.util.*;
 
 public class CodeGenerateMainFrame extends JFrame {
     // 操作类型申请
     public static int Operate_Save = 1;
     public static int Operate_Generate = 2;
 
-    public static int Generate_File_Type_Dao = 1;
-    public static int Generate_File_Type_Mapper = 2;
-    public static int Generate_File_Type_QueryParam = 3;
     // 数据申请
     GenerateMybatisConfigClass generateMybatisConfigClass;
-    private boolean isGenerateDaoFile = false;
-    private boolean isGenerateMapperFile = false;
-    private boolean isGenerateQueryParamFile = false;
     // 事件申请
-    private ArrayList<MyMainFrameOperateEvent> eventListenerList = new ArrayList<MyMainFrameOperateEvent>();
+    private ArrayList<CodeGenerateMainFrameOperateEvent> eventListenerList = new ArrayList<CodeGenerateMainFrameOperateEvent>();
+    private Map<SettingTemplateItem, Boolean> filesMap = new LinkedHashMap<>();
 
     public CodeGenerateMainFrame(GenerateMybatisConfigClass generateMybatisConfigClass) {
+        // 初始化数据
         this.generateMybatisConfigClass = generateMybatisConfigClass;
+        // 读取配置文件
+        for (SettingTemplateItem item : SettingTemplateStoreService.getInstance().getState().getItems()) {
+            filesMap.put(item, false);
+        }
+
+
         JPanel jPanelHead = new JPanel();
         jPanelHead.setBorder(new EmptyBorder(20, 20, 0, 20));
         jPanelHead.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -54,15 +59,18 @@ public class CodeGenerateMainFrame extends JFrame {
             public void insertUpdate(DocumentEvent e) {
                 triggerChanged();
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 triggerChanged();
             }
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 triggerChanged();
             }
-            private void triggerChanged(){
+
+            private void triggerChanged() {
                 String text = textFieldTableName.getText();
                 onTableNameChanged(text);
             }
@@ -88,13 +96,14 @@ public class CodeGenerateMainFrame extends JFrame {
         table.setModel(new MyTableModel(generateMybatisConfigClass));
 
         JComboBox comboBoxJdbcType = new ComboBox();
-        comboBoxJdbcType.addItem("FLOAT");
-        comboBoxJdbcType.addItem("INTEGER");
-        comboBoxJdbcType.addItem("NUMERIC");
-        comboBoxJdbcType.addItem("DATE");
-        comboBoxJdbcType.addItem("LONGVARBINARY");
+
+        comboBoxJdbcType.addItem("");
+        for (String allJdbcType : JdbcTypeUtil.getAllJdbcTypes()) {
+            comboBoxJdbcType.addItem(allJdbcType);
+        }
+
         TableCellEditor tableCellEditorJdbcType = new DefaultCellEditor(comboBoxJdbcType);
-        table.getColumnModel().getColumn(2).setCellEditor(tableCellEditorJdbcType);
+        table.getColumnModel().getColumn(4).setCellEditor(tableCellEditorJdbcType);
 
 
         table.addMouseListener(new MouseListener() {
@@ -102,18 +111,14 @@ public class CodeGenerateMainFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int rowIndex = table.getSelectedRow();
                 int columnIndex = table.getSelectedColumn();
-                if (columnIndex >= 3 && columnIndex <= 5) {
-                    Boolean result = !(Boolean) table.getValueAt(rowIndex, columnIndex);
-                    table.setValueAt(result, rowIndex, columnIndex);
-                    if (columnIndex == 3) {
-                        if (result) {
-                            // 则其他为false
-                            for (int i = 0; i < table.getRowCount(); i++) {
-                                if (rowIndex != i) {
-                                    boolean val = (Boolean) table.getValueAt(i, columnIndex);
-                                    if (val) {
-                                        table.setValueAt(false, i, columnIndex);
-                                    }
+                if (columnIndex == 3) {
+                    Boolean selected = (Boolean) table.getValueAt(rowIndex, 3);
+                    if (selected) {
+                        for (int i = 0; i < table.getRowCount(); i++) {
+                            if (i != rowIndex) {
+                                boolean val = (Boolean) table.getValueAt(i, 3);
+                                if (val) {
+                                    table.setValueAt(false, i, 3);
                                 }
                             }
                         }
@@ -143,26 +148,25 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelFoot.setLayout(new VerticalFlowLayout());
         // 选择文件部分
         JPanel jPanelSelectFile = new JPanel();
-        jPanelFoot.add(jPanelSelectFile);
-        JCheckBox jCheckBoxDao = new JCheckBox("Dao");
-        jCheckBoxDao.setSelected(isGenerateDaoFile);
-        jCheckBoxDao.addActionListener((l) -> {
-            isGenerateDaoFile = jCheckBoxDao.isSelected();
-        });
-        JCheckBox jCheckBoxMapper = new JCheckBox("Mapper");
-        jCheckBoxMapper.setSelected(isGenerateMapperFile);
-        jCheckBoxMapper.addActionListener(i -> {
-            isGenerateMapperFile = jCheckBoxMapper.isSelected();
-        });
-        JCheckBox jCheckBoxQueryParam = new JCheckBox("QueryParam");
-        jCheckBoxQueryParam.setSelected(isGenerateQueryParamFile);
-        jCheckBoxQueryParam.addActionListener(i -> {
-            isGenerateQueryParamFile = jCheckBoxQueryParam.isSelected();
-        });
         jPanelSelectFile.setLayout(new FlowLayout(FlowLayout.CENTER));
-        jPanelSelectFile.add(jCheckBoxDao);
-        jPanelSelectFile.add(jCheckBoxMapper);
-        jPanelSelectFile.add(jCheckBoxQueryParam);
+        jPanelFoot.add(jPanelSelectFile);
+
+        // 读取配置文件
+        for (SettingTemplateItem item : filesMap.keySet()) {
+            JCheckBox jCheckBox = new JCheckBox(item.getName());
+            jCheckBox.addActionListener((l) -> {
+                JCheckBox source = ((JCheckBox) l.getSource());
+                String name = source.getText();
+                boolean isSelected = source.isSelected();
+                for (SettingTemplateItem settingTemplateItem : filesMap.keySet()) {
+                    if (settingTemplateItem.getName().equals(name)) {
+                        filesMap.put(settingTemplateItem, isSelected);
+                    }
+                }
+            });
+            jPanelSelectFile.add(jCheckBox);
+        }
+
         // 操作部分
         JPanel jPanelOperate = new JPanel();
         jPanelFoot.add(jPanelOperate);
@@ -198,7 +202,7 @@ public class CodeGenerateMainFrame extends JFrame {
         this.setVisible(true);
     }
 
-    public void addOperateListener(MyMainFrameOperateEvent eventListener) {
+    public void addOperateListener(CodeGenerateMainFrameOperateEvent eventListener) {
         eventListenerList.add(eventListener);
     }
 
@@ -207,8 +211,8 @@ public class CodeGenerateMainFrame extends JFrame {
     }
 
     private void triggerOperateEvent(int operate, String... params) {
-        for (MyMainFrameOperateEvent myMainFrameOperateEvent : eventListenerList) {
-            myMainFrameOperateEvent.active(operate, params);
+        for (CodeGenerateMainFrameOperateEvent codeGenerateMainFrameOperateEvent : eventListenerList) {
+            codeGenerateMainFrameOperateEvent.active(operate, params);
         }
     }
 
@@ -227,21 +231,16 @@ public class CodeGenerateMainFrame extends JFrame {
     }
 
     void onGenerateClick() {
-        ArrayList<String> arrayList = new ArrayList<String>();
-        if (isGenerateDaoFile) {
-            arrayList.add(String.valueOf(Generate_File_Type_Dao));
+        if (filesMap.values().stream().filter(i -> i.booleanValue()).count() == 0) {
+            Messages.showErrorDialog("Firstly,Select a file needed to be generated", "Notice");
+            return;
         }
-        if (isGenerateMapperFile) {
-            arrayList.add(String.valueOf(Generate_File_Type_Mapper));
-        }
-        if (isGenerateQueryParamFile) {
-            arrayList.add(String.valueOf(Generate_File_Type_QueryParam));
-        }
-        triggerOperateEvent(Operate_Generate, arrayList.toArray(String[]::new));
+        String[] templateNames = filesMap.keySet().stream().filter(i -> filesMap.get(i).booleanValue()).map(i -> i.getName()).toArray(String[]::new);
+        triggerOperateEvent(Operate_Generate, templateNames);
     }
 
     void onCancelClick() {
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE  );
+        // 退出关闭页面
         this.setVisible(false);
         this.dispose();
     }
@@ -272,13 +271,13 @@ public class CodeGenerateMainFrame extends JFrame {
                 case 1:
                     return "JavaType";
                 case 2:
-                    return "JdbcType";
+                    return "Ignore";
                 case 3:
                     return "PrimaryKey";
                 case 4:
-                    return "QueryCondition";
+                    return "JdbcType";
                 case 5:
-                    return "OrderByCondition";
+                    return "TypeHandler";
                 default:
                     return "";
             }
@@ -286,19 +285,27 @@ public class CodeGenerateMainFrame extends JFrame {
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            if (columnIndex <= 2) {
-                return String.class;
-            } else if (columnIndex >= 3 && columnIndex <= 5) {
-                return boolean.class;
-            } else {
-                return Object.class;
+            Class<?> clz;
+            switch (columnIndex) {
+                case 0:
+                case 1:
+                case 4:
+                case 5:
+                    clz = String.class;
+                    break;
+                case 2:
+                case 3:
+                    clz = Boolean.class;
+                    break;
+                default:
+                    clz = Object.class;
             }
+            return clz;
         }
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return (columnIndex == 2) ? true : false;
-//            return false;
+            return (columnIndex >= 2) ? true : false;
         }
 
         @Override
@@ -310,13 +317,13 @@ public class CodeGenerateMainFrame extends JFrame {
                 case 1:
                     return generateMybatisConfigField.getJavaType();
                 case 2:
-                    return generateMybatisConfigField.getJdbcType();
+                    return generateMybatisConfigField.isIgnore();
                 case 3:
                     return generateMybatisConfigField.isPrimaryKey();
                 case 4:
-                    return generateMybatisConfigField.isQuery();
+                    return generateMybatisConfigField.getJdbcType();
                 case 5:
-                    return generateMybatisConfigField.isOrderBy();
+                    return generateMybatisConfigField.getTypeHandler();
                 default:
                     return "";
             }
@@ -325,13 +332,13 @@ public class CodeGenerateMainFrame extends JFrame {
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == 2) {
-                generateMybatisConfigClass.getFields().get(rowIndex).setJdbcType((String) aValue);
+                generateMybatisConfigClass.getFields().get(rowIndex).setIgnore((boolean) aValue);
             } else if (columnIndex == 3) {
                 generateMybatisConfigClass.getFields().get(rowIndex).setPrimaryKey((Boolean) aValue);
             } else if (columnIndex == 4) {
-                generateMybatisConfigClass.getFields().get(rowIndex).setQuery((Boolean) aValue);
+                generateMybatisConfigClass.getFields().get(rowIndex).setJdbcType((String) aValue);
             } else if (columnIndex == 5) {
-                generateMybatisConfigClass.getFields().get(rowIndex).setOrderBy((Boolean) aValue);
+                generateMybatisConfigClass.getFields().get(rowIndex).setTypeHandler((String) aValue);
             }
         }
 

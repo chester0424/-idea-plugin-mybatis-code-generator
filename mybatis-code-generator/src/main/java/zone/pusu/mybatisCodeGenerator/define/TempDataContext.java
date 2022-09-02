@@ -1,12 +1,12 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
-public class TempDataContent {
+public class TempDataContext {
     GenerateMybatisConfigClass config;
 
     private String fileDir;
     private String fileName;
 
-    public TempDataContent(GenerateMybatisConfigClass config, String fileDir, String fileName) {
+    public TempDataContext(GenerateMybatisConfigClass config, String fileDir, String fileName) {
         this.config = config;
         this.fileDir = fileDir;
         this.fileName = fileName;

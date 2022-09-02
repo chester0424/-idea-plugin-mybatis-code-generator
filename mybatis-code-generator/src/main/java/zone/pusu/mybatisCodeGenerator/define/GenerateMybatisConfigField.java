@@ -1,5 +1,7 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
+import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
+
 /**
  * 字段配置信息
  */
@@ -13,21 +15,22 @@ public class GenerateMybatisConfigField {
      */
     private String javaType;
     /**
+     * 是否忽略
+     */
+    private boolean ignore = false;
+    /**
      * 字段 对应 jdbc 类型
      */
-    private String jdbcType;
+    private String jdbcType = "";
     /**
      * 是否是主键
      */
     private boolean primaryKey = false;
+
     /**
-     * 是否生成查询语句
+     * 类型处理器
      */
-    private boolean query = false;
-    /**
-     * 是否生成排序语句
-     */
-    private boolean orderBy = false;
+    private String typeHandler = "";
 
     public String getName() {
         return name;
@@ -43,6 +46,14 @@ public class GenerateMybatisConfigField {
 
     public void setJavaType(String javaType) {
         this.javaType = javaType;
+    }
+
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
     }
 
     public String getJdbcType() {
@@ -61,19 +72,21 @@ public class GenerateMybatisConfigField {
         this.primaryKey = primaryKey;
     }
 
-    public boolean isQuery() {
-        return query;
+    public String getTypeHandler() {
+        return typeHandler;
     }
 
-    public void setQuery(boolean query) {
-        this.query = query;
+    public void setTypeHandler(String typeHandler) {
+        this.typeHandler = typeHandler;
     }
 
-    public boolean isOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(boolean orderBy) {
-        this.orderBy = orderBy;
+    /**
+     * 数据库列名
+     * 对象字段名称单词拆分而来
+     *
+     * @return
+     */
+    public String getColumnName() {
+        return StringUtil.spiteWord(name);
     }
 }

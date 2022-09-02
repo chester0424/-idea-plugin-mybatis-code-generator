@@ -5,23 +5,23 @@ import java.util.List;
 
 public class SettingTemplate {
 
-    private List<SettingTemplateItem> itemList = new ArrayList<>();
+    private List<SettingTemplateItem> items = new ArrayList<>();
 
     public SettingTemplate() {
         for (int i = 0; i < 5; i++) {
             SettingTemplateItem item = new SettingTemplateItem();
             item.setName("Dao" + i);
             item.setContent("Content" + i);
-            itemList.add(item);
+            items.add(item);
         }
     }
 
-    public List<SettingTemplateItem> getItemList() {
-        return itemList;
+    public List<SettingTemplateItem> getItems() {
+        return items;
     }
 
-    public void setItemList(List<SettingTemplateItem> itemList) {
-        this.itemList = itemList;
+    public void setItems(List<SettingTemplateItem> items) {
+        this.items = items;
     }
 }
 

@@ -1,5 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.tool;
 
+import freemarker.cache.ByteArrayTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import zone.pusu.mybatisCodeGenerator.common.MCGException;
@@ -17,14 +18,38 @@ public class FreeMarkerUtil {
      * @param data
      * @return
      */
-    public static String process(String fileName, Object data) {
+//    public static String process(String fileName, Object data) {
+//        try {
+//            Configuration configuration = new Configuration(Configuration.getVersion());
+//            configuration.setDefaultEncoding("utf-8");
+//            configuration.setClassForTemplateLoading(FreeMarkerUtil.class, "/template/");
+//            Template template = configuration.getTemplate(fileName);
+//            StringWriter sw = new StringWriter();
+//            template.process(data, sw);
+//            return new String(sw.getBuffer());
+//        } catch (Exception exception) {
+//            throw new MCGException(exception.getMessage());
+//        }
+//    }
+
+    /**
+     * 模板处理
+     *
+     * @param templateContent 模板内容
+     * @param context         上下文数据
+     * @return
+     */
+    public static String process(String templateContent, Object context) {
         try {
-            Configuration configuration = new Configuration(Configuration.getVersion());
+            String tempFileName = "temp.ftl";
+            Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
             configuration.setDefaultEncoding("utf-8");
-            configuration.setClassForTemplateLoading(FreeMarkerUtil.class, "/template/");
-            Template template = configuration.getTemplate(fileName);
+            final ByteArrayTemplateLoader templateLoader = new ByteArrayTemplateLoader();
+            templateLoader.putTemplate(tempFileName, templateContent.getBytes());
+            configuration.setTemplateLoader(templateLoader);
+            Template template = configuration.getTemplate(tempFileName);
             StringWriter sw = new StringWriter();
-            template.process(data, sw);
+            template.process(context, sw);
             return new String(sw.getBuffer());
         } catch (Exception exception) {
             throw new MCGException(exception.getMessage());
