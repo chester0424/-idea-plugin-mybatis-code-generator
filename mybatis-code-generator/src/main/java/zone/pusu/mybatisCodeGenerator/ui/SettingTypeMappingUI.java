@@ -142,6 +142,8 @@ public class SettingTypeMappingUI implements Configurable {
                 item.setJdbcType("");
                 item.setJdbcType("");
                 settingTypeMapping.getItems().add(item);
+
+                jTable.updateUI();
             }
         });
         JButton jButtonDelete = new JButton(("Delete"));
@@ -153,6 +155,8 @@ public class SettingTypeMappingUI implements Configurable {
                 if (selectedRow > -1) {
                     SettingTypeMappingItem item = settingTypeMapping.getItems().get(selectedRow);
                     settingTypeMapping.getItems().remove(item);
+
+                    jTable.updateUI();
                 }
             }
         });

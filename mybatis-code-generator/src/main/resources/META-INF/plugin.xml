@@ -33,6 +33,7 @@
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService"/>
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService"/>
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingTypeMappingStoreService"/>
+        <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgColStoreService"/>
         <applicationConfigurable dynamic="true" instance="zone.pusu.mybatisCodeGenerator.ui.SettingMainUI"/>
     </extensions>
     <actions>

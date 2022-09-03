@@ -7,7 +7,6 @@ import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
-import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.Nullable;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
@@ -109,7 +108,7 @@ public class SettingTemplateUI implements Configurable {
         jButtonAdd.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                inputItemName("Template Name", "", new InputValidator() {
+                Common.inputItemName("Template Name", "", new InputValidator() {
                     @Override
                     public boolean checkInput(@NlsSafe String inputString) {
                         return allowInput(inputString);
@@ -209,13 +208,5 @@ public class SettingTemplateUI implements Configurable {
 
 
         return jPanelContainer;
-    }
-
-    private void inputItemName(String message, String initValue, InputValidator validator, Consumer<String> consumer) {
-        String value = Messages.showInputDialog(message, "Input " + message, Messages.getQuestionIcon(), initValue, validator);
-        if (StringUtil.isNullOrEmpty(value)) {
-            return;
-        }
-        consumer.accept(value);
     }
 }
