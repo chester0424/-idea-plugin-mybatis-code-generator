@@ -1,6 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
-public class SettingCustomizeCfgColItem {
+public class SettingExtendCfgColItem {
     /**
      * 自定义列名称
      */

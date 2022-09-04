@@ -13,10 +13,10 @@ import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import zone.pusu.mybatisCodeGenerator.common.MCGException;
-import zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgCol;
-import zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgColItem;
-import zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgColStoreService;
-import zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgColTypeEnum;
+import zone.pusu.mybatisCodeGenerator.setting.SettingExtendCfgCol;
+import zone.pusu.mybatisCodeGenerator.setting.SettingExtendCfgColItem;
+import zone.pusu.mybatisCodeGenerator.setting.SettingExtendCfgColStoreService;
+import zone.pusu.mybatisCodeGenerator.setting.SettingExtendCfgColTypeEnum;
 import zone.pusu.mybatisCodeGenerator.tool.JsonUtil;
 import zone.pusu.mybatisCodeGenerator.tool.ObjectUtil;
 
@@ -28,8 +28,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
 
-public class SettingCustomizeCfgColUI implements Configurable {
-    private SettingCustomizeCfgCol settingCustomizeCfgCol = new SettingCustomizeCfgCol();
+public class SettingExtendCfgColUI implements Configurable {
+    private SettingExtendCfgCol settingExtendCfgCol = new SettingExtendCfgCol();
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
@@ -43,17 +43,17 @@ public class SettingCustomizeCfgColUI implements Configurable {
 
     @Override
     public boolean isModified() {
-        return !JsonUtil.toJson(settingCustomizeCfgCol).equals(JsonUtil.toJson(SettingCustomizeCfgColStoreService.getInstance().getState()));
+        return !JsonUtil.toJson(settingExtendCfgCol).equals(JsonUtil.toJson(SettingExtendCfgColStoreService.getInstance().getState()));
     }
 
     @Override
     public void apply() throws ConfigurationException {
-        SettingCustomizeCfgColStoreService.getInstance().loadState(settingCustomizeCfgCol);
+        SettingExtendCfgColStoreService.getInstance().loadState(settingExtendCfgCol);
     }
 
     private JComponent initUI() {
         // 数据初始化
-        settingCustomizeCfgCol = ObjectUtil.clone(SettingCustomizeCfgColStoreService.getInstance().getState(), new TypeToken<SettingCustomizeCfgCol>() {
+        settingExtendCfgCol = ObjectUtil.clone(SettingExtendCfgColStoreService.getInstance().getState(), new TypeToken<SettingExtendCfgCol>() {
         });
 
         // 容器
@@ -68,7 +68,7 @@ public class SettingCustomizeCfgColUI implements Configurable {
         TableModel tableModel = new TableModel() {
             @Override
             public int getRowCount() {
-                return settingCustomizeCfgCol.getItems().size();
+                return settingExtendCfgCol.getItems().size();
             }
 
             @Override
@@ -105,11 +105,11 @@ public class SettingCustomizeCfgColUI implements Configurable {
             public Object getValueAt(int rowIndex, int columnIndex) {
                 switch (columnIndex) {
                     case 0:
-                        return settingCustomizeCfgCol.getItems().get(rowIndex).getName();
+                        return settingExtendCfgCol.getItems().get(rowIndex).getName();
                     case 1:
-                        return settingCustomizeCfgCol.getItems().get(rowIndex).getType();
+                        return settingExtendCfgCol.getItems().get(rowIndex).getType();
                     case 2:
-                        return settingCustomizeCfgCol.getItems().get(rowIndex).getOptions();
+                        return settingExtendCfgCol.getItems().get(rowIndex).getOptions();
                     default:
                         throw new MCGException("Not Supported");
                 }
@@ -119,13 +119,13 @@ public class SettingCustomizeCfgColUI implements Configurable {
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
                 switch (columnIndex) {
                     case 0:
-                        settingCustomizeCfgCol.getItems().get(rowIndex).setName(aValue.toString());
+                        settingExtendCfgCol.getItems().get(rowIndex).setName(aValue.toString());
                         break;
                     case 1:
-                        settingCustomizeCfgCol.getItems().get(rowIndex).setType(aValue.toString());
+                        settingExtendCfgCol.getItems().get(rowIndex).setType(aValue.toString());
                         break;
                     case 2:
-                        settingCustomizeCfgCol.getItems().get(rowIndex).setOptions(aValue.toString());
+                        settingExtendCfgCol.getItems().get(rowIndex).setOptions(aValue.toString());
                         break;
                     default:
                         throw new MCGException("Not Supported");
@@ -145,7 +145,7 @@ public class SettingCustomizeCfgColUI implements Configurable {
         jTable.setModel(tableModel);
 
         JComboBox comboBoxCustomizeCfgColType = new ComboBox();
-        for (SettingCustomizeCfgColTypeEnum value : SettingCustomizeCfgColTypeEnum.values()) {
+        for (SettingExtendCfgColTypeEnum value : SettingExtendCfgColTypeEnum.values()) {
             comboBoxCustomizeCfgColType.addItem(value.name());
         }
 
@@ -174,7 +174,7 @@ public class SettingCustomizeCfgColUI implements Configurable {
                     }
 
                     boolean allowInput(String inputString) {
-                        if (settingCustomizeCfgCol.getItems().stream().filter(i -> i.getName().equals(inputString)).count() > 0) {
+                        if (settingExtendCfgCol.getItems().stream().filter(i -> i.getName().equals(inputString)).count() > 0) {
                             return false;
                         }
                         return true;
@@ -183,11 +183,11 @@ public class SettingCustomizeCfgColUI implements Configurable {
                 }, new Consumer<String>() {
                     @Override
                     public void accept(String s) {
-                        SettingCustomizeCfgColItem item = new SettingCustomizeCfgColItem();
+                        SettingExtendCfgColItem item = new SettingExtendCfgColItem();
                         item.setName(s);
-                        item.setType(SettingCustomizeCfgColTypeEnum.BOOLEAN.name());
+                        item.setType(SettingExtendCfgColTypeEnum.BOOLEAN.name());
                         item.setOptions("");
-                        settingCustomizeCfgCol.getItems().add(item);
+                        settingExtendCfgCol.getItems().add(item);
 
                         jTable.updateUI();
                     }
@@ -201,8 +201,8 @@ public class SettingCustomizeCfgColUI implements Configurable {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = jTable.getSelectedRow();
                 if (selectedRow > -1) {
-                    SettingCustomizeCfgColItem item = settingCustomizeCfgCol.getItems().get(selectedRow);
-                    settingCustomizeCfgCol.getItems().remove(item);
+                    SettingExtendCfgColItem item = settingExtendCfgCol.getItems().get(selectedRow);
+                    settingExtendCfgCol.getItems().remove(item);
 
                     jTable.updateUI();
                 }

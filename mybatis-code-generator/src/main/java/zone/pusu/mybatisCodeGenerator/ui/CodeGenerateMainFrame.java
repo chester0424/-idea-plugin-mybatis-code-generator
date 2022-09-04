@@ -24,34 +24,51 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CodeGenerateMainFrame extends JFrame {
     // 操作类型申请
     public static int Operate_Save = 1;
     public static int Operate_Generate = 2;
 
-    // 数据申请
+    // 组件
+    JPanel jPanelHead;
+    JTextField textFieldTableName;
+    JPanel jPanelCenter;
+    JBTable table;
+    JScrollPane jScrollPane;
+    JPanel jPanelFoot;
+    JPanel jPanelSelectFile;
+    JPanel jPanelOperate;
+    JButton jButtonSave;
+    JButton jButtonGenerate;
+    JButton jButtonCancel;
+
+    // 代码生成配置信息
     GenerateMybatisConfigClass generateMybatisConfigClass;
-    // 事件申请
+    // 事件声明
     private ArrayList<CodeGenerateMainFrameOperateEvent> eventListenerList = new ArrayList<CodeGenerateMainFrameOperateEvent>();
-    private Map<SettingTemplateItem, Boolean> filesMap = new LinkedHashMap<>();
+    // 记录模板是否需要生成代码
+    private Map<SettingTemplateItem, Boolean> templateSelectedState = new LinkedHashMap<>();
 
     public CodeGenerateMainFrame(GenerateMybatisConfigClass generateMybatisConfigClass) {
         // 初始化数据
         this.generateMybatisConfigClass = generateMybatisConfigClass;
         // 读取配置文件
         for (SettingTemplateItem item : SettingTemplateStoreService.getInstance().getState().getItems()) {
-            filesMap.put(item, false);
+            templateSelectedState.put(item, false);
         }
 
 
-        JPanel jPanelHead = new JPanel();
+        jPanelHead = new JPanel();
         jPanelHead.setBorder(new EmptyBorder(20, 20, 0, 20));
         jPanelHead.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.add(jPanelHead, BorderLayout.NORTH);
         JLabel jLabelTableName = new JLabel("TableName:");
-        JTextField textFieldTableName = new JTextField();
+        textFieldTableName = new JTextField();
         textFieldTableName.setText(generateMybatisConfigClass.getTableName());
         textFieldTableName.setPreferredSize(new Dimension(400, 30));
         textFieldTableName.getDocument().addDocumentListener(new DocumentListener() {
@@ -72,24 +89,24 @@ public class CodeGenerateMainFrame extends JFrame {
 
             private void triggerChanged() {
                 String text = textFieldTableName.getText();
-                onTableNameChanged(text);
+                generateMybatisConfigClass.setTableName(text);
             }
         });
         jPanelHead.add(jLabelTableName);
         jPanelHead.add(textFieldTableName);
 
         // 数据部分
-        JPanel jPanelCenter = new JPanel();
+        jPanelCenter = new JPanel();
         jPanelCenter.setLayout(new BorderLayout());
         this.add(jPanelCenter, BorderLayout.CENTER);
 
-        JBTable table = new JBTable();
+        table = new JBTable();
         table.setBorder(new LineBorder(Color.GRAY, 1));
         table.setRowHeight(32);
         table.setRowSelectionAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(1, 50));
         // 滚动
-        JScrollPane jScrollPane = new JBScrollPane(table);
+        jScrollPane = new JBScrollPane(table);
         jScrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         jPanelCenter.add(jScrollPane);
 
@@ -143,24 +160,24 @@ public class CodeGenerateMainFrame extends JFrame {
             }
         });
 
-        JPanel jPanelFoot = new JPanel();
+        jPanelFoot = new JPanel();
         this.add(jPanelFoot, BorderLayout.SOUTH);
         jPanelFoot.setLayout(new VerticalFlowLayout());
         // 选择文件部分
-        JPanel jPanelSelectFile = new JPanel();
+        jPanelSelectFile = new JPanel();
         jPanelSelectFile.setLayout(new FlowLayout(FlowLayout.CENTER));
         jPanelFoot.add(jPanelSelectFile);
 
         // 读取配置文件
-        for (SettingTemplateItem item : filesMap.keySet()) {
+        for (SettingTemplateItem item : templateSelectedState.keySet()) {
             JCheckBox jCheckBox = new JCheckBox(item.getName());
             jCheckBox.addActionListener((l) -> {
                 JCheckBox source = ((JCheckBox) l.getSource());
                 String name = source.getText();
                 boolean isSelected = source.isSelected();
-                for (SettingTemplateItem settingTemplateItem : filesMap.keySet()) {
+                for (SettingTemplateItem settingTemplateItem : templateSelectedState.keySet()) {
                     if (settingTemplateItem.getName().equals(name)) {
-                        filesMap.put(settingTemplateItem, isSelected);
+                        templateSelectedState.put(settingTemplateItem, isSelected);
                     }
                 }
             });
@@ -168,23 +185,23 @@ public class CodeGenerateMainFrame extends JFrame {
         }
 
         // 操作部分
-        JPanel jPanelOperate = new JPanel();
+        jPanelOperate = new JPanel();
         jPanelFoot.add(jPanelOperate);
-        JButton jButtonSave = new JButton("Save");
+        jButtonSave = new JButton("Save");
         jButtonSave.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onSaveClick();
             }
         });
-        JButton jButtonGenerate = new JButton("Generate");
+        jButtonGenerate = new JButton("Generate");
         jButtonGenerate.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onGenerateClick();
             }
         });
-        JButton jButtonCancel = new JButton("Cancel");
+        jButtonCancel = new JButton("Cancel");
         jButtonCancel.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -222,20 +239,16 @@ public class CodeGenerateMainFrame extends JFrame {
         this.setLocation((screenWidth - this.getWidth()) / 2, (screenHeight - this.getHeight()) / 2);
     }
 
-    void onTableNameChanged(String tableName) {
-        generateMybatisConfigClass.setTableName(tableName);
-    }
-
     void onSaveClick() {
         triggerOperateEvent(Operate_Save);
     }
 
     void onGenerateClick() {
-        if (filesMap.values().stream().filter(i -> i.booleanValue()).count() == 0) {
+        if (templateSelectedState.values().stream().filter(i -> i.booleanValue()).count() == 0) {
             Messages.showErrorDialog("Firstly,Select a file needed to be generated", "Notice");
             return;
         }
-        String[] templateNames = filesMap.keySet().stream().filter(i -> filesMap.get(i).booleanValue()).map(i -> i.getName()).toArray(String[]::new);
+        String[] templateNames = templateSelectedState.keySet().stream().filter(i -> templateSelectedState.get(i).booleanValue()).map(i -> i.getName()).toArray(String[]::new);
         triggerOperateEvent(Operate_Generate, templateNames);
     }
 
@@ -248,6 +261,7 @@ public class CodeGenerateMainFrame extends JFrame {
     class MyTableModel implements TableModel {
         GenerateMybatisConfigClass generateMybatisConfigClass;
 
+
         MyTableModel(GenerateMybatisConfigClass generateMybatisConfigClass) {
             this.generateMybatisConfigClass = generateMybatisConfigClass;
         }
@@ -259,6 +273,8 @@ public class CodeGenerateMainFrame extends JFrame {
 
         @Override
         public int getColumnCount() {
+            // name ，
+
             return 6;
         }
 

@@ -1,6 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
 
-public enum SettingCustomizeCfgColTypeEnum {
+public enum SettingExtendCfgColTypeEnum {
     BOOLEAN, SELECT, INPUT;
 }

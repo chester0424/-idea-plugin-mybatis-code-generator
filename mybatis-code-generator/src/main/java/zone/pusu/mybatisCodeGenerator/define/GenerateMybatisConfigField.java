@@ -2,6 +2,9 @@ package zone.pusu.mybatisCodeGenerator.define;
 
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * 字段配置信息
  */
@@ -31,6 +34,12 @@ public class GenerateMybatisConfigField {
      * 类型处理器
      */
     private String typeHandler = "";
+
+    /**
+     * 扩展列
+     * 存储内容：标识名称，-值
+     */
+    private LinkedHashMap<String, Object> extend;
 
     public String getName() {
         return name;

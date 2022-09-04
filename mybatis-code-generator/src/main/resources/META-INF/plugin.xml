@@ -33,12 +33,12 @@
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService"/>
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService"/>
         <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingTypeMappingStoreService"/>
-        <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingCustomizeCfgColStoreService"/>
+        <applicationService serviceImplementation="zone.pusu.mybatisCodeGenerator.setting.SettingExtendCfgColStoreService"/>
         <applicationConfigurable dynamic="true" instance="zone.pusu.mybatisCodeGenerator.ui.SettingMainUI"/>
     </extensions>
     <actions>
         <action id="GenerateMybatisAction" class="zone.pusu.mybatisCodeGenerator.action.GenerateMybatisAction"
-                text="GenerateMybatis" description="生成Mybatis">
+                text="GenerateMybatis" description="生成Mybatis" icon="AllIcons.Actions.Lightning">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
