@@ -1,8 +1,5 @@
 package zone.pusu.mybatisCodeGenerator.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StringUtil {
     /**
      * 判断是否为空
@@ -24,27 +21,24 @@ public class StringUtil {
         if (StringUtil.isNullOrEmpty(source)) {
             return source;
         }
-        if (source.length() == 1) {
-            return source.toLowerCase();
-        } else {
-            List<String> splits = new ArrayList<>();
-            int startIndex = 0;
-            for (int i = 1; i < source.length(); i++) {
-                boolean isLowerPre = Character.isLowerCase(source.charAt(i - 1));
-                boolean isLower = Character.isLowerCase(source.charAt(i));
-                if (isLowerPre != isLower) {
-                    if (isLowerPre) { // 小->大
-                        splits.add(source.substring(startIndex, i - 1));
-                        startIndex = i;
-                    } else { // 大->小
-                        splits.add(source.substring(startIndex, i - 2));
-                        startIndex = i - 1;
-                    }
-                }
-            }
-            splits.add(source.substring(startIndex, source.length() - 1));
+        String tempName = source.replaceAll("[A-Z]", "_$0");
+        String[] partName = tempName.split("_");
+        return String.join("_", partName).toLowerCase();
+    }
 
-            return String.join("_", splits).toLowerCase();
+    /**
+     * 首字母消息
+     *
+     * @param s
+     * @return
+     */
+    public static String toLowerCaseFirstOne(String s) {
+        if (isNullOrEmpty(s)) {
+            return s;
         }
+        if (Character.isLowerCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
     }
 }

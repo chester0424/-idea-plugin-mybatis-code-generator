@@ -8,6 +8,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
 import org.jetbrains.annotations.Nullable;
+import zone.pusu.mybatisCodeGenerator.common.MCGException;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
 import zone.pusu.mybatisCodeGenerator.tool.JsonUtil;
@@ -18,6 +19,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +74,25 @@ public class SettingTemplateUI implements Configurable {
         // 删除按钮
         JButton jButtonDelete = new JButton("Delete");
         jPanelHead.add(jButtonDelete);
+
+        String freemarkerDocUrI = "http://freemarker.foofun.cn/toc.html";
+        JLabel freemarkerURI = new JLabel(freemarkerDocUrI);
+        freemarkerURI.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        freemarkerURI.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(freemarkerDocUrI));
+                    } catch (Exception ex) {
+                        throw new MCGException(ex.getMessage());
+                    }
+                }
+            }
+        });
+        jPanelHead.add(freemarkerURI);
+
         // 主要区域
         JSplitPane jSplitPaneMain = new JSplitPane();
         jSplitPaneMain.setResizeWeight(0.2);
@@ -77,6 +100,7 @@ public class SettingTemplateUI implements Configurable {
         jPanelContainer.add(jSplitPaneMain, BorderLayout.CENTER);
         // 模板列表
         JList jListTemplateName = new JList();
+        jListTemplateName.setMinimumSize(new Dimension(100, 200));
         jSplitPaneMain.setLeftComponent(jListTemplateName);
         Runnable refreshTemplateModel = () -> {
             jListTemplateName.setModel(new ListModel() {
@@ -108,7 +132,7 @@ public class SettingTemplateUI implements Configurable {
         jButtonAdd.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Common.inputItemName("Template Name", "", new InputValidator() {
+                Common.inputDialog("Template Name", "", new InputValidator() {
                     @Override
                     public boolean checkInput(@NlsSafe String inputString) {
                         return allowInput(inputString);

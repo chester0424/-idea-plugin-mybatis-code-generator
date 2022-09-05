@@ -1,14 +1,12 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
-import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * 字段配置信息
  */
-public class GenerateMybatisConfigField {
+public class GenerateConfigField {
     /**
      * 字段名称
      */
@@ -21,6 +19,10 @@ public class GenerateMybatisConfigField {
      * 是否忽略
      */
     private boolean ignore = false;
+    /**
+     * 列名
+     */
+    private String columnName;
     /**
      * 字段 对应 jdbc 类型
      */
@@ -39,7 +41,7 @@ public class GenerateMybatisConfigField {
      * 扩展列
      * 存储内容：标识名称，-值
      */
-    private LinkedHashMap<String, Object> extend;
+    private Map<String, Object> extend = new LinkedHashMap<>();
 
     public String getName() {
         return name;
@@ -63,6 +65,14 @@ public class GenerateMybatisConfigField {
 
     public void setIgnore(boolean ignore) {
         this.ignore = ignore;
+    }
+
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public String getJdbcType() {
@@ -89,13 +99,11 @@ public class GenerateMybatisConfigField {
         this.typeHandler = typeHandler;
     }
 
-    /**
-     * 数据库列名
-     * 对象字段名称单词拆分而来
-     *
-     * @return
-     */
-    public String getColumnName() {
-        return StringUtil.spiteWord(name);
+    public Map<String, Object> getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Map<String, Object> extend) {
+        this.extend = extend;
     }
 }

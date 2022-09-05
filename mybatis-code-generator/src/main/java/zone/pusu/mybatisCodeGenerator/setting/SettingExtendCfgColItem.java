@@ -6,7 +6,7 @@ public class SettingExtendCfgColItem {
      */
     private String name;
     /**
-     * 自定义列类型 (SettingCustomizeCfgColTypeEnum)
+     * 自定义列类型 (SettingExtendCfgColTypeEnum)
      * boolean,select,input
      */
     private String Type;

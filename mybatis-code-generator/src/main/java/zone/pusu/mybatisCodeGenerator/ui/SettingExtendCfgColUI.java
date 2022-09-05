@@ -33,7 +33,7 @@ public class SettingExtendCfgColUI implements Configurable {
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
-        return "Customize Config Column";
+        return "Extend Config Column";
     }
 
     @Override
@@ -162,7 +162,7 @@ public class SettingExtendCfgColUI implements Configurable {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Common.inputItemName("custom column name", "", new InputValidator() {
+                Common.inputDialog("Extend Column Name", "", new InputValidator() {
                     @Override
                     public boolean checkInput(@NlsSafe String inputString) {
                         return allowInput(inputString);
