@@ -485,7 +485,9 @@ public class CodeGenerateMainFrame extends JFrame {
                         // 默认路径和名称
                         String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent()).toString();
                         String fileName = classInfo.getName() + templateName;
-                        TemplateDataContext templateDataContext = TemplateDataContext.build(classInfo, generateConfig, fileDir, fileName);//new TemplateDataContext(generateConfig, fileDir, fileName);
+//                        TemplateDataContext templateDataContext = TemplateDataContext.build(classInfo, generateConfig, fileDir, fileName);//new TemplateDataContext(generateConfig, fileDir, fileName);
+
+                        TemplateDataContext templateDataContext = new TemplateDataContext(classInfo, generateConfig, fileDir, fileName);
                         String content = FreeMarkerUtil.process(item.getContent(), templateDataContext);
                         String filePath = Paths.get(templateDataContext.getTargetFileDir(), templateDataContext.getTargetFileName()).toString();
                         FileUtil.writeFile(filePath, content);

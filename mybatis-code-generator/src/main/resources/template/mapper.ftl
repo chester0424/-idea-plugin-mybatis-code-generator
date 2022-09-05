@@ -10,15 +10,15 @@
 
     <select id="get">
         SELECT * FROM ${tableName}
-        WHERE ${keyField.columnName} = #\{${keyField.name},${keyField.JdbcType}}
+        WHERE ${keyField.columnName} = #\{${keyField.name},${keyField.jdbcType}}
     </select>
 
     <select id="getPageList" resultType="resultMap">
         SELECT * FROM Product
         <trim prefix="WHERE" prefixOverrides="and |or ">
-            <if test="id != null">and t.ID like #{id}</if>
-            <if test="name != null">and t.name like #{id}</if>
-            <if test="amount != null">and t.amount like #{id}</if>
+            <if test="id != null">and t.ID like #\{id}</if>
+            <if test="name != null">and t.name like #\{id}</if>
+            <if test="amount != null">and t.amount like #\{id}</if>
         </trim>
     </select>
 
