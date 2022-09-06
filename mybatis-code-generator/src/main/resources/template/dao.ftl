@@ -19,4 +19,4 @@ int delete(String key);
 }
 
 <#-- 修改模板生成路径 -->
-${setTargetFileDir(targetFileDir+"\\dao")}${setTargetFileName("I"+targetFileName)}
+${callback.setTargetFileDir(targetFileDir+"\\dao")}${callback.setTargetFileName("I"+targetFileName)}
