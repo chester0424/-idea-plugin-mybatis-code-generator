@@ -8,10 +8,10 @@ public class TemplateDataContextCallBack {
     }
 
     public void setTargetFileDir(String targetFileDir) {
-        templateDataContext.put("targetFileDir", targetFileDir);
+        templateDataContext.put(TemplateDataContext.TARGET_FILE_DIR, targetFileDir);
     }
 
     public void setTargetFileName(String targetFileName) {
-        templateDataContext.put("targetFileName", targetFileName);
+        templateDataContext.put(TemplateDataContext.TARGET_FILE_NAME, targetFileName);
     }
 }

@@ -5,6 +5,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TemplateDataContext extends HashMap {
+
+    public static final String TARGET_FILE_DIR = "targetFileDir";
+    public static final String TARGET_FILE_NAME = "targetFileName";
+
     public TemplateDataContext(ClassInfo classInfo, GenerateConfig config, String targetFileDir, String targetFileName) {
         put("className", classInfo.getName());
         put("packageName", classInfo.getPackageName());
@@ -39,17 +43,17 @@ public class TemplateDataContext extends HashMap {
             put("nonKeyFields", fields.stream().filter(i -> i != firstOrNull.get()).collect(Collectors.toList()));
         }
 
-        put("targetFileDir", targetFileDir);
-        put("targetFileName", targetFileName);
+        put(TARGET_FILE_DIR, targetFileDir);
+        put(TARGET_FILE_NAME, targetFileName);
 
         put("setter", new TemplateDataContextCallBack(this));
     }
 
     public String getTargetFileDir() {
-        return get("targetFileDir").toString();
+        return get(TARGET_FILE_DIR).toString();
     }
 
     public String getTargetFileName() {
-        return get("targetFileName").toString();
+        return get(TARGET_FILE_NAME).toString();
     }
 }
