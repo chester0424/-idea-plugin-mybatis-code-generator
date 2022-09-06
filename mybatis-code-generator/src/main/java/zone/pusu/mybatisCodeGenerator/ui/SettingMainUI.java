@@ -51,7 +51,8 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
         Configurable[] configurables = new Configurable[]{
                 new SettingTemplateUI(),
                 new SettingTypeMappingUI(),
-                new SettingExtendCfgColUI()
+                new SettingExtendCfgColUI(),
+                new SettingHelpUI()
         };
         return configurables;
     }
