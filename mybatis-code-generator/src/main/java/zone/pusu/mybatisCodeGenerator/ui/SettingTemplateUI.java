@@ -7,8 +7,8 @@ import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
+import com.intellij.ui.components.JBList;
 import org.jetbrains.annotations.Nullable;
-import zone.pusu.mybatisCodeGenerator.common.MCGException;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
 import zone.pusu.mybatisCodeGenerator.tool.JsonUtil;
@@ -16,12 +16,10 @@ import zone.pusu.mybatisCodeGenerator.tool.ObjectUtil;
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,12 +55,13 @@ public class SettingTemplateUI implements Configurable {
 
     //endregion
 
-    private JPanel initUI() {
+    private JComponent initUI() {
         itemList = ObjectUtil.clone(SettingTemplateStoreService.getInstance().getState().getItems(), new TypeToken<List<SettingTemplateItem>>() {
         });
 
         // 容器
         JPanel jPanelContainer = new JPanel();
+        jPanelContainer.setAutoscrolls(false);
         jPanelContainer.setLayout(new BorderLayout());
         // 头部布局
         JPanel jPanelHead = new JPanel();
@@ -75,59 +74,44 @@ public class SettingTemplateUI implements Configurable {
         JButton jButtonDelete = new JButton("Delete");
         jPanelHead.add(jButtonDelete);
 
-        String freemarkerDocUrI = "http://freemarker.foofun.cn/toc.html";
-        JLabel freemarkerURI = new JLabel(freemarkerDocUrI);
-        freemarkerURI.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        freemarkerURI.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(freemarkerDocUrI));
-                    } catch (Exception ex) {
-                        throw new MCGException(ex.getMessage());
-                    }
-                }
-            }
-        });
-        jPanelHead.add(freemarkerURI);
-
         // 主要区域
         JSplitPane jSplitPaneMain = new JSplitPane();
-        jSplitPaneMain.setResizeWeight(0.2);
-        jSplitPaneMain.setDividerLocation(.2);
+        jSplitPaneMain.setBorder(new LineBorder(new Color(50,50,50)));
+        jSplitPaneMain.setResizeWeight(0.3);
+        jSplitPaneMain.setDividerLocation(.3); //分割比例
         jPanelContainer.add(jSplitPaneMain, BorderLayout.CENTER);
         // 模板列表
-        JList jListTemplateName = new JList();
-        jListTemplateName.setMinimumSize(new Dimension(100, 200));
+        JList jListTemplateName = new JBList();
+        jListTemplateName.setBackground(new Color(69,73,74));
         jSplitPaneMain.setLeftComponent(jListTemplateName);
-        Runnable refreshTemplateModel = () -> {
-            jListTemplateName.setModel(new ListModel() {
-                @Override
-                public int getSize() {
-                    return itemList.size();
-                }
+        jListTemplateName.setModel(new ListModel() {
+            @Override
+            public int getSize() {
+                return itemList.size();
+            }
 
-                @Override
-                public Object getElementAt(int index) {
-                    return itemList.get(index).getName();
-                }
+            @Override
+            public Object getElementAt(int index) {
+                return itemList.get(index).getName();
+            }
 
-                @Override
-                public void addListDataListener(ListDataListener l) {
+            @Override
+            public void addListDataListener(ListDataListener l) {
 
-                }
+            }
 
-                @Override
-                public void removeListDataListener(ListDataListener l) {
+            @Override
+            public void removeListDataListener(ListDataListener l) {
 
-                }
-            });
-        };
+            }
+        });
+
         // 编辑器
         JTextArea jTextAreaEditor = new JTextArea();
-        jSplitPaneMain.setRightComponent(jTextAreaEditor);
+        jTextAreaEditor.setAutoscrolls(true);
+        JScrollPane jScrollPane = new JScrollPane(jTextAreaEditor);
+        jScrollPane.setPreferredSize(new Dimension(200,200));
+        jSplitPaneMain.setRightComponent(jScrollPane);
 
         jButtonAdd.addActionListener(new AbstractAction() {
             @Override
@@ -153,7 +137,8 @@ public class SettingTemplateUI implements Configurable {
                         item.setName(s);
                         item.setContent("");
                         itemList.add(item);
-                        refreshTemplateModel.run();
+                        jListTemplateName.updateUI();
+                        jListTemplateName.setSelectedValue(s,true);
                     }
                 });
             }
@@ -165,7 +150,7 @@ public class SettingTemplateUI implements Configurable {
                 String templateName = jListTemplateName.getSelectedValue().toString();
                 SettingTemplateItem settingTemplateItem = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst().get();
                 itemList.remove(settingTemplateItem);
-                refreshTemplateModel.run();
+                jListTemplateName.updateUI();
             }
         });
 //        DefaultListModel
