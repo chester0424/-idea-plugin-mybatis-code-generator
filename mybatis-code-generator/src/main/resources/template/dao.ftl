@@ -1,21 +1,32 @@
 package ${packageName}.dao;
 
-import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import ${packageName}.${className};
+import ${packageName}.${className}QueryParam;
 
+import java.util.List;
+
+/**
+ * Product Dao
+ */
 @Mapper
 public interface I${className}Dao {
 
-${className} get(String key);
+    int insert(${className} ${className?uncap_first});
 
-Page<${className}> get${className}PageList(String key,@Param("pageNumKey") int pageNum,  @Param("pageSizeKey") int pageSize);
+    int insertBatch(@Param("coll")List<${className}> ${className?uncap_first}List);
 
-int Update(${className} ${className?uncap_first});
+    int update(${className} ${className?uncap_first});
 
-int delete(String key);
+    int delete(@Param("${keyField.name}") String ${keyField.name});
+
+    ${className} get(@Param("${keyField.name}") String ${keyField.name});
+
+    List<${className}> getList(${className}QueryParam param, @Param("pageNumKey") int pageNum, @Param("pageSizeKey") int pageSize);
+
+    int getCount(${className}QueryParam param);
 }
 
 <#-- 修改模板生成路径 -->
