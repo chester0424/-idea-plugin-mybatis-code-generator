@@ -37,6 +37,9 @@ public class FileUtil {
         if (file.exists()) {
             file.delete();
         }
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdir();
+        }
         try {
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             write.write(content);
