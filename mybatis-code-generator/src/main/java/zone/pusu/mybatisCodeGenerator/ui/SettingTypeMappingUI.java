@@ -160,6 +160,18 @@ public class SettingTypeMappingUI implements Configurable {
                 }
             }
         });
+        JButton jButtonReset = new JButton(("Reset"));
+        jPanelRight.add(jButtonReset);
+        jButtonReset.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "Are you sure to reset?", "Notice", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    settingTypeMapping.setItems(SettingTypeMappingStoreService.getInstance().getState().getDefault());
+                    jTable.updateUI();
+                }
+            }
+        });
         return jPanelContainer;
 
 

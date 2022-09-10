@@ -1,5 +1,7 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
+import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
+
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ public class TemplateDataContext extends HashMap {
                 Map<String, Object> field = new LinkedHashMap<>();
                 field.put("name", configField.getName());
                 field.put("javaType", configField.getJavaType());
+                field.put("javaTypeShort", StringUtil.getLastPart(configField.getJavaType(), "."));
                 field.put("columnName", configField.getColumnName());
                 field.put("jdbcType", configField.getJdbcType());
                 field.put("primaryKey", configField.isPrimaryKey());

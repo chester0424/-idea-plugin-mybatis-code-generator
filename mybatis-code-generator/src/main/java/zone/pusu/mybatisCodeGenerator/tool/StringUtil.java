@@ -41,4 +41,23 @@ public class StringUtil {
         else
             return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
     }
+
+    /**
+     * 获取字符串最后一部分
+     *
+     * @param source 原字符串
+     * @param flag   标志
+     * @return
+     */
+    public static String getLastPart(String source, String flag) {
+        if (isNullOrEmpty(source)) {
+            return source;
+        } else {
+            if (source.contains(flag)) {
+                return source.substring(source.lastIndexOf(flag));
+            } else {
+                return source;
+            }
+        }
+    }
 }
