@@ -54,7 +54,7 @@ public class StringUtil {
             return source;
         } else {
             if (source.contains(flag)) {
-                return source.substring(source.lastIndexOf(flag));
+                return source.substring(source.lastIndexOf(flag) + 1);
             } else {
                 return source;
             }

@@ -1,6 +1,7 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
+import zone.pusu.mybatisCodeGenerator.tool.TypeUtil;
 
 import java.io.File;
 import java.util.*;
@@ -46,10 +47,12 @@ public class TemplateDataContext extends HashMap {
             put("nonKeyFields", fields.stream().filter(i -> i != firstOrNull.get()).collect(Collectors.toList()));
         }
 
+        put("fieldTypeImports", fieldTypeImports(classInfo));
+
         put(TARGET_FILE_DIR, targetFileDir);
         put(TARGET_FILE_NAME, targetFileName);
 
-        put("setter", new TemplateDataContextCallBack(this));
+        put("callback", new TemplateDataContextCallBack(this));
     }
 
     public String getTargetFileDir() {
@@ -58,5 +61,18 @@ public class TemplateDataContext extends HashMap {
 
     public String getTargetFileName() {
         return get(TARGET_FILE_NAME).toString();
+    }
+
+    private String[] fieldTypeImports(ClassInfo classInfo) {
+        HashSet<String> fieldTypeImports = new HashSet<>();
+        for (FieldInfo fieldInfo : classInfo.getFieldInfos()) {
+            String javaType = fieldInfo.getType();
+            // 基本类型则不引入
+            if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
+                continue;
+            }
+            fieldTypeImports.add(javaType);
+        }
+        return fieldTypeImports.toArray(String[]::new);
     }
 }

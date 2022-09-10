@@ -1,7 +1,5 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
-import java.lang.reflect.Type;
-
 /**
  * 字段信息
  */
