@@ -47,7 +47,7 @@ public class TemplateDataContext extends HashMap {
             put("nonKeyFields", fields.stream().filter(i -> i != firstOrNull.get()).collect(Collectors.toList()));
         }
 
-        put("fieldTypeImports", fieldTypeImports(classInfo));
+        put("fieldTypeImports", fieldTypeImports(classInfo, config));
 
         put(TARGET_FILE_DIR, targetFileDir);
         put(TARGET_FILE_NAME, targetFileName);
@@ -63,15 +63,19 @@ public class TemplateDataContext extends HashMap {
         return get(TARGET_FILE_NAME).toString();
     }
 
-    private String[] fieldTypeImports(ClassInfo classInfo) {
+    private String[] fieldTypeImports(ClassInfo classInfo, GenerateConfig config) {
         HashSet<String> fieldTypeImports = new HashSet<>();
         for (FieldInfo fieldInfo : classInfo.getFieldInfos()) {
-            String javaType = fieldInfo.getType();
-            // 基本类型则不引入
-            if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
-                continue;
+            // 过滤掉忽略的字段
+            Optional<GenerateConfigField> generateConfigField = config.getFields().stream().filter(i -> i.getName().equals(fieldInfo.getName()) && i.isIgnore() == false).findFirst();
+            if (generateConfigField.isPresent()) {
+                String javaType = fieldInfo.getType();
+                // 基本类型则不引入
+                if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
+                    continue;
+                }
+                fieldTypeImports.add(javaType);
             }
-            fieldTypeImports.add(javaType);
         }
         return fieldTypeImports.toArray(String[]::new);
     }

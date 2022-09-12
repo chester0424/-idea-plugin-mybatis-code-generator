@@ -42,19 +42,18 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         SettingMainStoreService.getInstance().loadState(settingMain);
     }
 
     @Override
     public @NotNull Configurable[] getConfigurables() {
-        Configurable[] configurables = new Configurable[]{
+        return new Configurable[]{
                 new SettingTemplateUI(),
                 new SettingTypeMappingUI(),
                 new SettingExtendCfgColUI(),
                 new SettingHelpUI()
         };
-        return configurables;
     }
 
     private JPanel getMainUI() {

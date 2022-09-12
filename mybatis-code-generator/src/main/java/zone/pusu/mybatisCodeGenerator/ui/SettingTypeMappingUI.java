@@ -45,7 +45,7 @@ public class SettingTypeMappingUI implements Configurable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         SettingTypeMappingStoreService.getInstance().loadState(settingTypeMapping);
     }
 

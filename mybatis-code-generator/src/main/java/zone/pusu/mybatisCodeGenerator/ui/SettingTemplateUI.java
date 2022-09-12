@@ -2,12 +2,12 @@ package zone.pusu.mybatisCodeGenerator.ui;
 
 import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
 import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.Nullable;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateItem;
 import zone.pusu.mybatisCodeGenerator.setting.SettingTemplateStoreService;
@@ -17,13 +17,14 @@ import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * 设置-模板
@@ -49,7 +50,7 @@ public class SettingTemplateUI implements Configurable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         SettingTemplateStoreService.getInstance().getState().setItems(itemList);
     }
 
@@ -76,41 +77,20 @@ public class SettingTemplateUI implements Configurable {
 
         // 主要区域
         JSplitPane jSplitPaneMain = new JSplitPane();
-        jSplitPaneMain.setBorder(new LineBorder(new Color(50,50,50)));
+        jSplitPaneMain.setBorder(new LineBorder(new Color(50, 50, 50)));
         jSplitPaneMain.setResizeWeight(0.3);
         jSplitPaneMain.setDividerLocation(.3); //分割比例
         jPanelContainer.add(jSplitPaneMain, BorderLayout.CENTER);
         // 模板列表
         JList jListTemplateName = new JBList();
-        jListTemplateName.setBackground(new Color(69,73,74));
+        jListTemplateName.setBackground(new Color(69, 73, 74));
         jSplitPaneMain.setLeftComponent(jListTemplateName);
-        jListTemplateName.setModel(new ListModel() {
-            @Override
-            public int getSize() {
-                return itemList.size();
-            }
-
-            @Override
-            public Object getElementAt(int index) {
-                return itemList.get(index).getName();
-            }
-
-            @Override
-            public void addListDataListener(ListDataListener l) {
-
-            }
-
-            @Override
-            public void removeListDataListener(ListDataListener l) {
-
-            }
-        });
 
         // 编辑器
         JTextArea jTextAreaEditor = new JTextArea();
         jTextAreaEditor.setAutoscrolls(true);
-        JScrollPane jScrollPane = new JScrollPane(jTextAreaEditor);
-        jScrollPane.setPreferredSize(new Dimension(200,200));
+        JScrollPane jScrollPane = new JBScrollPane(jTextAreaEditor);
+        jScrollPane.setPreferredSize(new Dimension(200, 200));
         jSplitPaneMain.setRightComponent(jScrollPane);
 
         jButtonAdd.addActionListener(new AbstractAction() {
@@ -130,16 +110,13 @@ public class SettingTemplateUI implements Configurable {
                     boolean allowInput(String inputString) {
                         return !(itemList.stream().filter(i -> i.getName().equals(inputString)).count() > 0);
                     }
-                }, new Consumer<String>() {
-                    @Override
-                    public void accept(String s) {
-                        SettingTemplateItem item = new SettingTemplateItem();
-                        item.setName(s);
-                        item.setContent("");
-                        itemList.add(item);
-                        jListTemplateName.updateUI();
-                        jListTemplateName.setSelectedValue(s,true);
-                    }
+                }, s -> {
+                    SettingTemplateItem item = new SettingTemplateItem();
+                    item.setName(s);
+                    item.setContent("");
+                    itemList.add(item);
+                    jListTemplateName.updateUI();
+                    jListTemplateName.setSelectedValue(s, true);
                 });
             }
         });
@@ -175,13 +152,10 @@ public class SettingTemplateUI implements Configurable {
 
             }
         });
-        jListTemplateName.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                String templateName = jListTemplateName.getSelectedValue().toString();
-                SettingTemplateItem item = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst().get();
-                jTextAreaEditor.setText(item.getContent());
-            }
+        jListTemplateName.addListSelectionListener(e -> {
+            String templateName = jListTemplateName.getSelectedValue().toString();
+            SettingTemplateItem item = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst().get();
+            jTextAreaEditor.setText(item.getContent());
         });
         jTextAreaEditor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -205,9 +179,7 @@ public class SettingTemplateUI implements Configurable {
                     String templateContent = jTextAreaEditor.getText();
                     if (!StringUtil.isNullOrEmpty(templateName)) {
                         Optional<SettingTemplateItem> optional = itemList.stream().filter(i -> i.getName().equals(templateName)).findFirst();
-                        if (optional.isPresent()) {
-                            optional.get().setContent(templateContent);
-                        }
+                        optional.ifPresent(settingTemplateItem -> settingTemplateItem.setContent(templateContent));
                     }
                 } else {
                     Messages.showInfoMessage("Add a template first", "Info");
