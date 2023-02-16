@@ -1,0 +1,75 @@
+{
+  "tableName": "Product",
+  "fields": [
+    {
+      "name": "idCodeName",
+      "javaType": "java.lang.String",
+      "ignore": false,
+      "columnName": "id_code_name",
+      "jdbcType": "VARCHAR",
+      "primaryKey": true,
+      "typeHandler": "",
+      "extend": {
+        "Query": true,
+        "Keyword": true,
+        "TestSelect": "5"
+      }
+    },
+    {
+      "name": "name",
+      "javaType": "java.lang.String",
+      "ignore": false,
+      "columnName": "name",
+      "jdbcType": "VARCHAR",
+      "primaryKey": false,
+      "typeHandler": "JsonHandler",
+      "extend": {
+        "Query": true,
+        "Keyword": true,
+        "TestSelect": "3"
+      }
+    },
+    {
+      "name": "amount",
+      "javaType": "java.math.BigDecimal",
+      "ignore": false,
+      "columnName": "amount",
+      "jdbcType": "DECIMAL",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "Query": true,
+        "Keyword": true,
+        "TestSelect": "3"
+      }
+    },
+    {
+      "name": "goodWord",
+      "javaType": "java.lang.Boolean",
+      "ignore": false,
+      "columnName": "good_word",
+      "jdbcType": "BIT",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "Query": true,
+        "Keyword": true,
+        "TestSelect": "1"
+      }
+    },
+    {
+      "name": "content",
+      "javaType": "java.lang.Byte[]",
+      "ignore": true,
+      "columnName": "content",
+      "jdbcType": "BLOB",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "Query": true,
+        "Keyword": true,
+        "TestSelect": "5"
+      }
+    }
+  ]
+}

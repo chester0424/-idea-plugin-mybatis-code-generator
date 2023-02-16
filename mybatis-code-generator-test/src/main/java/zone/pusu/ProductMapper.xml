@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zone.pusu.product.dao.IProduct">
+    <resultMap id="resultMap" type="zone.pusu.product.Product">
+    {"name":"idCodeName","javaType":"java.lang.String","columnName":"id_code_name","jdbcType":"VARCHAR","primaryKey":true,"typeHandler":"","extend":{}}
+   <div>idCodeName<div>
+    {"name":"name","javaType":"java.lang.String","columnName":"name","jdbcType":"VARCHAR","primaryKey":false,"typeHandler":"JsonHandler","extend":{}}
+   <div>name<div>
+    {"name":"amount","javaType":"java.math.BigDecimal","columnName":"amount","jdbcType":"DECIMAL","primaryKey":false,"typeHandler":"","extend":{}}
+   <div>amount<div>
+    {"name":"goodWord","javaType":"java.lang.Boolean","columnName":"good_word","jdbcType":"BIT","primaryKey":false,"typeHandler":"","extend":{}}
+   <div>goodWord<div>
+    </resultMap>
+
+
+</mapper>

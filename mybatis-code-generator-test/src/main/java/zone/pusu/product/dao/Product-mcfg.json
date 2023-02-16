@@ -1,0 +1,137 @@
+{
+  "tableName": "Product",
+  "fields": [
+    {
+      "name": "id",
+      "javaType": "java.lang.String",
+      "ignore": false,
+      "columnName": "id",
+      "jdbcType": "VARCHAR",
+      "primaryKey": true,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "nvarchar2(50)"
+      }
+    },
+    {
+      "name": "name",
+      "javaType": "java.lang.String",
+      "ignore": false,
+      "columnName": "name",
+      "jdbcType": "VARCHAR",
+      "primaryKey": false,
+      "typeHandler": "JsonHandler",
+      "extend": {
+        "oracle_db": "nvarchar2(50)"
+      }
+    },
+    {
+      "name": "bigDecimal",
+      "javaType": "java.math.BigDecimal",
+      "ignore": false,
+      "columnName": "big_decimal",
+      "jdbcType": "DECIMAL",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "decimal(18,2)"
+      }
+    },
+    {
+      "name": "aBooleanWrap",
+      "javaType": "java.lang.Boolean",
+      "ignore": false,
+      "columnName": "a_boolean_wrap",
+      "jdbcType": "BIT",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "bit"
+      }
+    },
+    {
+      "name": "bytes",
+      "javaType": "byte[]",
+      "ignore": false,
+      "columnName": "bytes",
+      "jdbcType": "BLOB",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "blob"
+      }
+    },
+    {
+      "name": "date",
+      "javaType": "java.util.Date",
+      "ignore": false,
+      "columnName": "date",
+      "jdbcType": "DATE",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "date"
+      }
+    },
+    {
+      "name": "anInt",
+      "javaType": "int",
+      "ignore": false,
+      "columnName": "an_int",
+      "jdbcType": "INTEGER",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "int"
+      }
+    },
+    {
+      "name": "aBoolean",
+      "javaType": "boolean",
+      "ignore": false,
+      "columnName": "a_boolean",
+      "jdbcType": "BIT",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "bit"
+      }
+    },
+    {
+      "name": "ef",
+      "javaType": "char",
+      "ignore": false,
+      "columnName": "ef",
+      "jdbcType": "CHAR",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": "char"
+      }
+    },
+    {
+      "name": "test",
+      "javaType": "java.util.List\u003cjava.lang.String\u003e",
+      "ignore": true,
+      "columnName": "test",
+      "jdbcType": "",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": ""
+      }
+    },
+    {
+      "name": "list",
+      "javaType": "java.util.List\u003cjava.util.ArrayList\u003cjava.lang.String\u003e\u003e",
+      "ignore": true,
+      "columnName": "list",
+      "jdbcType": "",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
+        "oracle_db": ""
+      }
+    }
+  ]
+}
