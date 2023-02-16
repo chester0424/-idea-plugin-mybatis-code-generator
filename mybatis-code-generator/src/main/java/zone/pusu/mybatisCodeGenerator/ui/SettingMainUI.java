@@ -2,7 +2,6 @@ package zone.pusu.mybatisCodeGenerator.ui;
 
 import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.openapi.util.NlsContexts;
 import org.jetbrains.annotations.NotNull;
@@ -71,7 +70,7 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
         jPanelAuthor.add(new JLabel("Author    Name:"));
         JTextField textFieldAuthorName = new JTextField();
         textFieldAuthorName.setPreferredSize(new Dimension(400, 30));
-        textFieldAuthorName.setText(settingMain.getAuthorName());
+        textFieldAuthorName.setText(settingMain.getAuthor());
         textFieldAuthorName.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -90,7 +89,7 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
 
             private void onChanged() {
                 String text = textFieldAuthorName.getText();
-                settingMain.setAuthorName(text);
+                settingMain.setAuthor(text);
             }
         });
         jPanelAuthor.add(textFieldAuthorName);

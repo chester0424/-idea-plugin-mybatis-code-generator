@@ -4,19 +4,19 @@ package zone.pusu.mybatisCodeGenerator.setting;
  * 主要配置信息
  */
 public class SettingMain {
-    private String authorName = "";
+    private String author = "";
 
     /**
      * 对象配置文件路径
      */
     private String configFileSavePath = "./dao/";
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getConfigFileSavePath() {

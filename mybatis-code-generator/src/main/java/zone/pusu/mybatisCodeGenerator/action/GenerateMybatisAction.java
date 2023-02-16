@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
+import com.intellij.psi.util.PsiClassUtil;
 import zone.pusu.mybatisCodeGenerator.common.MCGException;
 import zone.pusu.mybatisCodeGenerator.define.ClassInfo;
 import zone.pusu.mybatisCodeGenerator.define.FieldInfo;
@@ -39,10 +40,10 @@ public class GenerateMybatisAction extends AnAction {
         Editor editor = event.getData(PlatformDataKeys.EDITOR);
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
         if (psiFile.getFileType().isReadOnly()) {
-            throw new MCGException("don't support readOnly file");
+            throw new MCGException("The current file cannot be read-only");
         }
         if (!psiFile.getVirtualFile().getName().contains(".java")) {
-            throw new MCGException("don't support file except java");
+            throw new MCGException("The current file does not support this operation (only java files)");
         }
         ClassInfo classInfo = new ClassInfo();
         PsiJavaFileImpl psiJavaFile = new PsiJavaFileImpl(psiFile.getViewProvider());
@@ -50,10 +51,10 @@ public class GenerateMybatisAction extends AnAction {
         if (psiClassList.size() > 0) {
             PsiClass psiClass = (PsiClass) psiClassList.get(0);
             if (!psiClass.getName().equals(psiFile.getName().substring(0, psiFile.getName().indexOf(".")))) {
-                throw new MCGException("class and file must be the same name");
+                throw new MCGException("Class and file must have the same name");
             }
             if (!psiClass.isValid()) {
-                throw new MCGException("class is not valid");
+                throw new MCGException("The class is not valid");
             }
 
             classInfo.setName(psiClass.getName());
@@ -69,7 +70,7 @@ public class GenerateMybatisAction extends AnAction {
             }
             return classInfo;
         } else {
-            throw new MCGException("there is no class");
+            throw new MCGException("There is no class");
         }
     }
 }

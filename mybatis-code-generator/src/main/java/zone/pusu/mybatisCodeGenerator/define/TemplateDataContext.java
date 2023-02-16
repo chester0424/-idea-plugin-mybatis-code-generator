@@ -1,5 +1,9 @@
 package zone.pusu.mybatisCodeGenerator.define;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import org.apache.commons.lang3.StringUtils;
+import zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService;
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 import zone.pusu.mybatisCodeGenerator.tool.TypeUtil;
 
@@ -53,6 +57,12 @@ public class TemplateDataContext extends HashMap {
         put(TARGET_FILE_NAME, targetFileName);
 
         put("callback", new TemplateDataContextCallBack(this));
+
+        Project[] projects = ProjectManager.getInstance().getOpenProjects();
+        Project currentProject = projects[0];
+        put("projectBasePath", currentProject.getBasePath());
+
+        put("author", SettingMainStoreService.getInstance().getState().getAuthor());
     }
 
     public String getTargetFileDir() {
@@ -69,14 +79,20 @@ public class TemplateDataContext extends HashMap {
             // 过滤掉忽略的字段
             Optional<GenerateConfigField> generateConfigField = config.getFields().stream().filter(i -> i.getName().equals(fieldInfo.getName()) && i.isIgnore() == false).findFirst();
             if (generateConfigField.isPresent()) {
-                String javaType = fieldInfo.getType();
-                // 基本类型则不引入
-                if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
-                    continue;
+                String[] javaTypes = javaTypeAnalysis(fieldInfo.getType());
+                for (String javaType : javaTypes) {
+                    if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
+                        continue;
+                    }
+                    fieldTypeImports.add(javaType);
                 }
-                fieldTypeImports.add(javaType);
             }
         }
         return fieldTypeImports.toArray(String[]::new);
+    }
+
+    private String[] javaTypeAnalysis(String javaType) {
+        List<String> types = Arrays.stream(javaType.split("<|>")).filter(i -> StringUtils.isNotEmpty(i)).collect(Collectors.toList());
+        return types.toArray(new String[0]);
     }
 }

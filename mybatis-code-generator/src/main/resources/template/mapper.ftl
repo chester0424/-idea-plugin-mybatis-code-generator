@@ -3,43 +3,43 @@
 <mapper namespace="${packageName}.dao.I${className}Dao">
     <insert id="insert">
         INSERT INTO ${tableName}(
-<#list fields as field>
+        <#list fields as field>
             ${field.columnName}<#sep>,
-</#list>
+        </#list>
 
         )
         VALUES (
-<#list fields as field>
+        <#list fields as field>
             ${r"#"}{${field.name},jdbcType=${field.jdbcType}}<#sep>,
-</#list>
+        </#list>
 
         )
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO ${tableName}(
-<#list fields as field>
-           ${field.columnName}<#sep>,
-</#list>
+        <#list fields as field>
+            ${field.columnName}<#sep>,
+        </#list>
 
         )
         VALUES
         <foreach collection="coll" item="item" separator=",">
-        (
-<#list fields as field>
-           ${r"#"}{${field.name},jdbcType=${field.jdbcType}}<#sep>,
-</#list>
+            (
+            <#list fields as field>
+                ${r"#"}{${field.name},jdbcType=${field.jdbcType}}<#sep>,
+            </#list>
 
-        )
+            )
         </foreach>
     </insert>
 
     <update id="update">
         UPDATE ${tableName}
         <set>
-<#list nonKeyFields as field>
-            ${field.columnName} = ${r"#"}{field.name}<#sep>,
-</#list>
+            <#list nonKeyFields as field>
+                ${field.columnName} = ${r"#"}{field.name}<#sep>,
+            </#list>
 
         </set>
         WHERE ${keyField.columnName} = ${r"#"}{${keyField.name}}
@@ -67,39 +67,39 @@
     </select>
 
     <resultMap id="resultMap" type="${packageName}.${className}">
-<#list fields as field>
-        <result property="${field.name}" column="${field.columnName}" jdbcType="${field.jdbcType}"/>
-</#list>
+        <#list fields as field>
+            <result property="${field.name}" column="${field.columnName}" jdbcType="${field.jdbcType}"/>
+        </#list>
     </resultMap>
 
     <sql id="where">
         <trim prefix="WHERE" prefixOverrides="and |or ">
-<#list fields as field>
-            <!-- ${field.name} -->
-<#if ["char","String","Char"]?seq_contains(field.javaTypeShort)>
-            <if test="${field.name} != null">
-                AND ${field.columnName} like ${r"#"}{${field.name}}
-            </if>
-            <if test="${field.name}_array != null">
-                AND ${field.columnName} IN
-                <foreach collection="${field.name}_array" item="value" open="(" separator="," close=")">${r"#"}{value,jdbcType=${field.jdbcType}}
-                </foreach>
-            </if>
-</#if>
-<#if ["short","int","long","float","double","Short","Integer","Long","Float","Double","BigDecimal","Date","DateTime"]?seq_contains(field.javaTypeShort)>
-             <if test="${field.name} != null">
-                AND ${field.name} like ${r"#"}{${field.name}}
-             </if>
-             <if test="${field.name}_range != null">
-                 AND ${field.name} <![CDATA[ >= ]]> ${r"#"}{field.${field.name}_range.start} AND ${field.name} <![CDATA[ <= ]]>  ${r"#"}{field.${field.name}_range.end}
-             </if>
-</#if>
-<#if ["boolean","Boolean"]?seq_contains(field.javaTypeShort)>
-            <if test="${field.name} != null">
-                AND ${field.name} like ${r"#"}{${field.name}}
-            </if>
-</#if>
-</#list>
+            <#list fields as field>
+                <!-- ${field.name} -->
+                <#if ["char","String","Char"]?seq_contains(field.javaTypeShort)>
+                    <if test="${field.name} != null">
+                        AND ${field.columnName} like ${r"#"}{${field.name}}
+                    </if>
+                    <if test="${field.name}_array != null">
+                        AND ${field.columnName} IN
+                        <foreach collection="${field.name}_array" item="value" open="(" separator="," close=")">${r"#"}{value,jdbcType=${field.jdbcType}}
+                        </foreach>
+                    </if>
+                </#if>
+                <#if ["short","int","long","float","double","Short","Integer","Long","Float","Double","BigDecimal","Date","DateTime"]?seq_contains(field.javaTypeShort)>
+                    <if test="${field.name} != null">
+                        AND ${field.name} like ${r"#"}{${field.name}}
+                    </if>
+                    <if test="${field.name}_range != null">
+                        AND ${field.name} <![CDATA[ >= ]]> ${r"#"}{field.${field.name}_range.start} AND ${field.name} <![CDATA[ <= ]]>  ${r"#"}{field.${field.name}_range.end}
+                    </if>
+                </#if>
+                <#if ["boolean","Boolean"]?seq_contains(field.javaTypeShort)>
+                    <if test="${field.name} != null">
+                        AND ${field.name} like ${r"#"}{${field.name}}
+                    </if>
+                </#if>
+            </#list>
         </trim>
     </sql>
 
@@ -107,11 +107,13 @@
         <trim prefix="ORDER BY">
             <if test="order_array != null">
                 <foreach collection="order_array" item="value" separator=",">
-<#list fields as field>
-                    <!-- ${field.name} -->
-                    <if test="value == '${field.name}_asc'">${field.columnName}</if>
-                    <if test="value == '${field.name}_desc'">${field.columnName} DESC</if>
-</#list>
+                    <#list fields as field>
+                        <#if ["char","String","Char","short","int","long","float","double","Short","Integer","Long","Float","Double","BigDecimal","Date","DateTime","boolean","Boolean"]?seq_contains(field.javaTypeShort)>
+                            <!-- ${field.name} -->
+                            <if test="value == '${field.name}_asc'">${field.columnName}</if>
+                            <if test="value == '${field.name}_desc'">${field.columnName} DESC</if>
+                        </#if>
+                    </#list>
                 </foreach>
             </if>
         </trim>

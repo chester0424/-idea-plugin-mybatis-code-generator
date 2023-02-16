@@ -83,7 +83,7 @@ public class SettingTemplateUI implements Configurable {
         jPanelContainer.add(jSplitPaneMain, BorderLayout.CENTER);
         // 模板列表
         JList jListTemplateName = new JBList();
-        jListTemplateName.setBackground(new Color(69, 73, 74));
+//        jListTemplateName.setBackground(new Color(69, 73, 74));
         jSplitPaneMain.setLeftComponent(jListTemplateName);
 
         // 编辑器

@@ -13,7 +13,7 @@ import zone.pusu.mybatisCodeGenerator.tool.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelListener;
@@ -96,16 +96,16 @@ public class CodeGenerateMainFrame extends JFrame {
         // 数据部分
         jPanelCenter = new JPanel();
         jPanelCenter.setLayout(new BorderLayout());
+        jPanelCenter.setBorder(new EmptyBorder(10, 20, 20, 10));
         this.add(jPanelCenter, BorderLayout.CENTER);
 
         table = new JBTable();
-        table.setBorder(new LineBorder(Color.GRAY, 1));
+        table.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         table.setRowHeight(32);
         table.setRowSelectionAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(1, 50));
         // 滚动
         jScrollPane = new JBScrollPane(table);
-        jScrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         jPanelCenter.add(jScrollPane);
 
         table.setModel(new TableModel() {
@@ -312,8 +312,13 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelFoot.setLayout(new VerticalFlowLayout());
         // 选择文件部分
         jPanelSelectFile = new JPanel();
+        jPanelSelectFile.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanelSelectFile.setLayout(new FlowLayout(FlowLayout.CENTER));
         jPanelFoot.add(jPanelSelectFile);
+
+        JLabel jLabel_template_text = new JLabel();
+        jLabel_template_text.setText("可选模板:  ");
+        jPanelSelectFile.add(jLabel_template_text);
 
         // 读取配置文件
         for (SettingTemplateItem item : templateSelectedState.keySet()) {
@@ -334,21 +339,27 @@ public class CodeGenerateMainFrame extends JFrame {
         // 操作部分
         jPanelOperate = new JPanel();
         jPanelFoot.add(jPanelOperate);
-        jButtonSave = new JButton("Save");
+        jButtonSave = new JButton("Save Config");
+        jButtonSave.setPreferredSize(new Dimension(200, 50));
+        jButtonSave.setBackground(Color.MAGENTA);
         jButtonSave.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onSaveClick();
             }
         });
-        jButtonGenerate = new JButton("Generate");
+        jButtonGenerate = new JButton("Generate Code");
+        jButtonGenerate.setPreferredSize(new Dimension(200, 50));
+        jButtonGenerate.setBackground(Color.ORANGE);
         jButtonGenerate.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onGenerateClick();
             }
         });
-        jButtonCancel = new JButton("Cancel");
+        jButtonCancel = new JButton("Exit");
+        jButtonCancel.setPreferredSize(new Dimension(200, 50));
+        jButtonCancel.setBackground(Color.RED);
         jButtonCancel.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -461,7 +472,7 @@ public class CodeGenerateMainFrame extends JFrame {
     void onGenerateClick() {
         try {
             if (templateSelectedState.values().stream().filter(i -> i.booleanValue()).count() == 0) {
-                Messages.showErrorDialog("Firstly,Select at least one template", "Notice");
+                Messages.showErrorDialog("At least one template needs to be selected", "ERROR");
                 return;
             }
             String[] templateNames = templateSelectedState.keySet().stream().filter(i -> templateSelectedState.get(i).booleanValue()).map(i -> i.getName()).toArray(String[]::new);
@@ -481,7 +492,7 @@ public class CodeGenerateMainFrame extends JFrame {
             }
             Messages.showInfoMessage("Generated Successfully", "Notice");
         } catch (Exception ex) {
-            Messages.showErrorDialog(ex.getMessage(), "Notice");
+            Messages.showErrorDialog(ex.getMessage(), "ERROR");
         }
     }
 

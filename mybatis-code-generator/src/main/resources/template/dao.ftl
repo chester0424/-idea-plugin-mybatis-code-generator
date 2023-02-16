@@ -8,25 +8,29 @@ import ${packageName}.${className}QueryParam;
 
 import java.util.List;
 
+
 /**
- * Product Dao
- */
+* ${className} Dao
+*
+* @author ${author}
+* @since ${.now?string("yyyy-MM-dd HH:mm:ss")}
+*/
 @Mapper
 public interface I${className}Dao {
 
-    int insert(${className} ${className?uncap_first});
+int insert(${className} ${className?uncap_first});
 
-    int insertBatch(@Param("coll")List<${className}> ${className?uncap_first}List);
+int insertBatch(@Param("coll")List<${className}> ${className?uncap_first}List);
 
-    int update(${className} ${className?uncap_first});
+int update(${className} ${className?uncap_first});
 
-    int delete(@Param("${keyField.name}") String ${keyField.name});
+int delete(@Param("${keyField.name}") String ${keyField.name});
 
-    ${className} get(@Param("${keyField.name}") String ${keyField.name});
+${className} get(@Param("${keyField.name}") String ${keyField.name});
 
-    List<${className}> getList(${className}QueryParam param, @Param("pageNumKey") int pageNum, @Param("pageSizeKey") int pageSize);
+List<${className}> getList(${className}QueryParam param, @Param("pageNumKey") int pageNum, @Param("pageSizeKey") int pageSize);
 
-    int getCount(${className}QueryParam param);
+int getCount(${className}QueryParam param);
 }
 
 <#-- 修改模板生成路径 -->
