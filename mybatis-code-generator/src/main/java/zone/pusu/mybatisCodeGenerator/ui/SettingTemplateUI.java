@@ -16,7 +16,6 @@ import zone.pusu.mybatisCodeGenerator.tool.ObjectUtil;
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataListener;
@@ -77,13 +76,12 @@ public class SettingTemplateUI implements Configurable {
 
         // 主要区域
         JSplitPane jSplitPaneMain = new JSplitPane();
-        jSplitPaneMain.setBorder(new LineBorder(new Color(50, 50, 50)));
         jSplitPaneMain.setResizeWeight(0.3);
         jSplitPaneMain.setDividerLocation(.3); //分割比例
         jPanelContainer.add(jSplitPaneMain, BorderLayout.CENTER);
         // 模板列表
         JList jListTemplateName = new JBList();
-//        jListTemplateName.setBackground(new Color(69, 73, 74));
+        jListTemplateName.setBackground(new Color(69, 73, 74));
         jSplitPaneMain.setLeftComponent(jListTemplateName);
 
         // 编辑器
@@ -130,7 +128,7 @@ public class SettingTemplateUI implements Configurable {
                 jListTemplateName.updateUI();
             }
         });
-//        DefaultListModel
+
         jListTemplateName.setModel(new ListModel() {
             @Override
             public int getSize() {

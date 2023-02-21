@@ -1,5 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -13,7 +14,7 @@ public class SettingExtendCfgColStoreService implements PersistentStateComponent
     private SettingExtendCfgCol settingExtendCfgCol = new SettingExtendCfgCol();
 
     public static SettingExtendCfgColStoreService getInstance() {
-        return ServiceManager.getService(SettingExtendCfgColStoreService.class);
+        return ApplicationManager.getApplication().getService(SettingExtendCfgColStoreService.class);
     }
 
     @Override

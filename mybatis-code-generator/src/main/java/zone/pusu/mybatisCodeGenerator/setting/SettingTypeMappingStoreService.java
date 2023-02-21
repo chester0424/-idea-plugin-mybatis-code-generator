@@ -1,5 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -13,7 +14,7 @@ public class SettingTypeMappingStoreService implements PersistentStateComponent<
     private SettingTypeMapping typeMapping = new SettingTypeMapping();
 
     public static SettingTypeMappingStoreService getInstance() {
-        return ServiceManager.getService(SettingTypeMappingStoreService.class);
+        return ApplicationManager.getApplication().getService(SettingTypeMappingStoreService.class);
     }
 
     @Override

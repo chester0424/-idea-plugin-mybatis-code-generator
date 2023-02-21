@@ -1,5 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -13,7 +14,8 @@ public class SettingTemplateStoreService implements PersistentStateComponent<Set
     SettingTemplate settingTemplate = new SettingTemplate();
 
     public static SettingTemplateStoreService getInstance() {
-        return ServiceManager.getService(SettingTemplateStoreService.class);
+        return ApplicationManager.getApplication().getService(SettingTemplateStoreService.class);
+
     }
 
     @Override

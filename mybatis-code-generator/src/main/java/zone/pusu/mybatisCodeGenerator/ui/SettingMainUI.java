@@ -27,7 +27,7 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
 
     @Override
     public @NlsContexts.ConfigurableName String getDisplayName() {
-        return "MyBatis CodeGenerator FWD DIR";
+        return "MyBatis Forward CodeGenerator";
     }
 
     @Override
@@ -63,6 +63,13 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
         // 构造UI视图
         JPanel jPanelContainer = new JPanel();
         jPanelContainer.setLayout(new VerticalFlowLayout(VerticalFlowLayout.LEFT));
+
+        JLabel jLabelLogon = new JLabel();
+        jLabelLogon.setText(" MEET ME MEET BEAUTIFUL, NICE DAY");
+        Font font = new Font("宋体",Font.BOLD, 24);
+        jLabelLogon.setPreferredSize(new Dimension(200, 80));
+        jLabelLogon.setFont(font);
+        jPanelContainer.add(jLabelLogon);
 
         // 用户信息
         JPanel jPanelAuthor = new JPanel();

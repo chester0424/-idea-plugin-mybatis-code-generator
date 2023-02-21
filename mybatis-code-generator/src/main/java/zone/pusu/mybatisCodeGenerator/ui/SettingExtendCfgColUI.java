@@ -47,7 +47,7 @@ public class SettingExtendCfgColUI implements Configurable {
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
         SettingExtendCfgColStoreService.getInstance().loadState(settingExtendCfgCol);
     }
 

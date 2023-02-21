@@ -317,7 +317,7 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelFoot.add(jPanelSelectFile);
 
         JLabel jLabel_template_text = new JLabel();
-        jLabel_template_text.setText("可选模板:  ");
+        jLabel_template_text.setText("Optional templates:  ");
         jPanelSelectFile.add(jLabel_template_text);
 
         // 读取配置文件

@@ -1,7 +1,7 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ public class SettingMainStoreService implements PersistentStateComponent<Setting
     private SettingMain settingMain = new SettingMain();
 
     public static SettingMainStoreService getInstance() {
-        return ServiceManager.getService(SettingMainStoreService.class);
+        return ApplicationManager.getApplication().getService(SettingMainStoreService.class);
     }
 
     @Override
