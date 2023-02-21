@@ -70,7 +70,7 @@
 * 保存配置
     * 点击“Save Config”按钮保存配置
 * 生成代码
-    * 首选勾选在“Optional Templates”中勾选需要生成代码的模板
+    * 首先在“Optional Templates”中勾选需要生成代码的模板
     * 点击“Generate Code"按钮生成代码
 
 ## 其他
