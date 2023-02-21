@@ -1,35 +1,122 @@
+# 介绍
+使用java项目中，使用Mybatis做ORM很常见，大多是逆向工程方式，工具数据库结构生成代码，这种方式也便于使用，开发也挺高效。 \
+而 Mybatis Forward CodeGenerator 插件使用 **“正向"工程** 思路，根据编写的类，通过简便的操作生成代码 \
+某种程度上，可能更加契合面向对象、领域驱动设计等构建思路，不妨一试。
+
+# 使用说明
+
+## 安装
+
+* 打开集成开发环境 Idea
+* 依次打开 文件(File)-> 设置(Setting) -> 插件(Plugins) -> 市场(MarketPlace)
+* 搜索框中输入 Mybatis Forward CodeGenerator，搜索该插件
+* 点击“安装” 即可
+
+## 插件配置
+
+### 基本设置
+
+打开：文件->设置->其他设置-> Mybatis Forward CodeGenerator \
+设置 AuthorName、ConfigFilePath 信息
+
+### 模板配置
+
+”Template“栏目下配置模板
+
+* 点击“Add"按钮，在弹出的提示框中输入模板名称 \
+  注意：模板名称通常需要带后缀，比如“Dao.java”,默认生成的代码文件会保存在“类文件”相同目录下，文件名为：[类名]Dao.java
+* 模板仅支持使用FreeMaker语法
+* 模板可以从上下文中获取到的信息(Map结构)有：
+    * className 类名称
+    * packageName 包名
+    * fileName 类文件文件名
+    * fileDir 类文件所在目录
+    * filePath 文件全路径
+    * tableName 表名
+    * fields 字段列表（对象列表结构）
+        * name 字段名称
+        * javaType 字段Java类型全称
+        * javaTypeShort 字段Java类型
+        * columnName 列名
+        * jdbcType JDBC类型
+        * primaryKey 是否是主键
+        * typeHandler 类型处理器
+        * extend 扩展信息（key-value结构）
+* 上下支持回调操作
+    * callback
+        * setTargetFileDir() 修改默认代码文件生成目录
+        * setTargetFileName() 修改默认代码文件生成文件名
+* 因为FreeMaker已经提供了丰富的数据处理功能，所以上下文对象几乎没有提供对数据处理的功能，相关需求请查询FreeMaker手册
+
+### 类型映射配置
+
+* 插件已经内置了基本的Java类型与JDBC类型的映射
+* 可以根据实际需求，在“Type Mapping”栏目下，对映射关系调整、添加、删除等操作
+
+### 扩展列配置
+
+* 插件默认提供 自定义表名、自定义列名、是否忽略类字段、主键配置、JdbcType类型配置、TypeHandler配置
+* 如果需要更多属性，在“Extend Config Column”中维护
+* 点击“Add”，在弹框中输入扩展列的名称
+* 在Type（数据类型）列选择扩展配置列的数据属性，目前仅支持：布尔类型（BOOLEAN)、下拉选择(SELECT)、文本输入(INPUT)
+* Options列仅在Type列是“SELECT”时的输入值有效，多个选项使用英文逗号(“,”) 隔开
+
+注：配置好配置信息以后，记得点击“确定”或“应用”，以保存配置。
+
+## 代码生成
+
+* 在编辑器中编写好Java类，鼠标右键选择“GenerateMybatis”选项
+* 在弹出的代码生成窗口中，根据实际情况配置相应信息：表名、主键等
+* 保存配置
+    * 点击“Save Config”按钮保存配置
+* 生成代码
+    * 首选勾选在“Optional Templates”中勾选需要生成代码的模板
+    * 点击“Generate Code"按钮生成代码
+
+## 其他
+
+* 模板编辑参考
+    * dao         [resources/template/dao.txt]
+    * mapper      [resources/template/mapper.txt]
+    * queryParam  [resource/template/queryParam.text]
+    * sql         [resource/template/sql.txt]
+
+* [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
+
 /**
+
 * 获取文件中的当前鼠标所在的class
-*  如果当前没有class,则提示：mybatis代码生成 仅支持根据对象字段生成dao/mapper/queryParam
+* 如果当前没有class,则提示：mybatis代码生成 仅支持根据对象字段生成dao/mapper/queryParam
 *
-*  需要获取的信息有：
+* 需要获取的信息有：
 *      类型信息：名称、命名空间
 *      字段信息：名称、类型、注释信息
 *
 *
-*  仅支持 特定的java类型， 以及对应的jdbcType,并根据这些信息，展示
+* 仅支持 特定的java类型， 以及对应的jdbcType,并根据这些信息，展示
 *
-*  生成代码生成配置文件，命名方式  类型名.emc(entity mybatis config file)
+* 生成代码生成配置文件，命名方式 类型名.emc(entity mybatis config file)
 *
-*  再次生成代码时，会从相同目录中查找改文件，并根据该文件信息和类型信息进行对比，点击确认时，保存改文件并生成相应代码
+* 再次生成代码时，会从相同目录中查找改文件，并根据该文件信息和类型信息进行对比，点击确认时，保存改文件并生成相应代码
 *
 *
-*   第一步：
+* 第一步：
 *      实现：获取全部需要的类型信息；
-*   第二步：
+* 第二步：
 *      根据获取的类型信息，生成dao,mapper,queryParam 类 （简单生成）
-*   第三步：
+* 第三步：
 *      界面优化，使支持界面配置
-*   第四步：
+* 第四步：
 *      比较全面的配置功能和支持模板化的生成操作
 *
+
 */
 
 独立插件
 1.全局配置
-    作者名称
+作者名称
 2.项目配置
-    java类型与jdbc类型映射
-    TypeHandler 配置
+java类型与jdbc类型映射
+TypeHandler 配置
 3.对象配置
-    对象生成哪些文件配置
+对象生成哪些文件配置
