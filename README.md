@@ -1,17 +1,12 @@
 # idea-plugin-mybatis-code-generator
 
 #### 介绍
-正向根据对象定义生成mybatis代码
-
-#### 软件架构
-软件架构说明
+根据对象定义正向生成mybatis代码
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+idea编辑器中：设置(setting)-插件(plugins)-市场(marketplace),搜索：Mybatis Forward CodeGenerator
 
 #### 使用说明
 
