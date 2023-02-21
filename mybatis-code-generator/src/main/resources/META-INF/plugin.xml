@@ -5,16 +5,17 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>Mybatis-code-generator-FD</name>
+    <name>Mybatis Forward CodeGenerator</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="373934650@qq.com" url="http://www.pusu.zone">pusu.zone</vendor>
+    <vendor email="373934650@qq.com" url="https://gitee.com/chesterone/idea-plugin-mybatis-code-generator">Mybatis Forward CodeGenerator</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    generator mybatis dao,mapper and queryParam base on current Java Class
+    Generate mybatis necessary files based on the current java class <br/>
+    <a href="https://gitee.com/chesterone/idea-plugin-mybatis-code-generator">gitee</>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
