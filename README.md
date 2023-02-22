@@ -82,8 +82,8 @@
 * 模板编辑参考
     * dao         [resources/template/dao.txt]
     * mapper      [resources/template/mapper.txt]
-    * queryParam  [resource/template/queryParam.text]
-    * sql         [resource/template/sql.txt]
+    * queryParam  [resources/template/queryParam.text]
+    * sql         [resources/template/sql.txt]
 
 * [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
 
