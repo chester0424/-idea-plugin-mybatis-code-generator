@@ -42,12 +42,11 @@
         * primaryKey 是否是主键
         * typeHandler 类型处理器
         * extend 扩展信息（key-value结构）
-    * keyField 主键列 （如果未设置则不能获取到该值）
+    * keyField 主键列（如果未设置则不能获取到该值）
     * nonKeyFields 非主键列列表
-    * fieldTypeImports 字段类型依赖导入
+    * fieldTypeImports 字段类型依赖导入（字符串列表结构）
     * projectBasePath 项目路径
     * authorName 作者
-    * 
 * 上下支持回调操作
     * callback
         * setTargetFileDir() 修改默认代码文件生成目录
