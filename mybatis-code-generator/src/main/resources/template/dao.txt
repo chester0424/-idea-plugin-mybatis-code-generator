@@ -12,7 +12,7 @@ import java.util.List;
 /**
 * ${className} Dao
 *
-* @author ${author}
+* @author ${authorName}
 * @since ${.now?string("yyyy-MM-dd HH:mm:ss")}
 */
 @Mapper

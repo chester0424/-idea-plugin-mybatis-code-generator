@@ -10,7 +10,7 @@ import java.util.Map;
 /**
 * ${className} Dao
 *
-* @author ${author}
+* @author ${authorName}
 * @since ${.now?string("yyyy-MM-dd HH:mm:ss")}
 */
 public class ${className}QueryParam {

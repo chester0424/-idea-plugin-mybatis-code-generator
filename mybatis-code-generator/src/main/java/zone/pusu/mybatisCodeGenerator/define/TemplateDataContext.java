@@ -62,7 +62,7 @@ public class TemplateDataContext extends HashMap {
         Project currentProject = projects[0];
         put("projectBasePath", currentProject.getBasePath());
 
-        put("author", SettingMainStoreService.getInstance().getState().getAuthor());
+        put("authorName", SettingMainStoreService.getInstance().getState().getAuthor());
     }
 
     public String getTargetFileDir() {
