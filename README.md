@@ -84,6 +84,7 @@
     * mapper      [resources/template/mapper.txt]
     * queryParam  [resources/template/queryParam.text]
     * sql         [resources/template/sql.txt]
+* Mybatis分页，建议使用适当分页插件方式
+* [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
 
-* [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
 
