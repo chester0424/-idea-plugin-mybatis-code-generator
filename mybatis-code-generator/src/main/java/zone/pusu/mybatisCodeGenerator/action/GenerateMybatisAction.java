@@ -28,7 +28,7 @@ public class GenerateMybatisAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         try {
-            Project project = e.getProject();
+//            Project project = e.getProject();
             ClassInfo classInfo = analysisCurrentJavaFile(e);
             new CodeGenerateMainFrame(classInfo);
         } catch (Exception exception) {
@@ -37,7 +37,7 @@ public class GenerateMybatisAction extends AnAction {
     }
 
     private ClassInfo analysisCurrentJavaFile(AnActionEvent event) {
-        Editor editor = event.getData(PlatformDataKeys.EDITOR);
+//        Editor editor = event.getData(PlatformDataKeys.EDITOR);
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
         if (psiFile.getFileType().isReadOnly()) {
             throw new MCGException("The current file cannot be read-only");
