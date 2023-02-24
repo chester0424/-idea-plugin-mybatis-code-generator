@@ -483,7 +483,7 @@ public class CodeGenerateMainFrame extends JFrame {
                         String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent()).toString();
                         String fileName = classInfo.getName() + templateName;
                         TemplateDataContext templateDataContext = new TemplateDataContext(classInfo, generateConfig, fileDir, fileName);
-                        String content = FreeMarkerUtil.process(item.getContent(), templateDataContext);
+                        String content = FreeMarkerUtil.process(templateName,item.getContent(), templateDataContext);
                         String filePath = Paths.get(templateDataContext.getTargetFileDir(), templateDataContext.getTargetFileName()).toString();
                         FileUtil.writeFile(filePath, content);
 

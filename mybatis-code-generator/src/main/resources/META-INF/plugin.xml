@@ -46,7 +46,8 @@
     </extensions>
     <actions>
         <action id="GenerateMybatisAction" class="zone.pusu.mybatisCodeGenerator.action.GenerateMybatisAction"
-                text="GenerateMybatis" description="生成Mybatis" icon="AllIcons.Actions.Lightning">
+                text="GenerateMybatis" description="GenerateMybatis"
+                icon="zone.pusu.mybatisCodeGenerator.common.Icons.PluginIcon">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>

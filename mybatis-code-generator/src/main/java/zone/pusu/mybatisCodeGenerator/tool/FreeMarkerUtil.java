@@ -12,36 +12,14 @@ import java.io.StringWriter;
  */
 public class FreeMarkerUtil {
     /**
-     * 模板处理数据
-     *
-     * @param fileName
-     * @param data
-     * @return
-     */
-//    public static String process(String fileName, Object data) {
-//        try {
-//            Configuration configuration = new Configuration(Configuration.getVersion());
-//            configuration.setDefaultEncoding("utf-8");
-//            configuration.setClassForTemplateLoading(FreeMarkerUtil.class, "/template/");
-//            Template template = configuration.getTemplate(fileName);
-//            StringWriter sw = new StringWriter();
-//            template.process(data, sw);
-//            return new String(sw.getBuffer());
-//        } catch (Exception exception) {
-//            throw new MCGException(exception.getMessage());
-//        }
-//    }
-
-    /**
      * 模板处理
      *
      * @param templateContent 模板内容
      * @param context         上下文数据
      * @return
      */
-    public static String process(String templateContent, Object context) {
+    public static String process(String tempFileName, String templateContent, Object context) {
         try {
-            String tempFileName = "temp.ftl";
             Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
             configuration.setDefaultEncoding("utf-8");
             final ByteArrayTemplateLoader templateLoader = new ByteArrayTemplateLoader();
@@ -55,5 +33,4 @@ public class FreeMarkerUtil {
             throw new MCGException(exception.getMessage());
         }
     }
-
 }
