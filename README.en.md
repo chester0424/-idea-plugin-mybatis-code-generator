@@ -86,7 +86,7 @@ Note: After configuring the configuration information, remember to click "OK" or
     * queryParam  [resources/template/queryParam.text]
     * sql         [resources/template/sql.txt]
 * If paging query is required, plug-in method is recommended
-* [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker-online](http://freemarker.foofun.cn/toc.html)
+* [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker-online manual](http://freemarker.foofun.cn/toc.html)
 * Other helps QQ:373934650 Email:373934650@qq.com
 
 
