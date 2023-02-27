@@ -1,6 +1,6 @@
 # Introduce
-In the use of Java projects, it is common to use Mybatis to do ORM. Most of them are reverse engineering methods, which generate code according to the database structure. This method is also convenient to use and efficient for development.
-The Mybatis Forward CodeGenerator plug-in uses the * * "forward" project * * idea to generate code through some simple operations according to the classes written.
+In the use of Java projects, it is common to use Mybatis to do ORM. Most of them are reverse engineering methods, which generate code according to the database structure. This method is also convenient to use and efficient for development. \
+The Mybatis Forward CodeGenerator plug-in uses the * * "forward" project * * idea to generate code through some simple operations according to the classes written. \
 To some extent, it may be more suitable for the construction ideas such as object-oriented and domain-driven design.
 # Instructions
 
