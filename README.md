@@ -86,6 +86,6 @@
     * sql         [resources/template/sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
-* 其他帮助,QQ:373934650
+* 其他帮助,QQ:373934650 [373934650](tencent://message/?uin=373934650&Site=&Menu=yes)
 
 
