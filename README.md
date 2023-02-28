@@ -1,3 +1,5 @@
+[English](./README.en.md)
+
 # 介绍
 使用java项目中，使用Mybatis做ORM很常见，大多是逆向工程方式，根据数据库结构生成代码，这种方式也便于使用，开发也挺高效。 \
 而 Mybatis Forward CodeGenerator 插件使用 **“正向"工程** 思路，根据编写的类，通过一些简便的操作生成代码。 \
@@ -86,5 +88,6 @@
     * sql         [resources/template/sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
+* 其他帮助 QQ:373934650 Email:373934650@qq.com
 
 
