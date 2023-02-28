@@ -88,6 +88,5 @@
     * sql         [resources/template/sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
-* 其他帮助 QQ:373934650 Email:373934650@qq.com
-
-
+* 其他帮助 Email:373934650@qq.com QQ:373934650 
+<img src="mybatis-code-generator/src/main/resources/contact/QQ.png"  width="100" height="100" title="QQ">
