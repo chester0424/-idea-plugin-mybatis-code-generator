@@ -88,6 +88,7 @@
     * sql         [resources/template/sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
+* MainPage [Gitee](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/) [GitHub](https://github.com/chester0424/idea-plugin-mybatis-code-generator)
 * 其他帮助 QQ:373934650 Email:373934650@qq.com 
 <img src="mybatis-code-generator/src/main/resources/contact/QQ.png"  width="100" height="100" title="QQ">
 <img src="mybatis-code-generator/src/main/resources/contact/WeChat.png"  width="100" height="100" title="WeChat">
