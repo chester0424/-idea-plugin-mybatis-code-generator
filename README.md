@@ -91,4 +91,4 @@
 * 其他帮助 QQ:373934650 Email:373934650@qq.com
 
 
-![QQ](mybatis-code-generator/src/main/resources/contact/QQ.png=50*50)
+![QQ](mybatis-code-generator/src/main/resources/contact/QQ.png =50*50)
