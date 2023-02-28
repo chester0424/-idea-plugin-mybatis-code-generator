@@ -87,6 +87,7 @@ Note: After configuring the configuration information, remember to click "OK" or
     * sql         [resources/template/sql.txt]
 * If paging query is required, plug-in method is recommended
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker-online manual](http://freemarker.foofun.cn/toc.html)
+* MainPage [Gitee](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/) [GitHub](https://github.com/chester0424/idea-plugin-mybatis-code-generator)
 * Other helps QQ:373934650 Email:373934650@qq.com
 
 <img src="mybatis-code-generator/src/main/resources/contact/QQ.png"  width="100" height="100" title="QQ">
