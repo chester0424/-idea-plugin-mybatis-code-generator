@@ -92,3 +92,5 @@
 
 
 ![QQ](mybatis-code-generator/src/main/resources/contact/QQ.png =100x20)
+
+<img src="mybatis-code-generator/src/main/resources/contact/QQ.png"  width="50" height="50">
