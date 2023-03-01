@@ -81,10 +81,10 @@ Note: After configuring the configuration information, remember to click "OK" or
 ## Other
 
 * Template editing reference
-    * dao         [resources/template/dao.txt]
-    * mapper      [resources/template/mapper.txt]
-    * queryParam  [resources/template/queryParam.text]
-    * sql         [resources/template/sql.txt]
+    * dao         [resources/template/Dao.java.txt]
+    * mapper      [resources/template/Mapper.xml.txt]
+    * queryParam  [resources/template/QueryParam.java.text]
+    * sql         [resources/template/Sql.sql.txt]
 * If paging query is required, plug-in method is recommended
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker-online manual](http://freemarker.foofun.cn/toc.html)
 * MainPage [Gitee](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/) [GitHub](https://github.com/chester0424/idea-plugin-mybatis-code-generator)
