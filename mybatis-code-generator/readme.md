@@ -81,10 +81,10 @@
 ## 其他
 
 * 模板编辑参考
-    * dao         [resources/template/dao.txt]
-    * mapper      [resources/template/mapper.txt]
-    * queryParam  [resources/template/queryParam.text]
-    * sql         [resources/template/sql.txt]
+    * dao         [resources/template/Dao.java.txt]
+    * mapper      [resources/template/Mapper.xml.txt]
+    * queryParam  [resources/template/QueryParam.java.text]
+    * sql         [resources/template/Sql.sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
 

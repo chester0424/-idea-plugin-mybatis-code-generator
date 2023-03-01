@@ -28,29 +28,29 @@
 
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO Product(
-           id,
-           name,
-           big_decimal,
-           a_boolean_wrap,
-           bytes,
-           date,
-           an_int,
-           a_boolean,
-           ef
+            id,
+            name,
+            big_decimal,
+            a_boolean_wrap,
+            bytes,
+            date,
+            an_int,
+            a_boolean,
+            ef
         )
         VALUES
         <foreach collection="coll" item="item" separator=",">
-        (
-           #{id,jdbcType=VARCHAR},
-           #{name,jdbcType=VARCHAR},
-           #{bigDecimal,jdbcType=DECIMAL},
-           #{aBooleanWrap,jdbcType=BIT},
-           #{bytes,jdbcType=BLOB},
-           #{date,jdbcType=DATE},
-           #{anInt,jdbcType=INTEGER},
-           #{aBoolean,jdbcType=BIT},
-           #{ef,jdbcType=CHAR}
-        )
+            (
+                #{id,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR},
+                #{bigDecimal,jdbcType=DECIMAL},
+                #{aBooleanWrap,jdbcType=BIT},
+                #{bytes,jdbcType=BLOB},
+                #{date,jdbcType=DATE},
+                #{anInt,jdbcType=INTEGER},
+                #{aBoolean,jdbcType=BIT},
+                #{ef,jdbcType=CHAR}
+            )
         </foreach>
     </insert>
 
@@ -123,31 +123,31 @@
                 </foreach>
             </if>
             <!-- bigDecimal -->
-             <if test="bigDecimal != null">
+            <if test="bigDecimal != null">
                 AND bigDecimal like #{bigDecimal}
-             </if>
-             <if test="bigDecimal_range != null">
-                 AND bigDecimal <![CDATA[ >= ]]> #{field.bigDecimal_range.start} AND bigDecimal <![CDATA[ <= ]]>  #{field.bigDecimal_range.end}
-             </if>
+            </if>
+            <if test="bigDecimal_range != null">
+                AND bigDecimal <![CDATA[ >= ]]> #{field.bigDecimal_range.start} AND bigDecimal <![CDATA[ <= ]]>  #{field.bigDecimal_range.end}
+            </if>
             <!-- aBooleanWrap -->
             <if test="aBooleanWrap != null">
                 AND aBooleanWrap like #{aBooleanWrap}
             </if>
             <!-- bytes -->
             <!-- date -->
-             <if test="date != null">
+            <if test="date != null">
                 AND date like #{date}
-             </if>
-             <if test="date_range != null">
-                 AND date <![CDATA[ >= ]]> #{field.date_range.start} AND date <![CDATA[ <= ]]>  #{field.date_range.end}
-             </if>
+            </if>
+            <if test="date_range != null">
+                AND date <![CDATA[ >= ]]> #{field.date_range.start} AND date <![CDATA[ <= ]]>  #{field.date_range.end}
+            </if>
             <!-- anInt -->
-             <if test="anInt != null">
+            <if test="anInt != null">
                 AND anInt like #{anInt}
-             </if>
-             <if test="anInt_range != null">
-                 AND anInt <![CDATA[ >= ]]> #{field.anInt_range.start} AND anInt <![CDATA[ <= ]]>  #{field.anInt_range.end}
-             </if>
+            </if>
+            <if test="anInt_range != null">
+                AND anInt <![CDATA[ >= ]]> #{field.anInt_range.start} AND anInt <![CDATA[ <= ]]>  #{field.anInt_range.end}
+            </if>
             <!-- aBoolean -->
             <if test="aBoolean != null">
                 AND aBoolean like #{aBoolean}
@@ -197,4 +197,5 @@
         </trim>
     </sql>
 </mapper>
+
 

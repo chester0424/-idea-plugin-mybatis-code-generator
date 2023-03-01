@@ -1,6 +1,7 @@
 package zone.pusu.mybatisCodeGenerator.setting;
 
 public class SettingExtendCfgColItem {
+
     /**
      * 自定义列名称
      */
@@ -39,4 +40,6 @@ public class SettingExtendCfgColItem {
     public void setOptions(String options) {
         this.options = options;
     }
+
+
 }

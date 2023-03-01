@@ -3,19 +3,19 @@ package zone.pusu.product;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.lang.Boolean;
-import java.lang.String;
+    import java.math.BigDecimal;
+    import java.util.Date;
+    import java.lang.Boolean;
+    import java.lang.String;
 
 /**
  * Product Dao
  *
- * @author 
- * @since 2023-02-16 20:54:54
+ * @author chester
+ * @since 2023-03-01 21:54:25
  */
 public class ProductQueryParam {
-    private Map<String, Object> condition = new LinkedHashMap<>();
+private Map<String, Object> condition = new LinkedHashMap<>();
 
     public void setId(String id) {
         condition.put("id", id);
@@ -105,3 +105,4 @@ public class ProductQueryParam {
         ef_desc;
     }
 }
+

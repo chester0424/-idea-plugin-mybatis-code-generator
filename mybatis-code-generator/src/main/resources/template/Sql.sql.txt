@@ -1,0 +1,14 @@
+----------------------------
+---- ${tableName}
+---- <#if authorName?? && authorName != "">${authorName} </#if>${.now?string("yyyy-MM-dd HH:mm:ss")}
+----------------------------
+CREATE TABLE ${tableName} (
+<#list fields as field>
+    ${field.columnName?upper_case} ${field.extend.DbType?upper_case}<#sep>,
+</#list>
+
+);
+
+<#-- 修改模板生成路径 -->
+${callback.setTargetFileDir(targetFileDir+"\\dao")}
+${callback.setTargetFileName(className+"-sql.sql")}

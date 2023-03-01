@@ -8,12 +8,13 @@ import zone.pusu.product.ProductQueryParam;
 
 import java.util.List;
 
+
 /**
- * Product Dao
- *
- * @author 
- * @since 2023-02-16 20:54:54
- */
+* Product Dao
+*
+* @author chester
+* @since 2023-03-01 21:54:25
+*/
 @Mapper
 public interface IProductDao {
 
@@ -31,4 +32,5 @@ public interface IProductDao {
 
     int getCount(ProductQueryParam param);
 }
+
 
