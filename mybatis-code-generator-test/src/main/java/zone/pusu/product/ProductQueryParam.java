@@ -4,15 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
     import java.math.BigDecimal;
-    import java.util.Date;
-    import java.lang.Boolean;
     import java.lang.String;
 
 /**
  * Product Dao
  *
  * @author chester
- * @since 2023-03-01 21:54:25
+ * @since 2023-03-01 22:49:02
  */
 public class ProductQueryParam {
 private Map<String, Object> condition = new LinkedHashMap<>();
@@ -33,53 +31,42 @@ private Map<String, Object> condition = new LinkedHashMap<>();
         condition.put("name_array", nameArray);
     }
 
-    public void setBigDecimal(BigDecimal bigDecimal) {
-        condition.put("bigDecimal", bigDecimal);
+    public void setCode(String code) {
+        condition.put("code", code);
     }
 
-    public void setBigDecimalRange(BigDecimal bigDecimalBegin, BigDecimal bigDecimalEnd) {
-        condition.put("bigDecimal_range", new HashMap<String, Object>() {{
-            put("begin", bigDecimalBegin);
-            put("end", bigDecimalEnd);
+    public void setCodeArray(String... codeArray) {
+        condition.put("code_array", codeArray);
+    }
+
+    public void setWeight(BigDecimal weight) {
+        condition.put("weight", weight);
+    }
+
+    public void setWeightRange(BigDecimal weightBegin, BigDecimal weightEnd) {
+        condition.put("weight_range", new HashMap<String, Object>() {{
+            put("begin", weightBegin);
+            put("end", weightEnd);
         }});
     }
 
-    public void setABooleanWrap(Boolean aBooleanWrap) {
-        condition.put("aBooleanWrap", aBooleanWrap);
+    public void setPlaceOfProduction(String placeOfProduction) {
+        condition.put("placeOfProduction", placeOfProduction);
     }
 
-    public void setDate(Date date) {
-        condition.put("date", date);
+    public void setPlaceOfProductionArray(String... placeOfProductionArray) {
+        condition.put("placeOfProduction_array", placeOfProductionArray);
     }
 
-    public void setDateRange(Date dateBegin, Date dateEnd) {
-        condition.put("date_range", new HashMap<String, Object>() {{
-            put("begin", dateBegin);
-            put("end", dateEnd);
+    public void setPrice(BigDecimal price) {
+        condition.put("price", price);
+    }
+
+    public void setPriceRange(BigDecimal priceBegin, BigDecimal priceEnd) {
+        condition.put("price_range", new HashMap<String, Object>() {{
+            put("begin", priceBegin);
+            put("end", priceEnd);
         }});
-    }
-
-    public void setAnInt(int anInt) {
-        condition.put("anInt", anInt);
-    }
-
-    public void setAnIntRange(int anIntBegin, int anIntEnd) {
-        condition.put("anInt_range", new HashMap<String, Object>() {{
-            put("begin", anIntBegin);
-            put("end", anIntEnd);
-        }});
-    }
-
-    public void setABoolean(boolean aBoolean) {
-        condition.put("aBoolean", aBoolean);
-    }
-
-    public void setEf(char ef) {
-        condition.put("ef", ef);
-    }
-
-    public void setEfArray(char... efArray) {
-        condition.put("ef_array", efArray);
     }
 
     public void setOrderBy(OrderBy... orders) {
@@ -91,18 +78,14 @@ private Map<String, Object> condition = new LinkedHashMap<>();
         id_desc,
         name_asc,
         name_desc,
-        bigDecimal_asc,
-        bigDecimal_desc,
-        aBooleanWrap_asc,
-        aBooleanWrap_desc,
-        date_asc,
-        date_desc,
-        anInt_asc,
-        anInt_desc,
-        aBoolean_asc,
-        aBoolean_desc,
-        ef_asc,
-        ef_desc;
+        code_asc,
+        code_desc,
+        weight_asc,
+        weight_desc,
+        placeOfProduction_asc,
+        placeOfProduction_desc,
+        price_asc,
+        price_desc;
     }
 }
 

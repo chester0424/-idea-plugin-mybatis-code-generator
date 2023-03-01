@@ -1,5 +1,5 @@
 {
-  "tableName": "Product",
+  "tableName": "Base_Product",
   "fields": [
     {
       "name": "id",
@@ -22,14 +22,26 @@
       "primaryKey": false,
       "typeHandler": "",
       "extend": {
+        "DbType": "nvarchar2(200)"
+      }
+    },
+    {
+      "name": "code",
+      "javaType": "java.lang.String",
+      "ignore": false,
+      "columnName": "code",
+      "jdbcType": "VARCHAR",
+      "primaryKey": false,
+      "typeHandler": "",
+      "extend": {
         "DbType": "nvarchar2(50)"
       }
     },
     {
-      "name": "bigDecimal",
+      "name": "weight",
       "javaType": "java.math.BigDecimal",
       "ignore": false,
-      "columnName": "big_decimal",
+      "columnName": "weight",
       "jdbcType": "DECIMAL",
       "primaryKey": false,
       "typeHandler": "",
@@ -38,99 +50,27 @@
       }
     },
     {
-      "name": "aBooleanWrap",
-      "javaType": "java.lang.Boolean",
+      "name": "placeOfProduction",
+      "javaType": "java.lang.String",
       "ignore": false,
-      "columnName": "a_boolean_wrap",
-      "jdbcType": "BIT",
+      "columnName": "place_of_production",
+      "jdbcType": "VARCHAR",
       "primaryKey": false,
       "typeHandler": "",
       "extend": {
-        "DbType": "bit"
+        "DbType": "nvarchar2(100)"
       }
     },
     {
-      "name": "bytes",
-      "javaType": "byte[]",
+      "name": "price",
+      "javaType": "java.math.BigDecimal",
       "ignore": false,
-      "columnName": "bytes",
-      "jdbcType": "BLOB",
+      "columnName": "price",
+      "jdbcType": "DECIMAL",
       "primaryKey": false,
       "typeHandler": "",
       "extend": {
-        "DbType": "nvarchar2(50)"
-      }
-    },
-    {
-      "name": "date",
-      "javaType": "java.util.Date",
-      "ignore": false,
-      "columnName": "date",
-      "jdbcType": "DATE",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": "date"
-      }
-    },
-    {
-      "name": "anInt",
-      "javaType": "int",
-      "ignore": false,
-      "columnName": "an_int",
-      "jdbcType": "INTEGER",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": "number(8)"
-      }
-    },
-    {
-      "name": "aBoolean",
-      "javaType": "boolean",
-      "ignore": false,
-      "columnName": "a_boolean",
-      "jdbcType": "BIT",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": "bit"
-      }
-    },
-    {
-      "name": "ef",
-      "javaType": "char",
-      "ignore": false,
-      "columnName": "ef",
-      "jdbcType": "CHAR",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": "nvarchar2(50)"
-      }
-    },
-    {
-      "name": "test",
-      "javaType": "java.util.List\u003cjava.lang.String\u003e",
-      "ignore": true,
-      "columnName": "test",
-      "jdbcType": "",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": ""
-      }
-    },
-    {
-      "name": "list",
-      "javaType": "java.util.List\u003cjava.util.ArrayList\u003cjava.lang.String\u003e\u003e",
-      "ignore": true,
-      "columnName": "list",
-      "jdbcType": "",
-      "primaryKey": false,
-      "typeHandler": "",
-      "extend": {
-        "DbType": ""
+        "DbType": "number(18,2)"
       }
     }
   ]

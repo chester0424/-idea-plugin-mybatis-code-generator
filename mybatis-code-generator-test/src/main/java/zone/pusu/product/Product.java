@@ -6,18 +6,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 商品
+ */
 public class Product {
+
+    /**
+     * 商品ID
+     */
     private String id;
+    /**
+     * 商品名称
+     */
     private String name;
-    private BigDecimal bigDecimal;
-    private Boolean aBooleanWrap;
-    private byte[] bytes;
-    private Date date;
-    private int anInt;
-    private boolean aBoolean;
-    private char ef = 'e';
-    private List<String> test;
-    private List<ArrayList<String>> list;
+    /**
+     * 商品编码
+     */
+    private String code;
+    /**
+     * 商品重量
+     */
+    private BigDecimal weight;
+    /**
+     * 产地
+     */
+    private String placeOfProduction;
+    /**
+     * 商品价格
+     */
+    private BigDecimal price;
 
     public String getId() {
         return id;
@@ -35,4 +52,35 @@ public class Product {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
+
+    public String getPlaceOfProduction() {
+        return placeOfProduction;
+    }
+
+    public void setPlaceOfProduction(String placeOfProduction) {
+        this.placeOfProduction = placeOfProduction;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

@@ -2,90 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="zone.pusu.product.dao.IProductDao">
     <insert id="insert">
-        INSERT INTO Product(
+        INSERT INTO Base_Product(
             id,
             name,
-            big_decimal,
-            a_boolean_wrap,
-            bytes,
-            date,
-            an_int,
-            a_boolean,
-            ef
+            code,
+            weight,
+            place_of_production,
+            price
         )
         VALUES (
             #{id,jdbcType=VARCHAR},
             #{name,jdbcType=VARCHAR},
-            #{bigDecimal,jdbcType=DECIMAL},
-            #{aBooleanWrap,jdbcType=BIT},
-            #{bytes,jdbcType=BLOB},
-            #{date,jdbcType=DATE},
-            #{anInt,jdbcType=INTEGER},
-            #{aBoolean,jdbcType=BIT},
-            #{ef,jdbcType=CHAR}
+            #{code,jdbcType=VARCHAR},
+            #{weight,jdbcType=DECIMAL},
+            #{placeOfProduction,jdbcType=VARCHAR},
+            #{price,jdbcType=DECIMAL}
         )
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO Product(
+        INSERT INTO Base_Product(
             id,
             name,
-            big_decimal,
-            a_boolean_wrap,
-            bytes,
-            date,
-            an_int,
-            a_boolean,
-            ef
+            code,
+            weight,
+            place_of_production,
+            price
         )
         VALUES
         <foreach collection="coll" item="item" separator=",">
             (
                 #{id,jdbcType=VARCHAR},
                 #{name,jdbcType=VARCHAR},
-                #{bigDecimal,jdbcType=DECIMAL},
-                #{aBooleanWrap,jdbcType=BIT},
-                #{bytes,jdbcType=BLOB},
-                #{date,jdbcType=DATE},
-                #{anInt,jdbcType=INTEGER},
-                #{aBoolean,jdbcType=BIT},
-                #{ef,jdbcType=CHAR}
+                #{code,jdbcType=VARCHAR},
+                #{weight,jdbcType=DECIMAL},
+                #{placeOfProduction,jdbcType=VARCHAR},
+                #{price,jdbcType=DECIMAL}
             )
         </foreach>
     </insert>
 
     <update id="update">
-        UPDATE Product
+        UPDATE Base_Product
         <set>
             name = #{field.name},
-            big_decimal = #{field.name},
-            a_boolean_wrap = #{field.name},
-            bytes = #{field.name},
-            date = #{field.name},
-            an_int = #{field.name},
-            a_boolean = #{field.name},
-            ef = #{field.name}
+            code = #{field.name},
+            weight = #{field.name},
+            place_of_production = #{field.name},
+            price = #{field.name}
         </set>
         WHERE id = #{id}
     </update>
 
     <delete id="delete">
-        DELETE Product WHERE id = #{id}
+        DELETE Base_Product WHERE id = #{id}
     </delete>
 
     <select id="get" resultMap="resultMap">
-        SELECT * FROM Product
+        SELECT * FROM Base_Product
         WHERE id = #{id}
     </select>
 
     <select id="getList" resultMap="resultMap">
-        SELECT * FROM Product
+        SELECT * FROM Base_Product
         <include refid="where"></include>
         <include refid="order"></include>
     </select>
 
     <select id="getCount" resultType="int">
-        SELECT COUNT(*) FROM Product
+        SELECT COUNT(*) FROM Base_Product
         <include refid="where"></include>
         <include refid="order"></include>
     </select>
@@ -93,13 +78,10 @@
     <resultMap id="resultMap" type="zone.pusu.product.Product">
         <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="bigDecimal" column="big_decimal" jdbcType="DECIMAL"/>
-        <result property="aBooleanWrap" column="a_boolean_wrap" jdbcType="BIT"/>
-        <result property="bytes" column="bytes" jdbcType="BLOB"/>
-        <result property="date" column="date" jdbcType="DATE"/>
-        <result property="anInt" column="an_int" jdbcType="INTEGER"/>
-        <result property="aBoolean" column="a_boolean" jdbcType="BIT"/>
-        <result property="ef" column="ef" jdbcType="CHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="weight" column="weight" jdbcType="DECIMAL"/>
+        <result property="placeOfProduction" column="place_of_production" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
     </resultMap>
 
     <sql id="where">
@@ -122,44 +104,37 @@
                 <foreach collection="name_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
                 </foreach>
             </if>
-            <!-- bigDecimal -->
-            <if test="bigDecimal != null">
-                AND bigDecimal like #{bigDecimal}
+            <!-- code -->
+            <if test="code != null">
+                AND code like #{code}
             </if>
-            <if test="bigDecimal_range != null">
-                AND bigDecimal <![CDATA[ >= ]]> #{field.bigDecimal_range.start} AND bigDecimal <![CDATA[ <= ]]>  #{field.bigDecimal_range.end}
-            </if>
-            <!-- aBooleanWrap -->
-            <if test="aBooleanWrap != null">
-                AND aBooleanWrap like #{aBooleanWrap}
-            </if>
-            <!-- bytes -->
-            <!-- date -->
-            <if test="date != null">
-                AND date like #{date}
-            </if>
-            <if test="date_range != null">
-                AND date <![CDATA[ >= ]]> #{field.date_range.start} AND date <![CDATA[ <= ]]>  #{field.date_range.end}
-            </if>
-            <!-- anInt -->
-            <if test="anInt != null">
-                AND anInt like #{anInt}
-            </if>
-            <if test="anInt_range != null">
-                AND anInt <![CDATA[ >= ]]> #{field.anInt_range.start} AND anInt <![CDATA[ <= ]]>  #{field.anInt_range.end}
-            </if>
-            <!-- aBoolean -->
-            <if test="aBoolean != null">
-                AND aBoolean like #{aBoolean}
-            </if>
-            <!-- ef -->
-            <if test="ef != null">
-                AND ef like #{ef}
-            </if>
-            <if test="ef_array != null">
-                AND ef IN
-                <foreach collection="ef_array" item="value" open="(" separator="," close=")">#{value,jdbcType=CHAR}
+            <if test="code_array != null">
+                AND code IN
+                <foreach collection="code_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
                 </foreach>
+            </if>
+            <!-- weight -->
+            <if test="weight != null">
+                AND weight like #{weight}
+            </if>
+            <if test="weight_range != null">
+                AND weight <![CDATA[ >= ]]> #{field.weight_range.start} AND weight <![CDATA[ <= ]]>  #{field.weight_range.end}
+            </if>
+            <!-- placeOfProduction -->
+            <if test="placeOfProduction != null">
+                AND place_of_production like #{placeOfProduction}
+            </if>
+            <if test="placeOfProduction_array != null">
+                AND place_of_production IN
+                <foreach collection="placeOfProduction_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+            <!-- price -->
+            <if test="price != null">
+                AND price like #{price}
+            </if>
+            <if test="price_range != null">
+                AND price <![CDATA[ >= ]]> #{field.price_range.start} AND price <![CDATA[ <= ]]>  #{field.price_range.end}
             </if>
         </trim>
     </sql>
@@ -174,24 +149,18 @@
                     <!-- name -->
                     <if test="value == 'name_asc'">name</if>
                     <if test="value == 'name_desc'">name DESC</if>
-                    <!-- bigDecimal -->
-                    <if test="value == 'bigDecimal_asc'">big_decimal</if>
-                    <if test="value == 'bigDecimal_desc'">big_decimal DESC</if>
-                    <!-- aBooleanWrap -->
-                    <if test="value == 'aBooleanWrap_asc'">a_boolean_wrap</if>
-                    <if test="value == 'aBooleanWrap_desc'">a_boolean_wrap DESC</if>
-                    <!-- date -->
-                    <if test="value == 'date_asc'">date</if>
-                    <if test="value == 'date_desc'">date DESC</if>
-                    <!-- anInt -->
-                    <if test="value == 'anInt_asc'">an_int</if>
-                    <if test="value == 'anInt_desc'">an_int DESC</if>
-                    <!-- aBoolean -->
-                    <if test="value == 'aBoolean_asc'">a_boolean</if>
-                    <if test="value == 'aBoolean_desc'">a_boolean DESC</if>
-                    <!-- ef -->
-                    <if test="value == 'ef_asc'">ef</if>
-                    <if test="value == 'ef_desc'">ef DESC</if>
+                    <!-- code -->
+                    <if test="value == 'code_asc'">code</if>
+                    <if test="value == 'code_desc'">code DESC</if>
+                    <!-- weight -->
+                    <if test="value == 'weight_asc'">weight</if>
+                    <if test="value == 'weight_desc'">weight DESC</if>
+                    <!-- placeOfProduction -->
+                    <if test="value == 'placeOfProduction_asc'">place_of_production</if>
+                    <if test="value == 'placeOfProduction_desc'">place_of_production DESC</if>
+                    <!-- price -->
+                    <if test="value == 'price_asc'">price</if>
+                    <if test="value == 'price_desc'">price DESC</if>
                 </foreach>
             </if>
         </trim>
