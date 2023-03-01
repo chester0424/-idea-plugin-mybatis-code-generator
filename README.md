@@ -81,6 +81,7 @@
 
 ## 其他
 
+* &#x1F308;[手册](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/blob/master/mybatis-code-generator/src/main/resources/operation-manual/OperationManual.docx)
 * 模板编辑参考
     * dao         [resources/template/Dao.java.txt]
     * mapper      [resources/template/Mapper.xml.txt]
