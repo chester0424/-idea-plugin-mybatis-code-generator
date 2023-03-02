@@ -25,10 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CodeGenerateMainFrame extends JFrame {
@@ -96,7 +93,7 @@ public class CodeGenerateMainFrame extends JFrame {
         // 数据部分
         jPanelCenter = new JPanel();
         jPanelCenter.setLayout(new BorderLayout());
-        jPanelCenter.setBorder(new EmptyBorder(10, 20, 20, 10));
+        jPanelCenter.setBorder(new EmptyBorder(10, 20, 10, 20));
         this.add(jPanelCenter, BorderLayout.CENTER);
 
         table = new JBTable();
@@ -312,13 +309,28 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelFoot.setLayout(new VerticalFlowLayout());
         // 选择文件部分
         jPanelSelectFile = new JPanel();
-        jPanelSelectFile.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanelSelectFile.setLayout(new FlowLayout(FlowLayout.CENTER));
+        jPanelSelectFile.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        jPanelSelectFile.setLayout(new VerticalFlowLayout());//;
         jPanelFoot.add(jPanelSelectFile);
+
+        JPanel jPanelSelectFile_head = new JPanel();
+        jPanelSelectFile_head.setLayout(new FlowLayout(FlowLayout.CENTER));
+        jPanelSelectFile.add(jPanelSelectFile_head);
+        JPanel jPanelSelectFile_content = new JPanel();
+        jPanelSelectFile_content.setLayout(new FlowLayout(FlowLayout.CENTER));
+        jPanelSelectFile.add(jPanelSelectFile_content);
 
         JLabel jLabel_template_text = new JLabel();
         jLabel_template_text.setText("Optional templates:  ");
-        jPanelSelectFile.add(jLabel_template_text);
+        jPanelSelectFile_head.add(jLabel_template_text);
+
+        JCheckBox jCheckBox_selectAll = new JCheckBox("Select All");
+        jCheckBox_selectAll.addActionListener((l) -> {
+            for (Component component : jPanelSelectFile_content.getComponents()) {
+                ((JCheckBox) component).setSelected(jCheckBox_selectAll.isSelected());
+            }
+        });
+        jPanelSelectFile_head.add(jCheckBox_selectAll);
 
         // 读取配置文件
         for (SettingTemplateItem item : templateSelectedState.keySet()) {
@@ -332,8 +344,12 @@ public class CodeGenerateMainFrame extends JFrame {
                         templateSelectedState.put(settingTemplateItem, isSelected);
                     }
                 }
+
+                if (Arrays.stream(jPanelSelectFile_content.getComponents()).filter(i -> !((JCheckBox) i).isSelected()).findFirst().isPresent()) {
+                    jCheckBox_selectAll.setSelected(false);
+                }
             });
-            jPanelSelectFile.add(jCheckBox);
+            jPanelSelectFile_content.add(jCheckBox);
         }
 
         // 操作部分
