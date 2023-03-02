@@ -10,7 +10,7 @@ import java.util.Map;
  * Product Dao
  *
  * @author chester
- * @since 2023-03-02 09:46:24
+ * @since 2023-03-02 10:39:26
  */
 public class ProductQueryParam {
 private Map<String, Object> condition = new LinkedHashMap<>();
