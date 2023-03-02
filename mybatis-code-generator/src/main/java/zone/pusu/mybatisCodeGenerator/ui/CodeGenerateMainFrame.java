@@ -388,7 +388,12 @@ public class CodeGenerateMainFrame extends JFrame {
             field.setJavaType(fieldInfo.getType());
             field.setJdbcType(getJdbcTypeByJavaType(fieldInfo.getType()));
             field.setColumnName(StringUtil.spiteWord(fieldInfo.getName()));
-
+            if (fieldInfo.getName().equals("id")) { // 默认“ID”字段为主键
+                field.setPrimaryKey(true);
+            }
+            if (defaultIgnore(fieldInfo.getType())) {
+                field.setIgnore(true);
+            }
             // 扩展配置列
             for (SettingExtendCfgColItem item : SettingExtendCfgColStoreService.getInstance().getState().getItems()) {
                 // default value
@@ -427,13 +432,11 @@ public class CodeGenerateMainFrame extends JFrame {
                     if (!StringUtil.isNullOrEmpty(field.getJdbcType())) {
                         optional.get().setJdbcType(field.getJdbcType());
                     }
-                    if (field.isPrimaryKey()) {
-                        optional.get().setPrimaryKey(field.isPrimaryKey());
-                    }
+                    optional.get().setIgnore(field.isIgnore());
+                    optional.get().setPrimaryKey(field.isPrimaryKey());
                     if (!StringUtil.isNullOrEmpty(field.getTypeHandler())) {
                         optional.get().setTypeHandler(field.getTypeHandler());
                     }
-
                     if (optional.get().getExtend().size() > 0) {
                         for (String key : optional.get().getExtend().keySet()) {
                             if (field.getExtend().containsKey(key)) {
@@ -442,7 +445,6 @@ public class CodeGenerateMainFrame extends JFrame {
                         }
                     }
                 }
-
             }
         }
         return result;
@@ -454,6 +456,11 @@ public class CodeGenerateMainFrame extends JFrame {
             return optional.get().getJdbcType();
         }
         return "";
+    }
+
+    private boolean defaultIgnore(String javaType) {
+        Optional<SettingTypeMappingItem> optional = SettingTypeMappingStoreService.getInstance().getState().getDefault().stream().filter(i -> i.getJavaType().equals(javaType)).findFirst();
+        return !optional.isPresent();
     }
 
     void onSaveClick() {
@@ -483,7 +490,7 @@ public class CodeGenerateMainFrame extends JFrame {
                         String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent()).toString();
                         String fileName = classInfo.getName() + templateName;
                         TemplateDataContext templateDataContext = new TemplateDataContext(classInfo, generateConfig, fileDir, fileName);
-                        String content = FreeMarkerUtil.process(templateName,item.getContent(), templateDataContext);
+                        String content = FreeMarkerUtil.process(templateName, item.getContent(), templateDataContext);
                         String filePath = Paths.get(templateDataContext.getTargetFileDir(), templateDataContext.getTargetFileName()).toString();
                         FileUtil.writeFile(filePath, content);
 

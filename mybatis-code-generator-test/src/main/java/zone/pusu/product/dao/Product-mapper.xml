@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="zone.pusu.product.dao.IProductDao">
     <insert id="insert">
-        INSERT INTO Base_Product(
+        INSERT INTO Product(
             id,
             name,
             code,
@@ -21,7 +21,7 @@
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO Base_Product(
+        INSERT INTO Product(
             id,
             name,
             code,
@@ -43,7 +43,7 @@
     </insert>
 
     <update id="update">
-        UPDATE Base_Product
+        UPDATE Product
         <set>
             name = #{field.name},
             code = #{field.name},
@@ -55,22 +55,22 @@
     </update>
 
     <delete id="delete">
-        DELETE Base_Product WHERE id = #{id}
+        DELETE Product WHERE id = #{id}
     </delete>
 
     <select id="get" resultMap="resultMap">
-        SELECT * FROM Base_Product
+        SELECT * FROM Product
         WHERE id = #{id}
     </select>
 
     <select id="getList" resultMap="resultMap">
-        SELECT * FROM Base_Product
+        SELECT * FROM Product
         <include refid="where"></include>
         <include refid="order"></include>
     </select>
 
     <select id="getCount" resultType="int">
-        SELECT COUNT(*) FROM Base_Product
+        SELECT COUNT(*) FROM Product
         <include refid="where"></include>
         <include refid="order"></include>
     </select>
