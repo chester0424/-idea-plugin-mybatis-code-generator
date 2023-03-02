@@ -13,7 +13,7 @@ import java.util.List;
 * Product Dao
 *
 * @author chester
-* @since 2023-03-02 10:39:26
+* @since 2023-03-02 10:48:51
 */
 @Mapper
 public interface IProductDao {
