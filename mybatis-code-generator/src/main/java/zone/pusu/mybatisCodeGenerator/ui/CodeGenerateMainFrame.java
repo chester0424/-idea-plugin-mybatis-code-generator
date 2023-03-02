@@ -326,8 +326,12 @@ public class CodeGenerateMainFrame extends JFrame {
 
         JCheckBox jCheckBox_selectAll = new JCheckBox("Select All");
         jCheckBox_selectAll.addActionListener((l) -> {
+            boolean isSelectedAll = jCheckBox_selectAll.isSelected();
             for (Component component : jPanelSelectFile_content.getComponents()) {
-                ((JCheckBox) component).setSelected(jCheckBox_selectAll.isSelected());
+                ((JCheckBox) component).setSelected(isSelectedAll);
+            }
+            for (SettingTemplateItem item : templateSelectedState.keySet()) {
+                templateSelectedState.put(item, isSelectedAll);
             }
         });
         jPanelSelectFile_head.add(jCheckBox_selectAll);
