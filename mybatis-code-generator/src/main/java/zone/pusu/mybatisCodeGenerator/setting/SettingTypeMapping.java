@@ -47,9 +47,9 @@ public class SettingTypeMapping {
         map.put("byte[]", "BLOB");
         map.put("java.math.BigInteger", "BIGINT");
         map.put("java.math.BigDecimal", "DECIMAL");
-        map.put("java.util.Date", "DATETIME"); // date and time
-        map.put("java.sql.Date", "DATE"); // only date part
-        map.put("java.sql.Time", "TIME"); // only time part
+        map.put("java.util.Date", "DATETIME");       // date and time
+        map.put("java.sql.Date", "DATE");            // only date part
+        map.put("java.sql.Time", "TIME");            // only time part
         map.put("java.sql.Timestamp", "TIMESTAMP");  // UTC date and time
 
         List<SettingTypeMappingItem> items1 = new LinkedList<>();
