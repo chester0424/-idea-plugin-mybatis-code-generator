@@ -38,15 +38,29 @@
         UPDATE ${tableName}
         <set>
 <#list nonKeyFields as field>
-            ${field.columnName} = ${r"#"}{field.name}<#sep>,
+            ${field.columnName} = ${r"#"}{${field.name},jdbcType=${field.jdbcType}}<#sep>,
 </#list>
 
         </set>
         WHERE ${keyField.columnName} = ${r"#"}{${keyField.name}}
     </update>
 
+    <update id="updateDyn">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="keyValues.entrySet()" item="value" index="key" separator=",">
+<#list nonKeyFields as field>
+                <if test="key == '${field.name}'">
+                    ${field.columnName} = ${r"#"}{value,jdbcType=${field.jdbcType}}
+                </if>
+</#list>
+            </foreach>
+        </set>
+        WHERE ${keyField.columnName} = ${r"#"}{${keyField.name}}
+    </update>
+
     <delete id="delete">
-        DELETE ${tableName} WHERE ${keyField.columnName} = ${r"#"}{${keyField.name}}
+        DELETE FROM ${tableName} WHERE ${keyField.columnName} = ${r"#"}{${keyField.name}}
     </delete>
 
     <select id="get" resultMap="resultMap">
@@ -82,7 +96,8 @@
             </if>
             <if test="${field.name}_array != null">
                 AND ${field.columnName} IN
-                <foreach collection="${field.name}_array" item="value" open="(" separator="," close=")">${r"#"}{value,jdbcType=${field.jdbcType}}
+                <foreach collection="${field.name}_array" item="value" open="(" separator="," close=")">
+                    ${r"#"}{value,jdbcType=${field.jdbcType}}
                 </foreach>
             </if>
 </#if>

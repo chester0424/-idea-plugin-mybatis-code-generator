@@ -7,6 +7,7 @@ import ${packageName}.${className};
 import ${packageName}.${className}QueryParam;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -24,9 +25,13 @@ public interface I${className}Dao {
 
     int update(${className} ${className?uncap_first});
 
+    int updateDyn(@Param("id") String id, @Param("keyValues") Map<String, Object> values);
+
     int delete(@Param("${keyField.name}") String ${keyField.name});
 
     ${className} get(@Param("${keyField.name}") String ${keyField.name});
+
+    List<${className}> getList(${className}QueryParam param);
 
     List<${className}> getList(${className}QueryParam param, @Param("pageNumKey") int pageNum, @Param("pageSizeKey") int pageSize);
 
