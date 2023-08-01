@@ -1,6 +1,6 @@
 package zone.pusu.mybatisCodeGenerator.tool;
 
-public class StringUtil {
+public class StringUtil extends com.intellij.openapi.util.text.StringUtil {
     /**
      * 判断是否为空
      *

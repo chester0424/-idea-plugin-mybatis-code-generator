@@ -2,7 +2,7 @@ package zone.pusu.mybatisCodeGenerator.define;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.ArrayUtils;
 import zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService;
 import zone.pusu.mybatisCodeGenerator.tool.StringUtil;
 import zone.pusu.mybatisCodeGenerator.tool.TypeUtil;
@@ -92,7 +92,18 @@ public class TemplateDataContext extends HashMap {
     }
 
     private String[] javaTypeAnalysis(String javaType) {
-        List<String> types = Arrays.stream(javaType.split("<|>")).filter(i -> StringUtils.isNotEmpty(i)).collect(Collectors.toList());
-        return types.toArray(new String[0]);
+        // is array
+        if (javaType.endsWith("[]")) {
+            String type = StringUtil.trimEnd(javaType, "[]");
+            return javaTypeAnalysis(type);
+        }
+        // is generic
+        if (javaType.contains("<")) {
+            String type = javaType.substring(0, javaType.indexOf('<'));
+            String subJavaType = javaType.substring(javaType.indexOf("<") + 1, javaType.length() - 1);
+            String[] subTypes = javaTypeAnalysis(subJavaType);
+            return (String[]) ArrayUtils.addAll(new String[]{type}, subTypes);
+        }
+        return new String[]{javaType};
     }
 }
