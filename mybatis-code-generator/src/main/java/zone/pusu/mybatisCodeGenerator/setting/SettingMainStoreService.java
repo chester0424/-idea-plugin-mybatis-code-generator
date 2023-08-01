@@ -17,7 +17,7 @@ public class SettingMainStoreService implements PersistentStateComponent<Setting
     }
 
     @Override
-    public @Nullable SettingMain getState() {
+    public @NotNull SettingMain getState() {
         return settingMain;
     }
 
