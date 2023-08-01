@@ -45,7 +45,7 @@ public class TemplateDataContext extends HashMap {
         }
         put("fields", fields);
 
-        Optional<Map<String, Object>> firstOrNull = fields.stream().filter(i -> Boolean.valueOf(i.get("primaryKey").toString()) == true).findFirst();
+        Optional<Map<String, Object>> firstOrNull = fields.stream().filter(i -> Boolean.parseBoolean(i.get("primaryKey").toString())).findFirst();
         if (firstOrNull.isPresent()) {
             put("keyField", firstOrNull.get());
             put("nonKeyFields", fields.stream().filter(i -> i != firstOrNull.get()).collect(Collectors.toList()));
@@ -77,11 +77,11 @@ public class TemplateDataContext extends HashMap {
         HashSet<String> fieldTypeImports = new HashSet<>();
         for (FieldInfo fieldInfo : classInfo.getFieldInfos()) {
             // 过滤掉忽略的字段
-            Optional<GenerateConfigField> generateConfigField = config.getFields().stream().filter(i -> i.getName().equals(fieldInfo.getName()) && i.isIgnore() == false).findFirst();
+            Optional<GenerateConfigField> generateConfigField = config.getFields().stream().filter(i -> i.getName().equals(fieldInfo.getName()) && !i.isIgnore()).findFirst();
             if (generateConfigField.isPresent()) {
                 String[] javaTypes = javaTypeAnalysis(fieldInfo.getType());
                 for (String javaType : javaTypes) {
-                    if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().filter(i -> javaType.indexOf(i) >= 0).count() > 0) {
+                    if (TypeUtil.primitiveTypeAndWrappedTypes.keySet().stream().anyMatch(javaType::contains)) {
                         continue;
                     }
                     fieldTypeImports.add(javaType);
