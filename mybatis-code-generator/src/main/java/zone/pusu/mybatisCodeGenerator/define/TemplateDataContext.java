@@ -35,10 +35,7 @@ public class TemplateDataContext extends HashMap {
                 field.put("primaryKey", configField.isPrimaryKey());
                 field.put("typeHandler", configField.getTypeHandler());
 
-                Map<String, Object> contextFieldExtend = new LinkedHashMap();
-                configField.getExtend().forEach((key, value) -> {
-                    contextFieldExtend.put(key, value);
-                });
+                Map<String, Object> contextFieldExtend = new LinkedHashMap<>(configField.getExtend());
                 field.put("extend", contextFieldExtend);
                 fields.add(field);
             }
