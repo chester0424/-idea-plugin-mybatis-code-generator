@@ -3,14 +3,15 @@ package zone.pusu.product;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-    import java.math.BigDecimal;
-    import java.lang.String;
+import java.math.BigDecimal;
+import java.util.List;
+import java.lang.String;
 
 /**
  * Product Dao
  *
- * @author chester
- * @since 2023-03-02 10:48:52
+ * @author 
+ * @since 2023-08-01 11:53:25
  */
 public class ProductQueryParam {
 private Map<String, Object> condition = new LinkedHashMap<>();

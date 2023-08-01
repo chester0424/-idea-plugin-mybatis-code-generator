@@ -12,6 +12,13 @@ import java.util.Map;
  */
 public class Product {
 
+//    /**
+//     * 属性
+//     */
+//    private String[] properties;
+//
+//    private List<String> test1;
+
     /**
      * 商品ID
      */
