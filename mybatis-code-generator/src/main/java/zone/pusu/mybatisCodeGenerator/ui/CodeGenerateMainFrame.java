@@ -183,7 +183,7 @@ public class CodeGenerateMainFrame extends JFrame {
 
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return (columnIndex >= 3) ? true : false;
+                return (columnIndex >= 2) ? true : false;
             }
 
             @Override
@@ -218,7 +218,9 @@ public class CodeGenerateMainFrame extends JFrame {
             @Override
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
                 GenerateConfigField generateConfigField = generateConfig.getFields().get(rowIndex);
-                if (columnIndex == 3) {
+                if (columnIndex == 2) {
+                    generateConfigField.setColumnName((String) aValue);
+                } else if (columnIndex == 3) {
                     generateConfigField.setIgnore((boolean) aValue);
                 } else if (columnIndex == 4) {
                     generateConfigField.setPrimaryKey((Boolean) aValue);
