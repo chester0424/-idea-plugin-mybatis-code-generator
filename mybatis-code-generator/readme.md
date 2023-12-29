@@ -28,6 +28,7 @@
 * 模板仅支持使用FreeMaker语法
 * 模板可以从上下文中获取到的信息(Map结构)有：
     * className 类名称
+    * comment 注释
     * packageName 包名
     * fileName 类文件文件名
     * fileDir 类文件所在目录
@@ -37,6 +38,7 @@
         * name 字段名称
         * javaType 字段Java类型全称
         * javaTypeShort 字段Java类型
+        * comment 注释
         * columnName 列名
         * jdbcType JDBC类型
         * primaryKey 是否是主键

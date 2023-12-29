@@ -1,9 +1,11 @@
 {
   "tableName": "Product",
+  "comment": "商品",
   "fields": [
     {
       "name": "id",
       "javaType": "java.lang.String",
+      "comment": "商品ID",
       "ignore": false,
       "columnName": "id",
       "jdbcType": "VARCHAR",
@@ -16,6 +18,7 @@
     {
       "name": "name",
       "javaType": "java.lang.String",
+      "comment": "商品名称",
       "ignore": false,
       "columnName": "name",
       "jdbcType": "VARCHAR",
@@ -28,6 +31,7 @@
     {
       "name": "code",
       "javaType": "java.lang.String",
+      "comment": "商品编码",
       "ignore": false,
       "columnName": "code",
       "jdbcType": "VARCHAR",
@@ -40,6 +44,7 @@
     {
       "name": "weight",
       "javaType": "java.math.BigDecimal",
+      "comment": "商品重量",
       "ignore": false,
       "columnName": "weight",
       "jdbcType": "DECIMAL",
@@ -52,6 +57,7 @@
     {
       "name": "placeOfProduction",
       "javaType": "java.lang.String",
+      "comment": "产地",
       "ignore": false,
       "columnName": "place_of_production",
       "jdbcType": "VARCHAR",
@@ -64,6 +70,7 @@
     {
       "name": "price",
       "javaType": "java.math.BigDecimal",
+      "comment": "商品价格",
       "ignore": false,
       "columnName": "price",
       "jdbcType": "DECIMAL",

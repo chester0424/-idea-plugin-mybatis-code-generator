@@ -11,6 +11,10 @@ public class ClassInfo {
      */
     private String name;
     /**
+     * 注释
+     */
+    private String comment;
+    /**
      * 包名
      */
     private String packageName;
@@ -33,6 +37,14 @@ public class ClassInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getPackageName() {

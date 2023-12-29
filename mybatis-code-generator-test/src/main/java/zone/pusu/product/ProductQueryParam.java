@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.math.BigDecimal;
-import java.util.List;
 import java.lang.String;
 
 /**
  * Product Dao
  *
  * @author 
- * @since 2023-08-01 11:53:25
+ * @since 2023-12-29 09:06:25
  */
 public class ProductQueryParam {
 private Map<String, Object> condition = new LinkedHashMap<>();

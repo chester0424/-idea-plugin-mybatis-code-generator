@@ -12,6 +12,10 @@ public class GenerateConfig implements Serializable {
      */
     private String tableName;
     /**
+     * 注释
+     */
+    private String comment;
+    /**
      * 字段信息
      */
     private List<GenerateConfigField> fields;
@@ -22,6 +26,14 @@ public class GenerateConfig implements Serializable {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public List<GenerateConfigField> getFields() {

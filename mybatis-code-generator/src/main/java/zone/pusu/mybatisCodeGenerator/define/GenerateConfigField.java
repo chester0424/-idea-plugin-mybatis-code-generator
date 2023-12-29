@@ -16,6 +16,10 @@ public class GenerateConfigField {
      */
     private String javaType;
     /**
+     * 注释
+     */
+    private String comment;
+    /**
      * 是否忽略
      */
     private boolean ignore = false;
@@ -57,6 +61,14 @@ public class GenerateConfigField {
 
     public void setJavaType(String javaType) {
         this.javaType = javaType;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public boolean isIgnore() {

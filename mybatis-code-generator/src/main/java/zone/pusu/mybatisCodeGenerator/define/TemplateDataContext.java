@@ -20,6 +20,7 @@ public class TemplateDataContext extends HashMap {
         put("className", classInfo.getName());
         put("packageName", classInfo.getPackageName());
         put("fileName", classInfo.getFileName());
+        put("comment", config.getComment());
         put("fileDir", new File(classInfo.getFilePath()).getParent());
         put("filePath", classInfo.getFilePath());
         put("tableName", config.getTableName());
@@ -29,6 +30,7 @@ public class TemplateDataContext extends HashMap {
                 Map<String, Object> field = new LinkedHashMap<>();
                 field.put("name", configField.getName());
                 field.put("javaType", configField.getJavaType());
+                field.put("comment", configField.getComment());
                 field.put("javaTypeShort", StringUtil.getLastPart(configField.getJavaType(), "."));
                 field.put("columnName", configField.getColumnName());
                 field.put("jdbcType", configField.getJdbcType());

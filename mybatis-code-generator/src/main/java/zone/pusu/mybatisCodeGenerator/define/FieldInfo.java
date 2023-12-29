@@ -12,6 +12,10 @@ public class FieldInfo {
      * 字段类型
      */
     private String type;
+    /**
+     * 注释
+     */
+    private String comment;
 
     public String getName() {
         return name;
@@ -27,5 +31,13 @@ public class FieldInfo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

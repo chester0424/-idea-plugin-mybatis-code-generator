@@ -114,7 +114,7 @@ public class CodeGenerateMainFrame extends JFrame {
             @Override
             public int getColumnCount() {
                 // name ，
-                int baseCount = 7;
+                int baseCount = 8;
                 long extendCount = SettingExtendCfgColStoreService.getInstance().getState().getItems().stream().count();
                 return (int) (baseCount + extendCount);
             }
@@ -122,27 +122,29 @@ public class CodeGenerateMainFrame extends JFrame {
             @Nls
             @Override
             public String getColumnName(int columnIndex) {
-                if (columnIndex <= 6) { // 基本列
+                if (columnIndex <= 7) { // 基本列
                     switch (columnIndex) {
                         case 0:
                             return "FieldName";
                         case 1:
                             return "JavaType";
                         case 2:
-                            return "ColumnName";
+                            return "Comment";
                         case 3:
-                            return "Ignore";
+                            return "ColumnName";
                         case 4:
-                            return "PrimaryKey";
+                            return "Ignore";
                         case 5:
-                            return "JdbcType";
+                            return "PrimaryKey";
                         case 6:
+                            return "JdbcType";
+                        case 7:
                             return "TypeHandler";
                         default:
                             return "";
                     }
                 } else { // 自定义列
-                    int index = columnIndex - 7;
+                    int index = columnIndex - 8;
                     return SettingExtendCfgColStoreService.getInstance().getState().getItems().get(index).getName();
                 }
             }
@@ -150,29 +152,29 @@ public class CodeGenerateMainFrame extends JFrame {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 Class<?> clz;
-                if (columnIndex <= 6) {
+                if (columnIndex <= 7) {
                     switch (columnIndex) {
                         case 0:
                         case 1:
                         case 2:
-                        case 5:
+                        case 3:
                         case 6:
+                        case 7:
                             clz = String.class;
                             break;
-                        case 3:
                         case 4:
+                        case 5:
                             clz = Boolean.class;
                             break;
                         default:
                             clz = Object.class;
                     }
                 } else {
-                    int index = columnIndex - 7;
+                    int index = columnIndex - 8;
                     SettingExtendCfgColItem settingExtendCfgColItem = SettingExtendCfgColStoreService.getInstance().getState().getItems().get(index);
                     if (settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.BOOLEAN.name())) {
                         clz = Boolean.class;
-                    } else if (settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) ||
-                            settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
+                    } else if (settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) || settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
                         clz = String.class;
                     } else {
                         throw new MCGException("NOT SUPPORT");
@@ -183,33 +185,35 @@ public class CodeGenerateMainFrame extends JFrame {
 
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return (columnIndex >= 2) ? true : false;
+                return (columnIndex >= 3) ? true : false;
             }
 
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
                 GenerateConfigField generateConfigField = generateConfig.getFields().get(rowIndex);
-                if (columnIndex <= 6) {
+                if (columnIndex <= 7) {
                     switch (columnIndex) {
                         case 0:
                             return generateConfigField.getName();
                         case 1:
                             return generateConfigField.getJavaType();
                         case 2:
-                            return generateConfigField.getColumnName();
+                            return generateConfigField.getComment();
                         case 3:
-                            return generateConfigField.isIgnore();
+                            return generateConfigField.getColumnName();
                         case 4:
-                            return generateConfigField.isPrimaryKey();
+                            return generateConfigField.isIgnore();
                         case 5:
-                            return generateConfigField.getJdbcType();
+                            return generateConfigField.isPrimaryKey();
                         case 6:
+                            return generateConfigField.getJdbcType();
+                        case 7:
                             return generateConfigField.getTypeHandler();
                         default:
                             return "";
                     }
                 } else {
-                    int index = columnIndex - 7;
+                    int index = columnIndex - 8;
                     String key = generateConfigField.getExtend().keySet().stream().collect(Collectors.toList()).get(index);
                     return generateConfigField.getExtend().get(key);
                 }
@@ -218,18 +222,18 @@ public class CodeGenerateMainFrame extends JFrame {
             @Override
             public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
                 GenerateConfigField generateConfigField = generateConfig.getFields().get(rowIndex);
-                if (columnIndex == 2) {
+                if (columnIndex == 3) {
                     generateConfigField.setColumnName((String) aValue);
-                } else if (columnIndex == 3) {
-                    generateConfigField.setIgnore((boolean) aValue);
                 } else if (columnIndex == 4) {
-                    generateConfigField.setPrimaryKey((Boolean) aValue);
+                    generateConfigField.setIgnore((boolean) aValue);
                 } else if (columnIndex == 5) {
-                    generateConfigField.setJdbcType((String) aValue);
+                    generateConfigField.setPrimaryKey((Boolean) aValue);
                 } else if (columnIndex == 6) {
+                    generateConfigField.setJdbcType((String) aValue);
+                } else if (columnIndex == 7) {
                     generateConfigField.setTypeHandler((String) aValue);
                 } else {
-                    int index = columnIndex - 7;
+                    int index = columnIndex - 8;
                     String key = generateConfigField.getExtend().keySet().stream().collect(Collectors.toList()).get(index);
                     generateConfigField.getExtend().put(key, aValue);
                 }
@@ -274,14 +278,14 @@ public class CodeGenerateMainFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int rowIndex = table.getSelectedRow();
                 int columnIndex = table.getSelectedColumn();
-                if (columnIndex == 4) {
-                    Boolean selected = (Boolean) table.getValueAt(rowIndex, 4);
+                if (columnIndex == 5) {
+                    Boolean selected = (Boolean) table.getValueAt(rowIndex, 5);
                     if (selected) {
                         for (int i = 0; i < table.getRowCount(); i++) {
                             if (i != rowIndex) {
-                                boolean val = (Boolean) table.getValueAt(i, 4);
+                                boolean val = (Boolean) table.getValueAt(i, 5);
                                 if (val) {
-                                    table.setValueAt(false, i, 4);
+                                    table.setValueAt(false, i, 5);
                                 }
                             }
                         }
@@ -393,7 +397,9 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelOperate.add(jButtonGenerate);
         jPanelOperate.add(jButtonCancel);
 
-        this.setTitle("Mybatis Generator" + " : " + classInfo.getPackageName() + '.' + classInfo.getName());
+        String title = "Mybatis Generator" + " : " + classInfo.getPackageName() + '.' + classInfo.getName()
+                + (StringUtil.isNullOrEmpty(classInfo.getComment()) ? "" : "[" + classInfo.getComment() + "]");
+        this.setTitle(title);
         this.setSize(1200, 600);
         Common.setCenterLocation(this);
         this.setVisible(true);
@@ -403,6 +409,7 @@ public class CodeGenerateMainFrame extends JFrame {
         GenerateConfig result = new GenerateConfig();
         // 通过classInfo 构造配置信息
         result.setTableName(classInfo.getName()); // 默认把对象名设置为表名
+        result.setComment(classInfo.getComment());
         result.setFields(new ArrayList<>());
         for (FieldInfo fieldInfo : classInfo.getFieldInfos()) {
             GenerateConfigField field = new GenerateConfigField();
@@ -410,6 +417,7 @@ public class CodeGenerateMainFrame extends JFrame {
             field.setJavaType(fieldInfo.getType());
             field.setJdbcType(getJdbcTypeByJavaType(fieldInfo.getType()));
             field.setColumnName(StringUtil.spiteWord(fieldInfo.getName()));
+            field.setComment(fieldInfo.getComment());
             if (fieldInfo.getName().equals("id")) { // 默认“ID”字段为主键
                 field.setPrimaryKey(true);
             }
@@ -421,8 +429,7 @@ public class CodeGenerateMainFrame extends JFrame {
                 // default value
                 if (item.getType().equals(SettingExtendCfgColTypeEnum.BOOLEAN.name())) {
                     field.getExtend().put(item.getName(), false);
-                } else if (item.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) ||
-                        item.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
+                } else if (item.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) || item.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
                     field.getExtend().put(item.getName(), "");
                 } else {
                     throw new MCGException("Not Support");
@@ -442,20 +449,14 @@ public class CodeGenerateMainFrame extends JFrame {
             for (GenerateConfigField field : configClassFromConfigFile.getFields()) {
                 Optional<GenerateConfigField> optional = result.getFields().stream().filter(i -> i.getName().equals(field.getName()) && i.getJavaType().equals(field.getJavaType())).findFirst();
                 if (optional.isPresent()) {
-                    if (field.isIgnore()) {
-                        optional.get().setIgnore(field.isIgnore());
-                    }
                     if (!StringUtil.isNullOrEmpty(field.getColumnName())) {
                         optional.get().setColumnName(field.getColumnName());
-                    }
-                    if (!StringUtil.isNullOrEmpty(field.getColumnName())) {
-                        optional.get().setColumnName(field.getColumnName());
-                    }
-                    if (!StringUtil.isNullOrEmpty(field.getJdbcType())) {
-                        optional.get().setJdbcType(field.getJdbcType());
                     }
                     optional.get().setIgnore(field.isIgnore());
                     optional.get().setPrimaryKey(field.isPrimaryKey());
+                    if (!StringUtil.isNullOrEmpty(field.getJdbcType())) {
+                        optional.get().setJdbcType(field.getJdbcType());
+                    }
                     if (!StringUtil.isNullOrEmpty(field.getTypeHandler())) {
                         optional.get().setTypeHandler(field.getTypeHandler());
                     }
@@ -495,7 +496,9 @@ public class CodeGenerateMainFrame extends JFrame {
         }
         String content = JsonUtil.toJsonPretty(generateConfig);
         FileUtil.writeFile(fileName, content);
-        Messages.showInfoMessage("Saved Successfully", "Notice");
+
+        //Messages.showInfoMessage("Saved Successfully", "Notice");
+        buttonExecuteEffect(this.jButtonSave, "Saved");
     }
 
     void onGenerateClick() {
@@ -519,10 +522,23 @@ public class CodeGenerateMainFrame extends JFrame {
                     }
                 }
             }
-            Messages.showInfoMessage("Generated Successfully", "Notice");
+            //Messages.showInfoMessage("Generated Successfully", "Notice");
+            buttonExecuteEffect(this.jButtonGenerate, "Generated");
         } catch (Exception ex) {
             Messages.showErrorDialog(ex.getMessage(), "ERROR");
         }
+    }
+
+    void buttonExecuteEffect(JButton jButton, String message) {
+        String originalText = jButton.getText();
+        ThreadUtil.execute(new Runnable[]{
+                        () -> {
+                            SwingUtilities.invokeLater(() -> jButton.setText(message));
+                        },
+                        () -> {
+                            SwingUtilities.invokeLater(() -> jButton.setText(originalText));
+                        }},
+                1);
     }
 
     void onCancelClick() {

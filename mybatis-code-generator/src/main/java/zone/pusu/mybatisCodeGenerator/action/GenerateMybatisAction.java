@@ -3,19 +3,16 @@ package zone.pusu.mybatisCodeGenerator.action;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
-import com.intellij.psi.util.PsiClassUtil;
 import zone.pusu.mybatisCodeGenerator.common.MCGException;
 import zone.pusu.mybatisCodeGenerator.define.ClassInfo;
 import zone.pusu.mybatisCodeGenerator.define.FieldInfo;
+import zone.pusu.mybatisCodeGenerator.tool.PsiUtil;
 import zone.pusu.mybatisCodeGenerator.ui.CodeGenerateMainFrame;
 
 import java.util.ArrayList;
@@ -62,10 +59,12 @@ public class GenerateMybatisAction extends AnAction {
             classInfo.setPackageName(psiJavaFile.getPackageName());
             classInfo.setFileName(psiFile.getName());
             classInfo.setFieldInfos(new ArrayList<>());
+            classInfo.setComment(PsiUtil.getCommentText(psiClass.getDocComment()));
             for (PsiField field : psiClass.getFields()) {
                 FieldInfo fieldInfo = new FieldInfo();
                 fieldInfo.setName(field.getName());
                 fieldInfo.setType(field.getType().getCanonicalText());
+                fieldInfo.setComment(PsiUtil.getCommentText(field.getDocComment()));
                 classInfo.getFieldInfos().add(fieldInfo);
             }
             return classInfo;
