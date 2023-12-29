@@ -1,6 +1,7 @@
 [English](./README.en.md)
 
 # 介绍
+
 使用java项目中，使用Mybatis做ORM很常见，大多是逆向工程方式，根据数据库结构生成代码，这种方式也便于使用，开发也挺高效。 \
 而 Mybatis Forward CodeGenerator 插件使用 **“正向"工程** 思路，根据编写的类，通过一些简便的操作生成代码。 \
 某种程度上说，它可能更加契合面向对象、领域驱动设计等构建思路，不妨一试。
@@ -30,6 +31,7 @@
 * 模板仅支持使用FreeMaker语法
 * 模板可以从上下文中获取到的信息(Map结构)有：
     * className 类名称
+    * comment 注释
     * packageName 包名
     * fileName 类文件文件名
     * fileDir 类文件所在目录
@@ -39,6 +41,7 @@
         * name 字段名称
         * javaType 字段Java类型全称
         * javaTypeShort 字段Java类型
+        * comment 注释
         * columnName 列名
         * jdbcType JDBC类型
         * primaryKey 是否是主键
@@ -81,7 +84,9 @@
 
 ## 其他
 
-* &#x1F308;[手册](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/blob/master/mybatis-code-generator/src/main/resources/operation-manual/OperationManual.docx) --有助于直观感受使用插件的意义
+*
+&#x1F308;[手册](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/blob/master/mybatis-code-generator/src/main/resources/operation-manual/OperationManual.docx)
+--有助于直观感受使用插件的意义
 * 模板编辑参考
     * dao         [resources/template/Dao.java.txt]
     * mapper      [resources/template/Mapper.xml.txt]
@@ -89,6 +94,7 @@
     * sql         [resources/template/Sql.sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
-* MainPage [Gitee](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/) [GitHub](https://github.com/chester0424/idea-plugin-mybatis-code-generator)
-* 其他帮助 QQ:373934650 Email:373934650@qq.com 
-<img src="mybatis-code-generator/src/main/resources/contact/QQ-Qun.png"  width="100" height="100" title="QQ">
+*
+MainPage [Gitee](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/) [GitHub](https://github.com/chester0424/idea-plugin-mybatis-code-generator)
+* 其他帮助 QQ:373934650 Email:373934650@qq.com
+  <img src="mybatis-code-generator/src/main/resources/contact/QQ-Qun.png"  width="100" height="100" title="QQ">

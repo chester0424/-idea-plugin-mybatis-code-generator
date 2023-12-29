@@ -29,6 +29,7 @@ Configure templates under the "Template" column
 * Template only supports FreeMaker syntax
 * The information that the template can get from the context (Map structure) is：
     * className 
+    * comment
     * packageName 
     * fileName 
     * fileDir 
@@ -38,6 +39,7 @@ Configure templates under the "Template" column
         * name 
         * javaType 
         * javaTypeShort 
+        * comment
         * columnName 
         * jdbcType 
         * primaryKey 
