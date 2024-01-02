@@ -20,7 +20,7 @@
 ### 基本设置
 
 打开：文件->设置->其他设置-> Mybatis Forward CodeGenerator \
-设置 AuthorName、ConfigFilePath 信息
+设置 AuthorName 信息、保存默认配置信息到本地项目
 
 ### 模板配置
 
@@ -87,11 +87,6 @@
 *
 &#x1F308;[手册](https://gitee.com/chesterone/idea-plugin-mybatis-code-generator/blob/master/mybatis-code-generator/src/main/resources/operation-manual/OperationManual.docx)
 --有助于直观感受使用插件的意义
-* 模板编辑参考
-    * dao         [resources/template/Dao.java.txt]
-    * mapper      [resources/template/Mapper.xml.txt]
-    * queryParam  [resources/template/QueryParam.java.text]
-    * sql         [resources/template/Sql.sql.txt]
 * 如果查询需要分页，建议使用插件方式
 * [https://github.com/mybatis/](https://github.com/mybatis/) ; [FreeMaker在线手册](http://freemarker.foofun.cn/toc.html)
 *

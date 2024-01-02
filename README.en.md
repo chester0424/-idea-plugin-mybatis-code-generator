@@ -18,7 +18,7 @@ To some extent, it may be more suitable for the construction ideas such as objec
 ### Basic settings
 
 Open: File ->Settings ->Other Settings ->Mybatis Forward CodeGenerator\
-Set AuthorName and ConfigFilePath information
+Set AuthorName and save Default Configs to the local project
 
 ### Template configuration
 
