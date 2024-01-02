@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "zone.pusu"
-version = "1.0.9"
+version = "2.0.1"
 
 repositories {
   mavenCentral()
