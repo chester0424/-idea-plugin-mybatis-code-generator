@@ -2,16 +2,19 @@ package zone.pusu.mybatisCodeGenerator.ui;
 
 import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.openapi.util.NlsContexts;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zone.pusu.mybatisCodeGenerator.config.ConfigManager;
 import zone.pusu.mybatisCodeGenerator.setting.SettingMain;
 import zone.pusu.mybatisCodeGenerator.setting.SettingMainStoreService;
 import zone.pusu.mybatisCodeGenerator.tool.JsonUtil;
 import zone.pusu.mybatisCodeGenerator.tool.ObjectUtil;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -48,9 +51,6 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
     @Override
     public @NotNull Configurable[] getConfigurables() {
         return new Configurable[]{
-                new SettingTemplateUI(),
-                new SettingTypeMappingUI(),
-                new SettingExtendCfgColUI(),
                 new SettingHelpUI()
         };
     }
@@ -66,7 +66,7 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
 
         JLabel jLabelLogon = new JLabel();
         jLabelLogon.setText(" MEET ME MEET BEAUTIFUL, NICE DAY");
-        Font font = new Font("宋体",Font.BOLD, 24);
+        Font font = new Font("宋体", Font.BOLD, 24);
         jLabelLogon.setPreferredSize(new Dimension(200, 80));
         jLabelLogon.setFont(font);
         jPanelContainer.add(jLabelLogon);
@@ -102,37 +102,31 @@ public class SettingMainUI implements Configurable, Configurable.Composite {
         jPanelAuthor.add(textFieldAuthorName);
         jPanelContainer.add(jPanelAuthor);
 
-        // 对象配置文件存储位置
+        // 保存默认信息到本地
         JPanel jPanelConfigFileSavePath = new JPanel();
         jPanelConfigFileSavePath.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jPanelConfigFileSavePath.add(new JLabel("Config File Path:"));
-        JTextField textFieldConfigFileSavePath = new JTextField();
-        textFieldConfigFileSavePath.setPreferredSize(new Dimension(400, 30));
-        textFieldConfigFileSavePath.setText(settingMain.getConfigFileSavePath());
-        textFieldConfigFileSavePath.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                onChanged();
-            }
+        jPanelConfigFileSavePath.setBorder(new EmptyBorder(200, 0, 0, 0));
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("/img/save.png"));
+        icon = new ImageIcon(icon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+        JButton jButtonSaveDefaultToLocal = new JButton("Save DEFAULT CONFIG to the local project", icon);
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                onChanged();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                onChanged();
-            }
-
-            private void onChanged() {
-                String text = textFieldConfigFileSavePath.getText();
-                settingMain.setConfigFileSavePath(text);
-            }
+        jButtonSaveDefaultToLocal.addActionListener(e -> {
+            saveConfigToLocal();
         });
-        jPanelConfigFileSavePath.add(textFieldConfigFileSavePath);
+        jPanelConfigFileSavePath.add(jButtonSaveDefaultToLocal);
+        jButtonSaveDefaultToLocal.setVisible(true);
         jPanelContainer.add(jPanelConfigFileSavePath);
 
         return jPanelContainer;
+    }
+
+    private void saveConfigToLocal() {
+        try {
+            ConfigManager.saveDefaultConfigToLocal();
+
+            Messages.showInfoMessage("Successfully Saved", "Success");
+        } catch (Exception e) {
+            Messages.showErrorDialog(e.getMessage(), "ERROR");
+        }
     }
 }

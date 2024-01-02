@@ -1,10 +1,19 @@
-package zone.pusu.mybatisCodeGenerator.setting;
+package zone.pusu.mybatisCodeGenerator.config;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * 类型映射项
+ * java type to jdbc type mapping
  */
-public class SettingTypeMappingItem {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class TypeMapping {
+
+    @XmlAttribute(name = "java")
     private String javaType;
+
+    @XmlAttribute(name = "jdbc")
     private String jdbcType;
 
     public String getJavaType() {

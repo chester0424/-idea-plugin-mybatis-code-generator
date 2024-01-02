@@ -14,7 +14,7 @@ import ${import};
  */
 public class ${className}QueryParam extends HashMap<String, Object> {
 <#list fields as field>
-    public static final ${field.javaTypeShort} field_${field.name}="${field.name}";
+    public static final String field_${field.name}="${field.name}";
 
 </#list>
 <#list fields as field>

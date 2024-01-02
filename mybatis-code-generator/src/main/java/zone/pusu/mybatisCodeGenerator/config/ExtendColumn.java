@@ -1,21 +1,32 @@
-package zone.pusu.mybatisCodeGenerator.setting;
+package zone.pusu.mybatisCodeGenerator.config;
 
-public class SettingExtendCfgColItem {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * config extend column
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ExtendColumn {
     /**
      * 自定义列名称
      */
+    @XmlAttribute(name = "name")
     private String name;
     /**
-     * 自定义列类型 (SettingExtendCfgColTypeEnum)
+     * 自定义列类型 (ExtendColumnTypeEnum)
      * boolean,select,input
      */
-    private String Type;
+    @XmlAttribute(name = "type")
+    private String type;
     /**
      * 自定义列选项值
      * 自定义类型为 select, 选择项 各个值用逗号隔开
      */
+    @XmlAttribute(name = "options")
     private String options;
+
 
     public String getName() {
         return name;
@@ -26,11 +37,11 @@ public class SettingExtendCfgColItem {
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
     public void setType(String type) {
-        Type = type;
+        this.type = type;
     }
 
     public String getOptions() {
@@ -40,6 +51,4 @@ public class SettingExtendCfgColItem {
     public void setOptions(String options) {
         this.options = options;
     }
-
-
 }

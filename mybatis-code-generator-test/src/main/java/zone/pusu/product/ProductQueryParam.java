@@ -1,77 +1,88 @@
 package zone.pusu.product;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+
 import java.math.BigDecimal;
 import java.lang.String;
 
 /**
  * Product Dao
  *
- * @author 
- * @since 2023-12-29 09:06:25
+ * @author chester
+ * @since 2024-01-02 16:24:09
  */
-public class ProductQueryParam {
-private Map<String, Object> condition = new LinkedHashMap<>();
+public class ProductQueryParam extends HashMap<String, Object> {
+    public static final String field_id="id";
+
+    public static final String field_name="name";
+
+    public static final String field_code="code";
+
+    public static final String field_weight="weight";
+
+    public static final String field_placeOfProduction="placeOfProduction";
+
+    public static final String field_price="price";
+
 
     public void setId(String id) {
-        condition.put("id", id);
+        put("id", id);
     }
 
     public void setIdArray(String... idArray) {
-        condition.put("id_array", idArray);
+        put("id_array", idArray);
     }
 
     public void setName(String name) {
-        condition.put("name", name);
+        put("name", name);
     }
 
     public void setNameArray(String... nameArray) {
-        condition.put("name_array", nameArray);
+        put("name_array", nameArray);
     }
 
     public void setCode(String code) {
-        condition.put("code", code);
+        put("code", code);
     }
 
     public void setCodeArray(String... codeArray) {
-        condition.put("code_array", codeArray);
+        put("code_array", codeArray);
     }
 
     public void setWeight(BigDecimal weight) {
-        condition.put("weight", weight);
+        put("weight", weight);
     }
 
     public void setWeightRange(BigDecimal weightBegin, BigDecimal weightEnd) {
-        condition.put("weight_range", new HashMap<String, Object>() {{
+        put("weight_range", new HashMap<String, Object>() {{
             put("begin", weightBegin);
             put("end", weightEnd);
         }});
     }
 
     public void setPlaceOfProduction(String placeOfProduction) {
-        condition.put("placeOfProduction", placeOfProduction);
+        put("placeOfProduction", placeOfProduction);
     }
 
     public void setPlaceOfProductionArray(String... placeOfProductionArray) {
-        condition.put("placeOfProduction_array", placeOfProductionArray);
+        put("placeOfProduction_array", placeOfProductionArray);
     }
 
     public void setPrice(BigDecimal price) {
-        condition.put("price", price);
+        put("price", price);
     }
 
     public void setPriceRange(BigDecimal priceBegin, BigDecimal priceEnd) {
-        condition.put("price_range", new HashMap<String, Object>() {{
+        put("price_range", new HashMap<String, Object>() {{
             put("begin", priceBegin);
             put("end", priceEnd);
         }});
     }
 
     public void setOrderBy(OrderBy... orders) {
-        condition.put("order_array", orders);
+        put("order_array", orders);
     }
+
 
     public enum OrderBy {
         id_asc,

@@ -7,8 +7,8 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.Nls;
 import zone.pusu.mybatisCodeGenerator.common.MCGException;
+import zone.pusu.mybatisCodeGenerator.config.*;
 import zone.pusu.mybatisCodeGenerator.define.*;
-import zone.pusu.mybatisCodeGenerator.setting.*;
 import zone.pusu.mybatisCodeGenerator.tool.*;
 
 import javax.swing.*;
@@ -20,9 +20,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
@@ -46,15 +44,26 @@ public class CodeGenerateMainFrame extends JFrame {
     GenerateConfig generateConfig;
     ClassInfo classInfo;
     // 记录模板是否需要生成代码
-    private Map<SettingTemplateItem, Boolean> templateSelectedState = new LinkedHashMap<>();
+    private Map<String, Boolean> templateSelectedState = new LinkedHashMap<>();
+    private Config config = null;
 
     public CodeGenerateMainFrame(ClassInfo classInfo) {
+        escToClose();
+
         // 初始化数据
         this.classInfo = classInfo;
+        try {
+            config = ConfigManager.getConfig();
+        } catch (Exception e) {
+            Messages.showErrorDialog(e.getMessage(), "get Config Error");
+        }
         this.generateConfig = initGenerateConfig(classInfo);
+
         // 读取配置的模板文件
-        for (SettingTemplateItem item : SettingTemplateStoreService.getInstance().getState().getItems()) {
-            templateSelectedState.put(item, false);
+        if (config.getTemplates() != null && config.getTemplates().keySet().size() > 0) {
+            for (String s : config.getTemplates().keySet()) {
+                templateSelectedState.put(s, false);
+            }
         }
 
         // 界面UI设置
@@ -113,9 +122,8 @@ public class CodeGenerateMainFrame extends JFrame {
 
             @Override
             public int getColumnCount() {
-                // name ，
                 int baseCount = 8;
-                long extendCount = SettingExtendCfgColStoreService.getInstance().getState().getItems().stream().count();
+                long extendCount = config.getExtendColumns().size();
                 return (int) (baseCount + extendCount);
             }
 
@@ -145,7 +153,7 @@ public class CodeGenerateMainFrame extends JFrame {
                     }
                 } else { // 自定义列
                     int index = columnIndex - 8;
-                    return SettingExtendCfgColStoreService.getInstance().getState().getItems().get(index).getName();
+                    return config.getExtendColumns().get(index).getName();
                 }
             }
 
@@ -171,10 +179,10 @@ public class CodeGenerateMainFrame extends JFrame {
                     }
                 } else {
                     int index = columnIndex - 8;
-                    SettingExtendCfgColItem settingExtendCfgColItem = SettingExtendCfgColStoreService.getInstance().getState().getItems().get(index);
-                    if (settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.BOOLEAN.name())) {
+                    ExtendColumn extendColumn = config.getExtendColumns().get(index);
+                    if (extendColumn.getType().equals(ExtendColumnTypeEnum.BOOLEAN.name())) {
                         clz = Boolean.class;
-                    } else if (settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) || settingExtendCfgColItem.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
+                    } else if (extendColumn.getType().equals(ExtendColumnTypeEnum.SELECT.name()) || extendColumn.getType().equals(ExtendColumnTypeEnum.INPUT.name())) {
                         clz = String.class;
                     } else {
                         throw new MCGException("NOT SUPPORT");
@@ -257,11 +265,11 @@ public class CodeGenerateMainFrame extends JFrame {
             comboBoxJdbcType.addItem(allJdbcType);
         }
         TableCellEditor tableCellEditorJdbcType = new DefaultCellEditor(comboBoxJdbcType);
-        table.getColumnModel().getColumn(5).setCellEditor(tableCellEditorJdbcType);
+        table.getColumnModel().getColumn(6).setCellEditor(tableCellEditorJdbcType);
         // 扩展列下拉处理
-        for (int i = 0; i < SettingExtendCfgColStoreService.getInstance().getState().getItems().size(); i++) {
-            SettingExtendCfgColItem item = SettingExtendCfgColStoreService.getInstance().getState().getItems().get(i);
-            if (item.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name())) {
+        for (int i = 0; i < config.getExtendColumns().size(); i++) {
+            ExtendColumn item = config.getExtendColumns().get(i);
+            if (item.getType().equals(ExtendColumnTypeEnum.SELECT.name())) {
                 if (!StringUtil.isNullOrEmpty(item.getOptions())) {
                     JComboBox jComboBox = new ComboBox();
                     for (String s : item.getOptions().split(",")) {
@@ -272,8 +280,7 @@ public class CodeGenerateMainFrame extends JFrame {
             }
         }
 
-
-        table.addMouseListener(new MouseListener() {
+        table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int rowIndex = table.getSelectedRow();
@@ -291,22 +298,6 @@ public class CodeGenerateMainFrame extends JFrame {
                         }
                     }
                 }
-            }
-
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            public void mouseExited(MouseEvent e) {
-
             }
         });
 
@@ -336,25 +327,24 @@ public class CodeGenerateMainFrame extends JFrame {
             for (Component component : jPanelSelectFile_content.getComponents()) {
                 ((JCheckBox) component).setSelected(isSelectedAll);
             }
-            for (SettingTemplateItem item : templateSelectedState.keySet()) {
-                templateSelectedState.put(item, isSelectedAll);
+            for (String s : config.getTemplates().keySet()) {
+                templateSelectedState.put(s, isSelectedAll);
             }
         });
         jPanelSelectFile_head.add(jCheckBox_selectAll);
 
         // 读取配置文件
-        for (SettingTemplateItem item : templateSelectedState.keySet()) {
-            JCheckBox jCheckBox = new JCheckBox(item.getName());
+        for (String item : templateSelectedState.keySet()) {
+            JCheckBox jCheckBox = new JCheckBox(item);
             jCheckBox.addActionListener((l) -> {
                 JCheckBox source = ((JCheckBox) l.getSource());
                 String name = source.getText();
                 boolean isSelected = source.isSelected();
-                for (SettingTemplateItem settingTemplateItem : templateSelectedState.keySet()) {
-                    if (settingTemplateItem.getName().equals(name)) {
+                for (String settingTemplateItem : templateSelectedState.keySet()) {
+                    if (settingTemplateItem.equals(name)) {
                         templateSelectedState.put(settingTemplateItem, isSelected);
                     }
                 }
-
                 if (Arrays.stream(jPanelSelectFile_content.getComponents()).filter(i -> !((JCheckBox) i).isSelected()).findFirst().isPresent()) {
                     jCheckBox_selectAll.setSelected(false);
                 }
@@ -397,8 +387,7 @@ public class CodeGenerateMainFrame extends JFrame {
         jPanelOperate.add(jButtonGenerate);
         jPanelOperate.add(jButtonCancel);
 
-        String title = "Mybatis Generator" + " : " + classInfo.getPackageName() + '.' + classInfo.getName()
-                + (StringUtil.isNullOrEmpty(classInfo.getComment()) ? "" : "[" + classInfo.getComment() + "]");
+        String title = "Mybatis Generator" + " : " + classInfo.getPackageName() + '.' + classInfo.getName() + (StringUtil.isNullOrEmpty(classInfo.getComment()) ? "" : "[" + classInfo.getComment() + "]");
         this.setTitle(title);
         this.setSize(1200, 600);
         Common.setCenterLocation(this);
@@ -425,14 +414,14 @@ public class CodeGenerateMainFrame extends JFrame {
                 field.setIgnore(true);
             }
             // 扩展配置列
-            for (SettingExtendCfgColItem item : SettingExtendCfgColStoreService.getInstance().getState().getItems()) {
+            for (ExtendColumn item : config.getExtendColumns()) {
                 // default value
-                if (item.getType().equals(SettingExtendCfgColTypeEnum.BOOLEAN.name())) {
+                if (item.getType().equals(ExtendColumnTypeEnum.BOOLEAN.name())) {
                     field.getExtend().put(item.getName(), false);
-                } else if (item.getType().equals(SettingExtendCfgColTypeEnum.SELECT.name()) || item.getType().equals(SettingExtendCfgColTypeEnum.INPUT.name())) {
+                } else if (item.getType().equals(ExtendColumnTypeEnum.SELECT.name()) || item.getType().equals(ExtendColumnTypeEnum.INPUT.name())) {
                     field.getExtend().put(item.getName(), "");
                 } else {
-                    throw new MCGException("Not Support");
+                    throw new MCGException(String.format("extend column type %s Not Support", item.getType()));
                 }
             }
             result.getFields().add(field);
@@ -474,7 +463,7 @@ public class CodeGenerateMainFrame extends JFrame {
     }
 
     private String getJdbcTypeByJavaType(String javaType) {
-        Optional<SettingTypeMappingItem> optional = SettingTypeMappingStoreService.getInstance().getState().getItems().stream().filter(i -> i.getJavaType().equals(javaType)).findFirst();
+        Optional<TypeMapping> optional = config.getTypeMappings().stream().filter(i -> i.getJavaType().equals(javaType)).findFirst();
         if (optional.isPresent()) {
             return optional.get().getJdbcType();
         }
@@ -482,13 +471,13 @@ public class CodeGenerateMainFrame extends JFrame {
     }
 
     private boolean defaultIgnore(String javaType) {
-        Optional<SettingTypeMappingItem> optional = SettingTypeMappingStoreService.getInstance().getState().getDefault().stream().filter(i -> i.getJavaType().equals(javaType)).findFirst();
+        Optional<TypeMapping> optional = config.getTypeMappings().stream().filter(i -> i.getJavaType().equals(javaType)).findFirst();
         return !optional.isPresent();
     }
 
     void onSaveClick() {
         String fileName = classInfo.getName() + "-mcfg.json";
-        String settingConfigFileSavePath = SettingMainStoreService.getInstance().getState().getConfigFileSavePath();
+        String settingConfigFileSavePath = config.getConfigFileSavePath(); //SettingMainStoreService.getInstance().getState().getConfigFileSavePath();
         if (!StringUtil.isNullOrEmpty(settingConfigFileSavePath) && new File(settingConfigFileSavePath).isAbsolute()) {
             fileName = Paths.get(settingConfigFileSavePath, fileName).toString();
         } else {
@@ -497,7 +486,6 @@ public class CodeGenerateMainFrame extends JFrame {
         String content = JsonUtil.toJsonPretty(generateConfig);
         FileUtil.writeFile(fileName, content);
 
-        //Messages.showInfoMessage("Saved Successfully", "Notice");
         buttonExecuteEffect(this.jButtonSave, "Saved");
     }
 
@@ -507,43 +495,59 @@ public class CodeGenerateMainFrame extends JFrame {
                 Messages.showErrorDialog("At least one template needs to be selected", "ERROR");
                 return;
             }
-            String[] templateNames = templateSelectedState.keySet().stream().filter(i -> templateSelectedState.get(i).booleanValue()).map(i -> i.getName()).toArray(String[]::new);
+            String[] templateNames = templateSelectedState.keySet().stream().filter(i -> templateSelectedState.get(i).booleanValue()).toArray(String[]::new);
             for (String templateName : templateNames) {
-                for (SettingTemplateItem item : SettingTemplateStoreService.getInstance().getState().getItems()) {
-                    if (item.getName().equals(templateName)) {
+                for (String item : config.getTemplates().keySet()) {
+                    if (item.equals(templateName)) {
                         // 默认路径和名称
+                        String templateFileName = templateFileTrimEnd(templateName);
                         String fileDir = Paths.get(new File(classInfo.getFilePath()).getParent()).toString();
-                        String fileName = classInfo.getName() + templateName;
+                        String fileName = classInfo.getName() + templateFileName;
                         TemplateDataContext templateDataContext = new TemplateDataContext(classInfo, generateConfig, fileDir, fileName);
-                        String content = FreeMarkerUtil.process(templateName, item.getContent(), templateDataContext);
+                        String content = FreeMarkerUtil.process(templateFileName, config.getTemplates().get(item), templateDataContext);
                         String filePath = Paths.get(templateDataContext.getTargetFileDir(), templateDataContext.getTargetFileName()).toString();
                         FileUtil.writeFile(filePath, content);
 
                     }
                 }
             }
-            //Messages.showInfoMessage("Generated Successfully", "Notice");
             buttonExecuteEffect(this.jButtonGenerate, "Generated");
         } catch (Exception ex) {
             Messages.showErrorDialog(ex.getMessage(), "ERROR");
         }
     }
 
-    void buttonExecuteEffect(JButton jButton, String message) {
-        String originalText = jButton.getText();
-        ThreadUtil.execute(new Runnable[]{
-                        () -> {
-                            SwingUtilities.invokeLater(() -> jButton.setText(message));
-                        },
-                        () -> {
-                            SwingUtilities.invokeLater(() -> jButton.setText(originalText));
-                        }},
-                1);
+    private String templateFileTrimEnd(String fileName) {
+        String templateFileExtend = ".ftl";
+        if (fileName.endsWith(templateFileExtend)) {
+            return StringUtil.trimEnd(fileName, templateFileExtend);
+        }
+        return fileName;
     }
 
     void onCancelClick() {
         // 退出关闭页面
         this.setVisible(false);
         this.dispose();
+    }
+
+    void escToClose() {
+        KeyboardFocusManager keyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        ActionListener actionListener = (ActionEvent e) -> onCancelClick();
+        keyboardFocusManager.addKeyEventDispatcher((KeyEvent event) -> {
+            if ((event.getID() == KeyEvent.KEY_PRESSED) && (event.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+                actionListener.actionPerformed(null);
+            }
+            return false;
+        });
+    }
+
+    void buttonExecuteEffect(JButton jButton, String message) {
+        String originalText = jButton.getText();
+        ThreadUtil.execute(new Runnable[]{() -> {
+            SwingUtilities.invokeLater(() -> jButton.setText(message));
+        }, () -> {
+            SwingUtilities.invokeLater(() -> jButton.setText(originalText));
+        }}, 1);
     }
 }

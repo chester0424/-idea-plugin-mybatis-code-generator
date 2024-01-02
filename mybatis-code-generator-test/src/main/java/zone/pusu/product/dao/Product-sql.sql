@@ -1,9 +1,9 @@
 ----------------------------
 ---- Product
----- 2023-12-29 09:06:25
+---- chester 2024-01-02 16:24:09
 ----------------------------
 CREATE TABLE Product (
-    ID NVARCHAR2(50),
+    ID NVARCHAR2(50) PRIMARY KEY,
     NAME NVARCHAR2(50),
     CODE NVARCHAR2(50),
     WEIGHT NUMBER(18,2),

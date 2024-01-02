@@ -1,16 +1,16 @@
 package zone.pusu.product;
 
 import org.springframework.stereotype.Component;
-import zone.pusu.product.dao.IProductDao;
+import zone.pusu.product.dao.ProductDao;
 
 import java.util.List;
 
 @Component
 public class ProductMgtSvr {
 
-    IProductDao productDao;
+    ProductDao productDao;
 
-    public ProductMgtSvr(IProductDao productDao) {
+    public ProductMgtSvr(ProductDao productDao) {
         this.productDao = productDao;
     }
 

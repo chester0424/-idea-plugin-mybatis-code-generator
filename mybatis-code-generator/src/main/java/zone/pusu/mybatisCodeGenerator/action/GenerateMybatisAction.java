@@ -15,6 +15,9 @@ import zone.pusu.mybatisCodeGenerator.define.FieldInfo;
 import zone.pusu.mybatisCodeGenerator.tool.PsiUtil;
 import zone.pusu.mybatisCodeGenerator.ui.CodeGenerateMainFrame;
 
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +28,6 @@ public class GenerateMybatisAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         try {
-//            Project project = e.getProject();
             ClassInfo classInfo = analysisCurrentJavaFile(e);
             new CodeGenerateMainFrame(classInfo);
         } catch (Exception exception) {
@@ -34,7 +36,6 @@ public class GenerateMybatisAction extends AnAction {
     }
 
     private ClassInfo analysisCurrentJavaFile(AnActionEvent event) {
-//        Editor editor = event.getData(PlatformDataKeys.EDITOR);
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
         if (psiFile.getFileType().isReadOnly()) {
             throw new MCGException("The current file cannot be read-only");

@@ -45,17 +45,41 @@
     <update id="update">
         UPDATE Product
         <set>
-            name = #{field.name},
-            code = #{field.name},
-            weight = #{field.name},
-            place_of_production = #{field.name},
-            price = #{field.name}
+            name = #{name,jdbcType=VARCHAR},
+            code = #{code,jdbcType=VARCHAR},
+            weight = #{weight,jdbcType=DECIMAL},
+            place_of_production = #{placeOfProduction,jdbcType=VARCHAR},
+            price = #{price,jdbcType=DECIMAL}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDyn">
+        UPDATE Product
+        <set>
+            <foreach collection="keyValues.entrySet()" item="value" index="key" separator=",">
+                <if test="key == 'name'">
+                    name = #{value,jdbcType=VARCHAR}
+                </if>
+                <if test="key == 'code'">
+                    code = #{value,jdbcType=VARCHAR}
+                </if>
+                <if test="key == 'weight'">
+                    weight = #{value,jdbcType=DECIMAL}
+                </if>
+                <if test="key == 'placeOfProduction'">
+                    place_of_production = #{value,jdbcType=VARCHAR}
+                </if>
+                <if test="key == 'price'">
+                    price = #{value,jdbcType=DECIMAL}
+                </if>
+            </foreach>
         </set>
         WHERE id = #{id}
     </update>
 
     <delete id="delete">
-        DELETE Product WHERE id = #{id}
+        DELETE FROM Product WHERE id = #{id}
     </delete>
 
     <select id="get" resultMap="resultMap">
@@ -92,7 +116,8 @@
             </if>
             <if test="id_array != null">
                 AND id IN
-                <foreach collection="id_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
+                <foreach collection="id_array" item="value" open="(" separator="," close=")">
+                    #{value,jdbcType=VARCHAR}
                 </foreach>
             </if>
             <!-- name -->
@@ -101,7 +126,8 @@
             </if>
             <if test="name_array != null">
                 AND name IN
-                <foreach collection="name_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
+                <foreach collection="name_array" item="value" open="(" separator="," close=")">
+                    #{value,jdbcType=VARCHAR}
                 </foreach>
             </if>
             <!-- code -->
@@ -110,7 +136,8 @@
             </if>
             <if test="code_array != null">
                 AND code IN
-                <foreach collection="code_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
+                <foreach collection="code_array" item="value" open="(" separator="," close=")">
+                    #{value,jdbcType=VARCHAR}
                 </foreach>
             </if>
             <!-- weight -->
@@ -126,7 +153,8 @@
             </if>
             <if test="placeOfProduction_array != null">
                 AND place_of_production IN
-                <foreach collection="placeOfProduction_array" item="value" open="(" separator="," close=")">#{value,jdbcType=VARCHAR}
+                <foreach collection="placeOfProduction_array" item="value" open="(" separator="," close=")">
+                    #{value,jdbcType=VARCHAR}
                 </foreach>
             </if>
             <!-- price -->

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <config-file-save-path>./dao/</config-file-save-path>
+    <type-mappings>
+        <mapping java="byte" jdbc="TINYINT"/>
+        <mapping java="short" jdbc="SMALLINT"/>
+        <mapping java="int" jdbc="INTEGER"/>
+        <mapping java="float" jdbc="REAL"/>
+        <mapping java="double" jdbc="DOUBLE"/>
+        <mapping java="boolean" jdbc="BIT"/>
+        <mapping java="char" jdbc="CHAR"/>
+        <mapping java="java.lang.Byte" jdbc="TINYINT"/>
+        <mapping java="java.lang.Short" jdbc="SMALLINT"/>
+        <mapping java="java.lang.Integer" jdbc="INTEGER"/>
+        <mapping java="java.lang.Long" jdbc="BIGINT"/>
+        <mapping java="java.lang.Float" jdbc="REAL"/>
+        <mapping java="java.lang.Double" jdbc="DOUBLE"/>
+        <mapping java="java.lang.Boolean" jdbc="BIT"/>
+        <mapping java="java.lang.Character" jdbc="CHAR"/>
+        <mapping java="java.lang.String" jdbc="VARCHAR"/>
+        <mapping java="java.lang.Byte[]" jdbc="BLOB"/>
+        <mapping java="byte[]" jdbc="BLOB"/>
+        <mapping java="java.math.BigInteger" jdbc="BIGINT"/>
+        <mapping java="java.math.BigDecimal" jdbc="DECIMAL"/>
+        <mapping java="java.util.Date" jdbc="DATETIME"/>
+        <mapping java="java.sql.Date" jdbc="DATE"/>
+        <mapping java="java.sql.Time" jdbc="TIME"/>
+        <mapping java="java.sql.Timestamp" jdbc="TIMESTAMP"/>
+    </type-mappings>
+    <extend-columns>
+        <!-- type's optional value INPUT/SELECT/BOOLEAN; options: the select options of 'SELECT'-->
+        <column name="DbType" type="INPUT" options=""/>
+    </extend-columns>
+</config>
+
+

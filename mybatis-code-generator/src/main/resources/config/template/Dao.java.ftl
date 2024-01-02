@@ -17,7 +17,7 @@ import java.util.Map;
 * @since ${.now?string("yyyy-MM-dd HH:mm:ss")}
 */
 @Mapper
-public interface I${className}Dao {
+public interface ${className}Dao {
 
     int insert(${className} ${className?uncap_first});
 
@@ -40,4 +40,4 @@ public interface I${className}Dao {
 
 <#-- 修改模板生成路径 -->
 ${callback.setTargetFileDir(targetFileDir+"\\dao")}
-${callback.setTargetFileName("I"+targetFileName)}
+<#--${callback.setTargetFileName(targetFileName)}-->
