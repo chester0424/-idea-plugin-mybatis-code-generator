@@ -275,7 +275,7 @@ public class CodeGenerateMainFrame extends JFrame {
                     for (String s : item.getOptions().split(",")) {
                         jComboBox.addItem(s);
                     }
-                    table.getColumnModel().getColumn(7 + i).setCellEditor(new DefaultCellEditor(jComboBox));
+                    table.getColumnModel().getColumn(8 + i).setCellEditor(new DefaultCellEditor(jComboBox));
                 }
             }
         }
@@ -477,7 +477,7 @@ public class CodeGenerateMainFrame extends JFrame {
 
     void onSaveClick() {
         String fileName = classInfo.getName() + "-mcfg.json";
-        String settingConfigFileSavePath = config.getConfigFileSavePath(); //SettingMainStoreService.getInstance().getState().getConfigFileSavePath();
+        String settingConfigFileSavePath = config.getConfigFileSavePath();
         if (!StringUtil.isNullOrEmpty(settingConfigFileSavePath) && new File(settingConfigFileSavePath).isAbsolute()) {
             fileName = Paths.get(settingConfigFileSavePath, fileName).toString();
         } else {
